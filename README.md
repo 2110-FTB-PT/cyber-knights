@@ -1,33 +1,41 @@
-# cyber-knights
+# CyberKights Capstone Project
 
-# pet rocks
+Aaron Morales Perez | May Wong | Francisco Tran | Kyle Perez
 
-# needd tables
+## DB tables
 
-#users table
+### users table
 
-# id | username | password
+id | username | password
 
-#
+simple users table to store usernames and passwords in db
 
-#products table
+### products table
 
-# id | name | price | description
+id | name | description | price
 
-#
+A table to store basic product information
 
-#image table
+### images table
 
-# id | image | url | productId
+id | description | url | "productId"
 
-#
+an images table to store image href/src links to use in front end
+will need to create a JOIN statement SQL to combine image row with product
+row or individually grab both with SQL STATEMENTS and add IMAGE information
+to a products object in JS
 
-#reviews table
+### reviews table
 
-# id | name | description | review poster | productId
+id | title | description | "userId" | "productId"
 
-#
+table that holds product reviews. Use a JOIN statement with
+"userId" and "productId" to attach a user to a review and a review to product.
+Or get them through individual SQL queries then add them together in JS
 
-#Comments table
+### comments table
 
-# id | comment poster | description | reviewId
+id | comment | "userId" | "reviewId"
+
+comments will be attached to reviews in a similar way as reviews are attached
+to products
