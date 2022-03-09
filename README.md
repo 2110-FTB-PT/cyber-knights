@@ -12,7 +12,7 @@ simple users table to store usernames and passwords in db
 
 ### products table
 
-**id | name | description | price**
+**id | name | description | price | isPublic**
 
 A table to store basic product information
 
