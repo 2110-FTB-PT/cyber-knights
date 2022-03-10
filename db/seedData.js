@@ -246,10 +246,10 @@ const rebuildDB = async () => {
     await dropTables()
     await createTables()
     await createInitialUsers()
-    await createInitProducts()
-    await createInitImages()
-    await createInitReviews()
-    await createInitComments()
+    // await createInitProducts()
+    // await createInitImages()
+    // await createInitReviews()
+    // await createInitComments()
   } catch (err) {
     throw err
   }

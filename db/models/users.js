@@ -1,4 +1,4 @@
-const client = require("./client");
+const client = require("../client");
 const bcrypt = require("bcrypt");
 const SALT_ROUNDS = 10;
 
@@ -38,8 +38,8 @@ async function getUser({ username, password }) {
   
       if (!user) {
         throw {
-          name: "IncorrectPassword",
-          message: "Password provided was incorrect, Please try again",
+          name: "UserDoesNotExist",
+          message: "User does not exist",
         };
       }
   
@@ -48,6 +48,11 @@ async function getUser({ username, password }) {
       if (isMatch) {
         delete user.password;
         return user;
+      } else {
+        throw {
+          name: "IncorrectPassword",
+          message: "Password provided was incorrect, Please try again",
+        };
       }
     } catch (error) {
       throw error;
