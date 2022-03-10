@@ -32,23 +32,15 @@ const getReviewById = async (reviewId) => {
       rows: [review],
     } = await client.query(
       `
-      SELECT *
-      FROM reviews
-      WHERE id = $1;
+      SELECT r.id, r."userId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r.id = $1;
     `,
       [reviewId]
     )
 
-    const { rows: comments } = await client.query(
-      `
-      SELECT *
-      FROM comments
-      WHERE "reviewId" = $1;
-    `,
-      [reviewId]
-    )
-
-    review.comments = comments
+    review.comments = await getCommentsByReview(reviewId)
 
     return review
   } catch (err) {
@@ -60,10 +52,11 @@ const getPublicReviewsByProduct = async (productId) => {
   try {
     const { rows: productReviews } = await client.query(
       `
-      SELECT *
-      FROM reviews
-      WHERE "productId" = $1 
-      AND "isPublic" = TRUE
+      SELECT r.id, r."userId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r."productId" = $1 
+      AND r."isPublic" = TRUE
     `,
       [productId]
     )
@@ -79,13 +72,15 @@ const getPublicReviewsByProduct = async (productId) => {
   }
 }
 
-const getReviewsByProduct = async (productid) => {
+const getReviewsByProduct = async (productId) => {
   try {
     const { rows: productReviews } = await client.query(
       `
-      SELECT *
-      FROM reviews
-      WHERE "productId" = $1 
+      SELECT r.id, r."productId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r."productId" = $1
+      AND "isPublic" = true 
     `,
       [productId]
     )
@@ -105,9 +100,10 @@ const getReviewsByUser = async (userId) => {
   try {
     const { rows: reviews } = await client.query(
       `
-      SELECT * 
-      FROM reviews
-      WHERE "userId" = $1;
+      SELECT r.id, r."userId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r."userId" = $1;
     `,
       [userId]
     )
@@ -117,7 +113,30 @@ const getReviewsByUser = async (userId) => {
       currReview.comments = await getCommentsByReview(currReview.id)
     }
 
-    console.log(reviews)
+    return reviews
+  } catch (err) {
+    throw err
+  }
+}
+
+const getPublicReviewsByUser = async (userId) => {
+  try {
+    const { rows: reviews } = await client.query(
+      `
+      SELECT r.id, r."userId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r."userId" = $1
+      AND r."isPublic" = true;
+    `,
+      [userId]
+    )
+
+    for (let i = 0; i < reviews.length; i++) {
+      const currReview = reviews[i]
+      currReview.comments = await getCommentsByReview(currReview.id)
+    }
+
     return reviews
   } catch (err) {
     throw err
@@ -148,7 +167,9 @@ const updateReview = async ({ reviewId, ...rest }) => {
       `,
       Object.values(rest)
     )
+
     updatedReview.comments = await getCommentsByReview(reviewId)
+
     return updatedReview
   } catch (err) {
     throw err
@@ -161,5 +182,6 @@ module.exports = {
   getReviewsByProduct,
   getReviewById,
   getReviewsByUser,
+  getPublicReviewsByUser,
   updateReview,
 }
