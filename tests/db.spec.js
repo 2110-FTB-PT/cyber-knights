@@ -5,19 +5,22 @@ const bcrypt = require('bcrypt')
 const {
   createUser,
   getUser,
+  getUserById,
   createProduct,
   getAllPublicProducts,
   getAllProducts,
+  getProductById,
   createImage,
   getAllImages,
   createReview,
   getReviewById,
+  getReviewsByProduct,
   createComment,
   getAllComments,
+  getCommentsByReview,
   getUserByUsername,
 } = require('../db')
 const client = require('../db/client')
-const { errorMonitor } = require('pg/lib/query')
 
 describe('Database', () => {
   beforeAll(async () => {
@@ -48,18 +51,18 @@ describe('Database', () => {
         queriedUser = user
       })
       it('Creates the user', async () => {
-        expect(userToCreate.username).toBe(userCredentials.username)
-        expect(queriedUser.username).toBe(userCredentials.username)
+        expect(userToCreate.username).toEqual(userCredentials.username)
+        expect(queriedUser.username).toEqual(userCredentials.username)
       })
       it('Does not store plain text password', async () => {
-        expect(queriedUser.password).not.toBe(userCredentials.password)
+        expect(queriedUser.password).not.toEqual(userCredentials.password)
       })
       it('Hashes password before storing (salted 10 times)', async () => {
         const hashedVersion = bcrypt.compareSync(
           userCredentials.password,
           queriedUser.password
         )
-        expect(hashedVersion).toBe(true)
+        expect(hashedVersion).toEqual(true)
       })
       it('Does NOT return the password', async () => {
         expect(userToCreate.password).toBeFalsy()
@@ -77,7 +80,7 @@ describe('Database', () => {
         )
         expect(verifyPassword).toBeTruthy()
         expect(verifiedUser).toBeTruthy()
-        expect(verifiedUser.username).toBe(userCredentials.username)
+        expect(verifiedUser.username).toEqual(userCredentials.username)
       })
       it('Does NOT return the password', async () => {
         expect(verifiedUser.password).toBeFalsy()
@@ -102,7 +105,18 @@ describe('Database', () => {
       it('Grabs user by their username', async () => {
         const user = await getUserByUsername(userCredentials.username)
         expect(user).toBeTruthy()
-        expect(user.username).toBe(userCredentials.username)
+        expect(user.username).toEqual(userCredentials.username)
+      })
+    })
+    describe('getUserById(userId)', () => {
+      it('Grabs user by their id', async () => {
+        const user = await getUserById(queriedUser.id)
+        queriedUser = user
+        expect(user).toBeTruthy()
+        expect(user.username).toEqual(userCredentials.username)
+      })
+      it('Does NOT return the password!', async () => {
+        expect(queriedUser.password).toBeFalsy()
       })
     })
   })
@@ -124,8 +138,8 @@ describe('Database', () => {
           price: `50`,
         }
         const createdProduct = await createProduct(productToCreate)
-        expect(createdProduct.name).toBe(productToCreate.name)
-        expect(createdProduct.description).toBe(productToCreate.description)
+        expect(createdProduct.name).toEqual(productToCreate.name)
+        expect(createdProduct.description).toEqual(productToCreate.description)
       })
     })
     describe('getAllPublicProducts()', () => {
@@ -137,6 +151,21 @@ describe('Database', () => {
         WHERE "isPublic" = true;
       `)
         expect(pubProducts).toEqual(queriedPubProducts)
+      })
+    })
+    describe('getProductById(productId)', () => {
+      it(`Returns product object with all it's reviews stored in an array`, async () => {
+        const singleProduct = await getProductById(4)
+        expect(singleProduct).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            isPublic: expect.any(Boolean),
+            description: expect.any(String),
+            price: expect.any(Number),
+            reviews: expect.any(Array),
+          })
+        )
       })
     })
   })
@@ -158,13 +187,14 @@ describe('Database', () => {
           productId: 5,
         }
         const createdImage = await createImage(createNewImg)
-        expect(createdImage.description).toBe(createNewImg.description)
-        expect(createdImage.url).toBe(createNewImg.url)
-        expect(createdImage.productId).toBe(createNewImg.productId)
+        expect(createdImage.description).toEqual(createNewImg.description)
+        expect(createdImage.url).toEqual(createNewImg.url)
+        expect(createdImage.productId).toEqual(createNewImg.productId)
       })
     })
   })
   describe('Reviews', () => {
+    let reviewToCheck
     describe('createReview({ title, description, userId, productId })', () => {
       it('Creates and returns new review', async () => {
         const createNewReview = {
@@ -174,16 +204,51 @@ describe('Database', () => {
           productId: 5,
         }
         const createdReview = await createReview(createNewReview)
-        expect(createdReview.title).toBe(createNewReview.title)
-        expect(createdReview.description).toBe(createNewReview.description)
-        expect(createdReview.userId).toBe(createNewReview.userId)
-        expect(createdReview.productId).toBe(createNewReview.productId)
+        reviewToCheck = createdReview
+        expect(createdReview.title).toEqual(createNewReview.title)
+        expect(createdReview.description).toEqual(createNewReview.description)
+        expect(createdReview.userId).toEqual(createNewReview.userId)
+        expect(createdReview.productId).toEqual(createNewReview.productId)
       })
     })
     describe('getReviewById(reviewId)', () => {
       it(`Gets a routine by it's id number`, async () => {
-        const reviewById = await getReviewById(1)
+        const reviewById = await getReviewById(reviewToCheck.id)
         expect(reviewById).toBeTruthy
+        expect(reviewById.title).toEqual(reviewToCheck.title)
+        expect(reviewById.description).toEqual(reviewToCheck.description)
+      })
+    })
+    describe('getReviewsByProduct(productId)', () => {
+      let productToCheck
+      it('Gets all reviews for a specific project and returns them as an array', async () => {
+        const createNewReview = {
+          title: 'WoW so FETCH',
+          description: 'this is the fetchest pet rock',
+          userId: 4,
+          productId: 4,
+          isPublic: false,
+        }
+        await createReview(createNewReview)
+        const productReviews = await getReviewsByProduct(4)
+        console.log('productReviews :>> ', productReviews)
+        productToCheck = productReviews
+        productReviews.forEach((review) =>
+          expect(review).toEqual(
+            expect.objectContaining({
+              id: expect.any(Number),
+              title: expect.any(String),
+              isPublic: expect.any(Boolean),
+              description: expect.any(String),
+              productId: expect.any(Number),
+              comments: expect.any(Array),
+            })
+          )
+        )
+      })
+      it('Return only public reviews', async () => {
+        const productReviews = await getReviewsByProduct(4)
+        productReviews.forEach(({ isPublic }) => expect(isPublic).toBeTruty)
       })
     })
   })
@@ -195,23 +260,17 @@ describe('Database', () => {
         reviewId: 5,
       }
       it('Creates and returns new Comment', async () => {
-        const beforeCreateComment = await getAllComments()
         const createdComment = await createComment(createNewComment)
-        const afterCreateComment = await getAllComments()
-        expect(createdComment.comment).toBe(createNewComment.comment)
-        expect(createdComment.userId).toBe(createNewComment.userId)
-        expect(createdComment.reviewId).toBe(createNewComment.reviewId)
-        expect(beforeCreateComment.length).toBeLessThan(
-          afterCreateComment.length
-        )
+        expect(createdComment.comment).toEqual(createNewComment.comment)
+        expect(createdComment.userId).toEqual(createNewComment.userId)
+        expect(createdComment.reviewId).toEqual(createNewComment.reviewId)
       })
-      it('after being created shows up in all comments', async () => {
-        const beforeCreateComment = await getAllComments()
-        await createComment(createNewComment)
-        const afterCreateComment = await getAllComments()
-        expect(beforeCreateComment.length).toBeLessThan(
-          afterCreateComment.length
-        )
+    })
+    describe('getCommentsByReview(reviewId)', () => {
+      it('Returns an array of all comments for a review', async () => {
+        const review = await getReviewById(1)
+        const comments = await getCommentsByReview(1)
+        expect(comments).toEqual(review.comments)
       })
     })
   })
