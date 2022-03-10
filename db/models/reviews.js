@@ -124,10 +124,44 @@ const getReviewsByUser = async (userId) => {
   }
 }
 
+const updateReview = async ({ reviewId, ...rest }) => {
+  try {
+    const setString = Object.keys(rest)
+      .map((key, idx) => `"${key}"=$${idx + 1}`)
+      .join(', ')
+
+    if (setString.length === 0) {
+      throw {
+        name: `UpdateReviewErro`,
+        message: `Must include all fields to update review`,
+      }
+    }
+
+    const {
+      rows: [updatedReview],
+    } = await client.query(
+      `
+        UPDATE reviews
+        SET ${setString}
+        WHERE id = ${reviewId}
+        RETURNING *;
+      `,
+      Object.values(rest)
+    )
+    console.log('updatedReview :>> ', updatedReview)
+    updatedReview.comments = await getCommentsByReview(reviewId)
+    console.log('updatedReview :>> ', updatedReview)
+    return updatedReview
+  } catch (err) {
+    throw err
+  }
+}
+
 module.exports = {
   createReview,
   getPublicReviewsByProduct,
   getReviewsByProduct,
   getReviewById,
   getReviewsByUser,
+  updateReview,
 }
