@@ -148,9 +148,7 @@ const updateReview = async ({ reviewId, ...rest }) => {
       `,
       Object.values(rest)
     )
-    console.log('updatedReview :>> ', updatedReview)
     updatedReview.comments = await getCommentsByReview(reviewId)
-    console.log('updatedReview :>> ', updatedReview)
     return updatedReview
   } catch (err) {
     throw err
