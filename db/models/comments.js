@@ -19,12 +19,11 @@ async function createComment({ comment, reviewId, userId, isPublic }) {
   }
 }
 
-async function updateReviewComment({ commentId, ...commentFields }) {
-  const setString = Object.keys(commentFields)
-    .map((field, index) => {
-      return `"${field}" = $${index + 1}`
-    })
-    .join(', ')
+async function updateReviewComment({ id: commentId, ...commentFields }) {
+
+  const setString = Object.keys(commentFields).map((field, index) => {
+    return `"${field}" = $${index + 1}`;
+  }).join(", ");
 
   try {
     const {
