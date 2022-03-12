@@ -273,7 +273,7 @@ const rebuildDB = async () => {
     await createTables()
     await createInitialUsers()
     await createInitProducts()
-    await createInitImages()
+    // await createInitImages()
     await createInitReviews()
     await createInitComments()
   } catch (err) {
