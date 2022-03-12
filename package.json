@@ -1,7 +1,4 @@
 {
-  "jest": {
-    "verbose": true
-  },
   "scripts": {
     "start": "react-scripts start",
     "seed:dev": "nodemon ./db/init_db",
