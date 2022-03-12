@@ -52,8 +52,14 @@ async function getPublicCommentsByUser({ username }) {
 
 async function getCommentsByReview(reviewId) {
   try{
-    
+    const { rows: comments } = await client.query(`
+      SELECT *
+      FROM comments
+      WHERE "reviewId"=$1
+      AND "isPublic"=true;
+  `, [reviewId]);
 
+    return comments;
   } catch (error) {
     throw error;
   }
