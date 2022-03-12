@@ -1,28 +1,35 @@
-const client = require("./client");
+const client = require("../client");
 
-async function createReviewComment({ comment, reviewId, userId, Ispublic }) {
+async function createComment({ comment, reviewId, userId, isPublic }) {
+  console.log("comment", comment)
+  console.log("reviewId", reviewId)
+  console.log("userId", userId)
+  console.log("isPublic", isPublic)
   try {
     const { rows: [createdComment] } = await client.query(`
-        INSERT INTO comments(comment, "reviewId", "userId", "isPublic") 
+        INSERT INTO comments(comment, "userId", "reviewId", "isPublic") 
         VALUES($1, $2, $3, $4)
         RETURNING *;
-      `, [comment, reviewId, userId, Ispublic]);
+      `, [comment, userId, reviewId, isPublic]);
 
+    console.log("createdComment", createdComment);
     return createdComment;
   } catch (error) {
     throw error;
   }
 }
 
-async function updateReviewComment({ reviewId, ...commentFields }) {
+async function updateReviewComment({ commentId, ...commentFields }) {
+
+  const setString = Object.keys(commentFields).map((field, index) => {
+    return `"${field}" = $${index + 1}`;
+  }).join(", ");
+
   try {
-    const setString = Object.keys(commentFields).map((field, index) => {
-      return `"${field}" = $${index + 1}`;
-    }).join(", ") || "";
     const { rows: [comment] } = await client.query(`
-            UPDATE activities
+            UPDATE comments
             SET ${setString}
-            WHERE id= ${id}
+            WHERE id= ${commentId}
             RETURNING *;
         `, Object.values(commentFields));
 
@@ -66,7 +73,7 @@ async function getCommentsByReview(reviewId) {
 }
 
 module.exports = {
-  createReviewComment,
+  createComment,
   updateReviewComment,
   getPublicCommentsByUser,
   getCommentsByReview

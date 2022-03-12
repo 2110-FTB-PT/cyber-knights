@@ -208,26 +208,31 @@ const createInitComments = async () => {
         comment: `You are so RIGHT! 1`,
         userId: 3,
         reviewId: 1,
+        isPublic: true,
       },
       {
         comment: `You are so RIGHT! 2`,
         userId: 3,
         reviewId: 2,
+        isPublic: true,
       },
       {
         comment: `You are so RIGHT! 3`,
         userId: 2,
         reviewId: 3,
+        isPublic: true,
       },
       {
         comment: `You are so RIGHT! 4`,
         userId: 1,
         reviewId: 4,
+        isPublic: true,
       },
       {
         comment: `You are so RIGHT! 5`,
         userId: 2,
         reviewId: 1,
+        isPublic: true,
       },
     ]
 
