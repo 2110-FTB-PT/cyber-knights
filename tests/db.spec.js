@@ -290,7 +290,7 @@ describe('Database', () => {
           description: 'description',
         }
         quieredReview = reviewToCheck
-        const updatedReview = await updateReview(updateInfo)
+        const updatedReview = await updateReview(quieredReview)
         expect(updatedReview).toBeTruthy()
         expect(updatedReview).toEqual(
           expect.objectContaining({
