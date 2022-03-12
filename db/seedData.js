@@ -55,7 +55,7 @@ const createTables = async () => {
         description VARCHAR(255) NOT NULL,
         "userId" INT REFERENCES users(id) NOT NULL,
         "productId" INT REFERENCES products(id) NOT NULL,
-        "isPublic" BOOLEAN DEFAULT TRUE 
+        "isPublic" BOOLEAN DEFAULT TRUE
       );
 
       CREATE TABLE comments(
@@ -134,21 +134,25 @@ const createInitImages = async () => {
         description: `A cute litle blue beetle!`,
         url: `https://cdn.vox-cdn.com/thumbor/CSVLsIhgVcg9Pph6f6Vfa_j45s0=/0x0:509x771/920x613/filters:focal(215x346:295x426):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/70004438/blue_beetle_movie_costume_concept_art.0.jpg`,
         productId: 1,
+        isPublic: true,
       },
       {
         description: `A cute litle nite owl!`,
         url: `https://static.wikia.nocookie.net/watchmen/images/4/44/Nite_Owl_II_DC.jpg/revision/latest/top-crop/width/360/height/450?cb=20210123132624`,
         productId: 2,
+        isPublic: true,
       },
       {
         description: `A cute litle WatchDog!`,
         url: `https://static2.cbrimages.com/wordpress/wp-content/uploads/2020/04/Watchdog-Man-patrol-from-One-Punch-Man-Cropped.jpg?q=50&fit=crop&w=740&h=370&dpr=1.5`,
         productId: 3,
+        isPublic: true,
       },
       {
         description: `A cute litle Trash Panda!`,
         url: `https://static0.srcdn.com/wordpress/wp-content/uploads/2021/01/Rocket-Raccoon-2.jpg`,
         productId: 4,
+        isPublic: true,
       },
     ]
 
@@ -170,24 +174,35 @@ const createInitReviews = async () => {
         description: `This is the cutest little PET ROCK! 1`,
         userId: 1,
         productId: 1,
+        isPublic: true,
       },
       {
         title: `WOW CUTE`,
         description: `This is the cutest little PET ROCK! 2`,
         userId: 3,
         productId: 2,
+        isPublic: true,
       },
       {
         title: `WOW CUTE`,
         description: `This is the cutest little PET ROCK! 3`,
         userId: 2,
         productId: 3,
+        isPublic: true,
       },
       {
         title: `WOW CUTE`,
         description: `This is the cutest little PET ROCK! 4`,
         userId: 1,
         productId: 4,
+        isPublic: true,
+      },
+      {
+        title: `wowSOOO CUTE`,
+        description: `CUTE CUTE CUTE CUTE`,
+        userId: 1,
+        productId: 4,
+        isPublic: true,
       },
     ]
 
@@ -234,6 +249,12 @@ const createInitComments = async () => {
         reviewId: 1,
         isPublic: true,
       },
+      {
+        comment: `This is a comment`,
+        userId: 2,
+        reviewId: 5,
+        isPublic: true,
+      },
     ]
 
     // createComment inside /db/models/comments.js
@@ -252,7 +273,7 @@ const rebuildDB = async () => {
     await createTables()
     await createInitialUsers()
     await createInitProducts()
-    await createInitImages()
+    // await createInitImages()
     await createInitReviews()
     await createInitComments()
   } catch (err) {

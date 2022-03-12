@@ -1,22 +1,21 @@
-const { idle_in_transaction_session_timeout } = require("pg/lib/defaults");
-const client = require("../client");
+const client = require('../client')
 
 async function createComment({ comment, reviewId, userId, isPublic }) {
-  console.log("comment", comment)
-  console.log("reviewId", reviewId)
-  console.log("userId", userId)
-  console.log("isPublic", isPublic)
   try {
-    const { rows: [createdComment] } = await client.query(`
+    const {
+      rows: [createdComment],
+    } = await client.query(
+      `
         INSERT INTO comments(comment, "userId", "reviewId", "isPublic") 
         VALUES($1, $2, $3, $4)
         RETURNING *;
-      `, [comment, userId, reviewId, isPublic]);
+      `,
+      [comment, userId, reviewId, isPublic]
+    )
 
-    console.log("createdComment", createdComment);
-    return createdComment;
+    return createdComment
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
@@ -27,22 +26,28 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
   }).join(", ");
 
   try {
-    const { rows: [comment] } = await client.query(`
+    const {
+      rows: [comment],
+    } = await client.query(
+      `
             UPDATE comments
             SET ${setString}
             WHERE id= ${commentId}
             RETURNING *;
-        `, Object.values(commentFields));
+        `,
+      Object.values(commentFields)
+    )
 
-    return comment;
+    return comment
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
 async function getPublicCommentsByUser({ username }) {
   try {
-    const { rows: comments } = await client.query(`
+    const { rows: comments } = await client.query(
+      `
       SELECT comments.*, users.username 
       AS "creatorName" 
       FROM comments
@@ -50,26 +55,31 @@ async function getPublicCommentsByUser({ username }) {
       ON users.id = comments."userId"
       WHERE users.username=$1
       AND comments."isPublic"=true;
-    `, [username]);
+    `,
+      [username]
+    )
 
-    return comments;
+    return comments
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
 async function getCommentsByReview(reviewId) {
-  try{
-    const { rows: comments } = await client.query(`
+  try {
+    const { rows: comments } = await client.query(
+      `
       SELECT *
       FROM comments
       WHERE "reviewId"=$1
       AND "isPublic"=true;
-  `, [reviewId]);
+  `,
+      [reviewId]
+    )
 
-    return comments;
+    return comments
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
@@ -77,5 +87,5 @@ module.exports = {
   createComment,
   updateReviewComment,
   getPublicCommentsByUser,
-  getCommentsByReview
-};
+  getCommentsByReview,
+}
