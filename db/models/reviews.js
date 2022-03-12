@@ -169,7 +169,6 @@ const updateReview = async ({ reviewId, ...rest }) => {
     )
 
     updatedReview.comments = await getCommentsByReview(reviewId)
-
     return updatedReview
   } catch (err) {
     throw err

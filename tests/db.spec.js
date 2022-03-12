@@ -13,12 +13,16 @@ const {
   createImage,
   getAllImages,
   createReview,
+  getReviewsByUser,
+  getPublicReviewsByUser,
   getReviewById,
   getReviewsByProduct,
+  updateReview,
   createComment,
   getAllComments,
   getCommentsByReview,
   getUserByUsername,
+  getPublicReviewsByProduct,
 } = require('../db')
 const client = require('../db/client')
 
@@ -95,7 +99,6 @@ describe('Database', () => {
           password: 'failingPassword',
         })
           .then((response) => {
-            console.log('Data captured: ', response)
             expect(response).toContainsEqual(errMessage)
           })
           .catch((e) => expect(e).toEqual(errMessage))
@@ -194,7 +197,7 @@ describe('Database', () => {
     })
   })
   describe('Reviews', () => {
-    let reviewToCheck
+    let reviewToCheck, quieredReview
     describe('createReview({ title, description, userId, productId })', () => {
       it('Creates and returns new review', async () => {
         const createNewReview = {
@@ -202,6 +205,7 @@ describe('Database', () => {
           description: `I bought this pet rock a week ago, and Even though I haven't received it yet, I already know it will be the best pet ever!`,
           userId: 4,
           productId: 5,
+          isPublic: true,
         }
         const createdReview = await createReview(createNewReview)
         reviewToCheck = createdReview
@@ -212,11 +216,18 @@ describe('Database', () => {
       })
     })
     describe('getReviewById(reviewId)', () => {
-      it(`Gets a routine by it's id number`, async () => {
+      it(`Gets a review by it's id number`, async () => {
         const reviewById = await getReviewById(reviewToCheck.id)
-        expect(reviewById).toBeTruthy
+        expect(reviewById).toBeTruthy()
         expect(reviewById.title).toEqual(reviewToCheck.title)
         expect(reviewById.description).toEqual(reviewToCheck.description)
+      })
+      it(`returns with creatorName from the users table`, async () => {
+        const reviewById = await getReviewById(reviewToCheck.id)
+        expect(reviewById).toBeTruthy()
+        expect(reviewById).toEqual(
+          expect.objectContaining({ creatorName: expect.any(String) })
+        )
       })
     })
     describe('getReviewsByProduct(productId)', () => {
@@ -231,12 +242,12 @@ describe('Database', () => {
         }
         await createReview(createNewReview)
         const productReviews = await getReviewsByProduct(4)
-        console.log('productReviews :>> ', productReviews)
         productToCheck = productReviews
         productReviews.forEach((review) =>
           expect(review).toEqual(
             expect.objectContaining({
               id: expect.any(Number),
+              creatorName: expect.any(String),
               title: expect.any(String),
               isPublic: expect.any(Boolean),
               description: expect.any(String),
@@ -248,7 +259,49 @@ describe('Database', () => {
       })
       it('Return only public reviews', async () => {
         const productReviews = await getReviewsByProduct(4)
-        productReviews.forEach(({ isPublic }) => expect(isPublic).toBeTruty)
+        productReviews.forEach(({ isPublic }) => expect(isPublic).toBeTruthy())
+      })
+    })
+    describe('getPublicReviewsByUser(userId)', () => {
+      it('gets all public reviews by a single user', async () => {
+        const reviewsByUser = await getPublicReviewsByUser(1)
+        expect(reviewsByUser).toBeTruthy()
+        reviewsByUser.forEach(({ isPublic }) => expect(isPublic).toBeTruthy())
+      })
+    })
+    describe('getReviewsByUser(userId)', () => {
+      it('gets all reviews by a single user', async () => {
+        const reviewsByUser = await getReviewsByUser(4)
+        expect(reviewsByUser).toBeTruthy()
+        reviewsByUser.forEach((review) =>
+          expect(review).toEqual(
+            expect.objectContaining({
+              isPublic: expect.any(Boolean),
+            })
+          )
+        )
+      })
+    })
+    describe('updateReview', () => {
+      it('updates an existing review', async () => {
+        const updateInfo = {
+          title: 'title',
+          reviewId: 1,
+          description: 'description',
+        }
+        quieredReview = reviewToCheck
+        const updatedReview = await updateReview(updateInfo)
+        expect(updatedReview).toBeTruthy()
+        expect(updatedReview).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            title: expect.any(String),
+            isPublic: expect.any(Boolean),
+            description: expect.any(String),
+            productId: expect.any(Number),
+            comments: expect.any(Array),
+          })
+        )
       })
     })
   })
