@@ -1,3 +1,4 @@
+const { idle_in_transaction_session_timeout } = require("pg/lib/defaults");
 const client = require("../client");
 
 async function createComment({ comment, reviewId, userId, isPublic }) {
@@ -19,7 +20,7 @@ async function createComment({ comment, reviewId, userId, isPublic }) {
   }
 }
 
-async function updateReviewComment({ commentId, ...commentFields }) {
+async function updateReviewComment({ id: commentId, ...commentFields }) {
 
   const setString = Object.keys(commentFields).map((field, index) => {
     return `"${field}" = $${index + 1}`;
