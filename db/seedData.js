@@ -100,21 +100,25 @@ const createInitProducts = async () => {
         name: `Blue Beetle`,
         description: `Cute Blue Beetle Rock Pet`,
         price: `90`,
+        isPublic: true,
       },
       {
         name: ` Nite Owl`,
         description: `Cute Nite Owl Rock Pet`,
         price: `150`,
+        isPublic: true,
       },
       {
         name: `WatchDog`,
         description: `Cute WatchDog Rock Pet`,
         price: `30`,
+        isPublic: true,
       },
       {
         name: `Rocket`,
         description: `Cute Trash Panda Rock Pet`,
         price: `90`,
+        isPublic: true,
       },
     ]
     // createProduct needs to be created inside /db/models/product.js
