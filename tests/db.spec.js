@@ -157,7 +157,7 @@ describe('Database', () => {
       })
     })
     describe('getProductById(productId)', () => {
-      it(`Returns product object with all it's reviews stored in an array`, async () => {
+      it(`Returns product object`, async () => {
         const singleProduct = await getProductById(4)
         expect(singleProduct).toEqual(
           expect.objectContaining({
@@ -166,7 +166,6 @@ describe('Database', () => {
             isPublic: expect.any(Boolean),
             description: expect.any(String),
             price: expect.any(Number),
-            reviews: expect.any(Array),
           })
         )
       })
@@ -311,6 +310,7 @@ describe('Database', () => {
         comment: `SAME CAN'T WAIT for it to show up!`,
         userId: 4,
         reviewId: 5,
+        isPublic: true,
       }
       it('Creates and returns new Comment', async () => {
         const createdComment = await createComment(createNewComment)

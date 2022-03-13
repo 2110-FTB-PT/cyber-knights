@@ -40,6 +40,12 @@ const getReviewById = async (reviewId) => {
       [reviewId]
     )
 
+    if (!review)
+      throw {
+        name: `ReviewNotFound`,
+        message: `Review with the id of ${reviewId} could NOT be found`,
+      }
+
     review.comments = await getCommentsByReview(reviewId)
 
     return review
@@ -139,7 +145,7 @@ const updateReview = async ({ id: reviewId, ...reviewFields }) => {
 
     if (setString.length === 0) {
       throw {
-        name: `UpdateReviewErro`,
+        name: `UpdateReviewErr`,
         message: `Must include all fields to update review`,
       }
     }
@@ -156,6 +162,12 @@ const updateReview = async ({ id: reviewId, ...reviewFields }) => {
       Object.values(reviewFields)
     )
 
+    if (!updatedReview)
+      throw {
+        name: `UpdateReviewErr`,
+        message: `Unable to update review check review fields`,
+      }
+
     updatedReview.comments = await getCommentsByReview(reviewId)
     return updatedReview
   } catch (err) {
@@ -163,10 +175,14 @@ const updateReview = async ({ id: reviewId, ...reviewFields }) => {
   }
 }
 
-const addCommentsToReviews = async (reviewArr) => {
-  for (let i = 0; i < reviewArr.length; i++) {
-    const currReview = reviewArr[i]
-    currReview.comments = await getCommentsByReview(currReview.id)
+const addCommentsToReviews = async (reviewsArr) => {
+  try {
+    for (let i = 0; i < reviewsArr.length; i++) {
+      const currReview = reviewsArr[i]
+      currReview.comments = await getCommentsByReview(currReview.id)
+    }
+  } catch (err) {
+    throw err
   }
 }
 
