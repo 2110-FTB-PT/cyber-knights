@@ -21,7 +21,7 @@ usersRouter.get("/me", (req, res, next) => {
    }
  });
 
- usersRouter.get("/:username/reviews", async (req, res, next) => {
+usersRouter.get("/:username/reviews", async (req, res, next) => {
    const { username } = req.params;
 
    try {
@@ -32,6 +32,18 @@ usersRouter.get("/me", (req, res, next) => {
      next({ name, message });
    }
  });
+
+usersRouter.get("/:username/comments", async (req, res, next) => {
+  const { username } = req.params;
+
+  try {
+    const comments = await getPublicCommentsByUser({ username });
+
+    res.send(comments);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 usersRouter.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
