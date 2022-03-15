@@ -1,6 +1,7 @@
 // This is the Web Server
 const express = require('express')
 const server = express()
+require("dotenv").config()
 
 // enable cross-origin resource sharing to proxy api requests
 // from localhost:3000 to localhost:4000 in local dev env
@@ -31,6 +32,10 @@ const { client } = require('./db')
 
 // connect to the server
 const PORT = process.env.PORT || 4000
+
+server.use(({ name, message }, req, res, next) => {
+  res.status(500).send({ name, message });
+});
 
 // define a server handle to close open tcp connection after unit tests have run
 const handle = server.listen(PORT, async () => {

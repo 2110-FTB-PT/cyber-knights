@@ -1,6 +1,12 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { getUser, getUserByUsername } = require("../db/users.js");
+const {
+  getUser,
+  getUserByUsername,
+  createUser,
+  getPublicReviewsByUser,
+  getPublicCommentsByUser,
+} = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
@@ -11,27 +17,27 @@ usersRouter.use((req, res, next) => {
 });
 
 usersRouter.get("/me", (req, res, next) => {
-   if (req.user) {
-     res.send(req.user);
-   } else {
-     next({
-       name: "InvalidToken",
-       message: "Invalid token error",
-     });
-   }
- });
+  if (req.user) {
+    res.send(req.user);
+  } else {
+    next({
+      name: "InvalidToken",
+      message: "Invalid token error",
+    });
+  }
+});
 
-usersRouter.get("/:username/reviews", async (req, res, next) => {
-   const { username } = req.params;
+usersRouter.get("/:id/reviews", async (req, res, next) => {
+  const { id } = req.params;
 
-   try {
-     const reviews = await getPublicReviewsByUser({ username });
+  try {
+    const reviews = await getPublicReviewsByUser(id);
 
-     res.send(reviews);
-   } catch ({ name, message }) {
-     next({ name, message });
-   }
- });
+    res.send(reviews);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 usersRouter.get("/:username/comments", async (req, res, next) => {
   const { username } = req.params;
