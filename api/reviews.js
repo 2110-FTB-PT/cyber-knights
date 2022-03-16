@@ -1,6 +1,12 @@
 const express = require('express')
 const reviewsRouter = express.Router()
-const { createReview, updateReview, getReviewById } = require('../db')
+const {
+  createReview,
+  updateReview,
+  getReviewById,
+  getReviewsByProduct,
+  getProductById,
+} = require('../db')
 
 //require user to create a new review
 reviewsRouter.post(
@@ -63,5 +69,24 @@ reviewsRouter.patch(
     }
   }
 )
+
+reviewsRouter.get('/:productId', async (req, res, next) => {
+  const { productId } = req.params
+  try {
+    const product = await getProductById(productId)
+    if (!product) {
+      next({
+        name: `NoProductFound`,
+        message: `This product could NOT be found`,
+      })
+      return
+    }
+
+    const productReviews = await getReviewsByProduct(productId)
+    res.send(productReviews)
+  } catch (err) {
+    next(err)
+  }
+})
 
 module.exports = reviewsRouter
