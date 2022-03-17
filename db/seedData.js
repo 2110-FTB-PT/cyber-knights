@@ -12,8 +12,9 @@ const dropTables = async () => {
     console.log('Starting to drop tables')
     await client.query(`
       DROP TABLE IF EXISTS comments;
+      DROP TABLE IF EXISTS review_images;
       DROP TABLE IF EXISTS reviews;
-      DROP TABLE IF EXISTS images;
+      DROP TABLE IF EXISTS product_images;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
     `)
@@ -31,6 +32,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL
+        admin BOOLEAN DEFAULT FALSE
       );
 
       CREATE TABLE products(
@@ -41,12 +43,11 @@ const createTables = async () => {
         "isPublic" BOOLEAN DEFAULT TRUE
       );
 
-      CREATE TABLE images(
+      CREATE TABLE product_images(
         id SERIAL PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL,
         "productId" INT REFERENCES products(id) NOT NULL,
-        UNIQUE (id, "productId")
       );
 
       CREATE TABLE reviews(
@@ -56,6 +57,13 @@ const createTables = async () => {
         "userId" INT REFERENCES users(id) NOT NULL,
         "productId" INT REFERENCES products(id) NOT NULL,
         "isPublic" BOOLEAN DEFAULT TRUE
+      );
+        
+      CREATE TABLE review_images(
+        id SERIAL PRIMARY KEY,
+        description VARCHAR(255) NOT NULL,
+        url VARCHAR(255) NOT NULL, 
+        "reviewId" INT REFERENCES reviews(id) NOT NULL,
       );
 
       CREATE TABLE comments(
@@ -100,21 +108,25 @@ const createInitProducts = async () => {
         name: `Blue Beetle`,
         description: `Cute Blue Beetle Rock Pet`,
         price: `90`,
+        isPublic: true,
       },
       {
         name: ` Nite Owl`,
         description: `Cute Nite Owl Rock Pet`,
         price: `150`,
+        isPublic: true,
       },
       {
         name: `WatchDog`,
         description: `Cute WatchDog Rock Pet`,
         price: `30`,
+        isPublic: true,
       },
       {
         name: `Rocket`,
         description: `Cute Trash Panda Rock Pet`,
         price: `90`,
+        isPublic: true,
       },
     ]
     // createProduct needs to be created inside /db/models/product.js

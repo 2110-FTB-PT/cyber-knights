@@ -1,4 +1,4 @@
-const client = require('../client')
+const client = require("../client");
 
 async function createComment({ comment, reviewId, userId, isPublic }) {
   try {
@@ -11,20 +11,20 @@ async function createComment({ comment, reviewId, userId, isPublic }) {
         RETURNING *;
       `,
       [comment, userId, reviewId, isPublic]
-    )
+    );
 
-    return createdComment
+    return createdComment;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
-async function updateReviewComment({ commentId, ...commentFields }) {
+async function updateReviewComment({ id: commentId, ...commentFields }) {
   const setString = Object.keys(commentFields)
     .map((field, index) => {
-      return `"${field}" = $${index + 1}`
+      return `"${field}" = $${index + 1}`;
     })
-    .join(', ')
+    .join(", ");
 
   try {
     const {
@@ -37,11 +37,11 @@ async function updateReviewComment({ commentId, ...commentFields }) {
             RETURNING *;
         `,
       Object.values(commentFields)
-    )
+    );
 
-    return comment
+    return comment;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -58,11 +58,11 @@ async function getPublicCommentsByUser({ username }) {
       AND comments."isPublic"=true;
     `,
       [username]
-    )
+    );
 
-    return comments
+    return comments;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -76,11 +76,11 @@ async function getCommentsByReview(reviewId) {
       AND "isPublic"=true;
   `,
       [reviewId]
-    )
+    );
 
-    return comments
+    return comments;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -89,4 +89,4 @@ module.exports = {
   updateReviewComment,
   getPublicCommentsByUser,
   getCommentsByReview,
-}
+};
