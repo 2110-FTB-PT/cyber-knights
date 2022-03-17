@@ -1,5 +1,6 @@
 const apiRouter = require("express").Router();
 const usersRouter = require("./users");
+const commentsRouter = require("./comments");
 const { getUserById } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
@@ -52,5 +53,6 @@ apiRouter.use((req, res, next) => {
 
 // place your routers here
 apiRouter.use("/users", usersRouter);
+apiRouter.use("/comments", commentsRouter);
 
 module.exports = apiRouter;

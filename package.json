@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "react-scripts start",
+    "seed": "node ./db/init_db",
     "seed:dev": "nodemon ./db/init_db",
     "start:dev": "nodemon index.js",
     "test:watch": "jest --watchAll --runInBand "

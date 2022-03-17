@@ -25,7 +25,7 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
       return `"${field}" = $${index + 1}`;
     })
     .join(", ");
-
+    
   try {
     const {
       rows: [comment],
@@ -84,9 +84,30 @@ async function getCommentsByReview(reviewId) {
   }
 }
 
+async function getCommentbyId(commentId) {
+  try {
+    const {
+      rows: [comments],
+    } = await client.query(
+      `
+        SELECT *
+        FROM comments
+        WHERE id=$1
+        AND "isPublic"=true;
+    `,
+      [commentId]
+    );
+
+    return comments;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createComment,
   updateReviewComment,
   getPublicCommentsByUser,
   getCommentsByReview,
+  getCommentbyId,
 };
