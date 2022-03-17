@@ -139,6 +139,7 @@ describe('Database', () => {
           name: `Spider-Rock`,
           description: `the real hero of the spider-verse`,
           price: `50`,
+          isPublic: true,
         }
         const createdProduct = await createProduct(productToCreate)
         expect(createdProduct.name).toEqual(productToCreate.name)
