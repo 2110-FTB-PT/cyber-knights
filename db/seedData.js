@@ -31,7 +31,7 @@ const createTables = async () => {
       CREATE TABLE users(
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
+        password VARCHAR(255) NOT NULL,
         admin BOOLEAN DEFAULT FALSE
       );
 
@@ -47,7 +47,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL,
-        "productId" INT REFERENCES products(id) NOT NULL,
+        "productId" INT REFERENCES products(id) NOT NULL
       );
 
       CREATE TABLE reviews(
@@ -63,7 +63,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL, 
-        "reviewId" INT REFERENCES reviews(id) NOT NULL,
+        "reviewId" INT REFERENCES reviews(id) NOT NULL
       );
 
       CREATE TABLE comments(
