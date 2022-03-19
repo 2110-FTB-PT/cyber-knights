@@ -1,8 +1,9 @@
-const apiRouter = require('express').Router()
-const usersRouter = require('./users')
-const { getUserById } = require('../db')
-const jwt = require('jsonwebtoken')
-const { JWT_SECRET } = process.env
+const apiRouter = require("express").Router();
+const usersRouter = require("./users");
+const commentsRouter = require("./comments");
+const { getUserById } = require("../db");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
 
 apiRouter.get('/health', (req, res, next) => {
   res.send({
@@ -45,7 +46,9 @@ apiRouter.use((req, res, next) => {
 })
 
 // place your routers here
-apiRouter.use('/users', usersRouter)
+apiRouter.use("/users", usersRouter);
+apiRouter.use("/comments", commentsRouter);
 apiRouter.use('/reviews', require('./reviews'))
+apiRouter.use('/images', require('./images'))
 
 module.exports = apiRouter

@@ -1,6 +1,7 @@
 const client = require('./client')
 const {
   createUser,
+  createAdmin,
   createProduct,
   createImage,
   createReview,
@@ -17,6 +18,7 @@ const dropTables = async () => {
       DROP TABLE IF EXISTS product_images;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS admins;
     `)
     console.log('Dropped all tables!')
   } catch (err) {
@@ -32,8 +34,15 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL
-        admin BOOLEAN DEFAULT FALSE
       );
+
+      CREATE TABLE admins(
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        admin BOOLEAN DEFAULT TRUE
+      );
+
 
       CREATE TABLE products(
         id SERIAL PRIMARY KEY,
@@ -47,7 +56,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL,
-        "productId" INT REFERENCES products(id) NOT NULL,
+        "productId" INT REFERENCES products(id) NOT NULL
       );
 
       CREATE TABLE reviews(
@@ -63,7 +72,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL, 
-        "reviewId" INT REFERENCES reviews(id) NOT NULL,
+        "reviewId" INT REFERENCES reviews(id) NOT NULL
       );
 
       CREATE TABLE comments(
@@ -97,6 +106,26 @@ const createInitialUsers = async () => {
     console.log('Finished creating users!')
   } catch (err) {
     throw err
+  }
+}
+
+const createInitialAdmins = async () => {
+  console.log('Starting to create users.......')
+  try {
+    const initAdmins = [
+      { username: 'AdminA', password: 'password1234' },
+      { username: 'AdminB', password: 'password1234' },
+      { username: 'AdminC', password: 'password1234' },
+      { username: 'AdminD', password: 'password1234' },
+    ]
+
+    // need to make the createUser function in /db/models/user.js
+    const admins = await Promise.all(initAdmins.map(createAdmin))
+    console.log('Admins =>', admins)
+    console.log('Finished creating Admins!')
+  } catch (err) {
+    throw err
+    Admins
   }
 }
 
@@ -284,6 +313,7 @@ const rebuildDB = async () => {
     await dropTables()
     await createTables()
     await createInitialUsers()
+    await createInitialAdmins()
     await createInitProducts()
     // await createInitImages()
     await createInitReviews()
