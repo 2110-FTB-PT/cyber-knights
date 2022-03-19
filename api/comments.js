@@ -2,7 +2,7 @@ const express = require("express");
 const commentsRouter = express.Router();
 const { createComment, updateReviewComment, getCommentbyId } = require("../db");
 
-commentsRouter.post("/", async (req, res, next) => {
+commentsRouter.post("/create", async (req, res, next) => {
   try {
     const { comment, isPublic, reviewId } = req.body;
     const { id: userId } = req.user;
