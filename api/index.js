@@ -50,5 +50,6 @@ apiRouter.use("/users", usersRouter);
 apiRouter.use("/comments", commentsRouter);
 apiRouter.use('/reviews', require('./reviews'))
 apiRouter.use('/images', require('./images'))
+apiRouter.use('/products',require('./products'))
 
 module.exports = apiRouter
