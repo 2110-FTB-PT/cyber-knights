@@ -40,6 +40,12 @@ const getReviewById = async (reviewId) => {
       [reviewId]
     )
 
+    if (!review)
+      throw {
+        name: `ReviewNotFound`,
+        message: `Review with the id of ${reviewId} could NOT be found`,
+      }
+
     review.comments = await getCommentsByReview(reviewId)
 
     return review
@@ -61,10 +67,7 @@ const getPublicReviewsByProduct = async (productId) => {
       [productId]
     )
 
-    for (let i = 0; i < productReviews.length; i++) {
-      const currReview = productReviews[i]
-      currReview.comments = await getCommentsByReview(currReview.id)
-    }
+    await addCommentsToReviews(productReviews)
 
     return productReviews
   } catch (err) {
@@ -85,10 +88,7 @@ const getReviewsByProduct = async (productId) => {
       [productId]
     )
 
-    for (let i = 0; i < productReviews.length; i++) {
-      const currReview = productReviews[i]
-      currReview.comments = await getCommentsByReview(currReview.id)
-    }
+    await addCommentsToReviews(productReviews)
 
     return productReviews
   } catch (err) {
@@ -108,10 +108,7 @@ const getReviewsByUser = async (userId) => {
       [userId]
     )
 
-    for (let i = 0; i < reviews.length; i++) {
-      const currReview = reviews[i]
-      currReview.comments = await getCommentsByReview(currReview.id)
-    }
+    await addCommentsToReviews(reviews)
 
     return reviews
   } catch (err) {
@@ -132,10 +129,7 @@ const getPublicReviewsByUser = async (userId) => {
       [userId]
     )
 
-    for (let i = 0; i < reviews.length; i++) {
-      const currReview = reviews[i]
-      currReview.comments = await getCommentsByReview(currReview.id)
-    }
+    await addCommentsToReviews(reviews)
 
     return reviews
   } catch (err) {
@@ -143,15 +137,15 @@ const getPublicReviewsByUser = async (userId) => {
   }
 }
 
-const updateReview = async ({ reviewId, ...rest }) => {
+const updateReview = async ({ id: reviewId, ...reviewFields }) => {
   try {
-    const setString = Object.keys(rest)
+    const setString = Object.keys(reviewFields)
       .map((key, idx) => `"${key}"=$${idx + 1}`)
       .join(', ')
 
     if (setString.length === 0) {
       throw {
-        name: `UpdateReviewErro`,
+        name: `UpdateReviewErr`,
         message: `Must include all fields to update review`,
       }
     }
@@ -165,11 +159,28 @@ const updateReview = async ({ reviewId, ...rest }) => {
         WHERE id = ${reviewId}
         RETURNING *;
       `,
-      Object.values(rest)
+      Object.values(reviewFields)
     )
+
+    if (!updatedReview)
+      throw {
+        name: `UpdateReviewErr`,
+        message: `Unable to update review check review fields`,
+      }
 
     updatedReview.comments = await getCommentsByReview(reviewId)
     return updatedReview
+  } catch (err) {
+    throw err
+  }
+}
+
+const addCommentsToReviews = async (reviewsArr) => {
+  try {
+    for (let i = 0; i < reviewsArr.length; i++) {
+      const currReview = reviewsArr[i]
+      currReview.comments = await getCommentsByReview(currReview.id)
+    }
   } catch (err) {
     throw err
   }

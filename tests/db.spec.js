@@ -139,6 +139,7 @@ describe('Database', () => {
           name: `Spider-Rock`,
           description: `the real hero of the spider-verse`,
           price: `50`,
+          isPublic: true,
         }
         const createdProduct = await createProduct(productToCreate)
         expect(createdProduct.name).toEqual(productToCreate.name)
@@ -157,7 +158,7 @@ describe('Database', () => {
       })
     })
     describe('getProductById(productId)', () => {
-      it(`Returns product object with all it's reviews stored in an array`, async () => {
+      it(`Returns product object`, async () => {
         const singleProduct = await getProductById(4)
         expect(singleProduct).toEqual(
           expect.objectContaining({
@@ -166,7 +167,6 @@ describe('Database', () => {
             isPublic: expect.any(Boolean),
             description: expect.any(String),
             price: expect.any(Number),
-            reviews: expect.any(Array),
           })
         )
       })
@@ -290,7 +290,7 @@ describe('Database', () => {
           description: 'description',
         }
         quieredReview = reviewToCheck
-        const updatedReview = await updateReview(updateInfo)
+        const updatedReview = await updateReview(quieredReview)
         expect(updatedReview).toBeTruthy()
         expect(updatedReview).toEqual(
           expect.objectContaining({
@@ -311,6 +311,7 @@ describe('Database', () => {
         comment: `SAME CAN'T WAIT for it to show up!`,
         userId: 4,
         reviewId: 5,
+        isPublic: true,
       }
       it('Creates and returns new Comment', async () => {
         const createdComment = await createComment(createNewComment)

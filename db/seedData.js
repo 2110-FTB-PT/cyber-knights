@@ -1,6 +1,7 @@
 const client = require('./client')
 const {
   createUser,
+  createAdmin,
   createProduct,
   createImage,
   createReview,
@@ -12,10 +13,12 @@ const dropTables = async () => {
     console.log('Starting to drop tables')
     await client.query(`
       DROP TABLE IF EXISTS comments;
+      DROP TABLE IF EXISTS review_images;
       DROP TABLE IF EXISTS reviews;
-      DROP TABLE IF EXISTS images;
+      DROP TABLE IF EXISTS product_images;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS admins;
     `)
     console.log('Dropped all tables!')
   } catch (err) {
@@ -33,6 +36,14 @@ const createTables = async () => {
         password VARCHAR(255) NOT NULL
       );
 
+      CREATE TABLE admins(
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        admin BOOLEAN DEFAULT TRUE
+      );
+
+
       CREATE TABLE products(
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE NOT NULL,
@@ -41,12 +52,11 @@ const createTables = async () => {
         "isPublic" BOOLEAN DEFAULT TRUE
       );
 
-      CREATE TABLE images(
+      CREATE TABLE product_images(
         id SERIAL PRIMARY KEY,
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL,
-        "productId" INT REFERENCES products(id) NOT NULL,
-        UNIQUE (id, "productId")
+        "productId" INT REFERENCES products(id) NOT NULL
       );
 
       CREATE TABLE reviews(
@@ -56,6 +66,13 @@ const createTables = async () => {
         "userId" INT REFERENCES users(id) NOT NULL,
         "productId" INT REFERENCES products(id) NOT NULL,
         "isPublic" BOOLEAN DEFAULT TRUE
+      );
+        
+      CREATE TABLE review_images(
+        id SERIAL PRIMARY KEY,
+        description VARCHAR(255) NOT NULL,
+        url VARCHAR(255) NOT NULL, 
+        "reviewId" INT REFERENCES reviews(id) NOT NULL
       );
 
       CREATE TABLE comments(
@@ -92,6 +109,26 @@ const createInitialUsers = async () => {
   }
 }
 
+const createInitialAdmins = async () => {
+  console.log('Starting to create users.......')
+  try {
+    const initAdmins = [
+      { username: 'AdminA', password: 'password1234' },
+      { username: 'AdminB', password: 'password1234' },
+      { username: 'AdminC', password: 'password1234' },
+      { username: 'AdminD', password: 'password1234' },
+    ]
+
+    // need to make the createUser function in /db/models/user.js
+    const admins = await Promise.all(initAdmins.map(createAdmin))
+    console.log('Admins =>', admins)
+    console.log('Finished creating Admins!')
+  } catch (err) {
+    throw err
+    Admins
+  }
+}
+
 const createInitProducts = async () => {
   console.log('Starting to create products')
   try {
@@ -100,21 +137,25 @@ const createInitProducts = async () => {
         name: `Blue Beetle`,
         description: `Cute Blue Beetle Rock Pet`,
         price: `90`,
+        isPublic: true,
       },
       {
         name: ` Nite Owl`,
         description: `Cute Nite Owl Rock Pet`,
         price: `150`,
+        isPublic: true,
       },
       {
         name: `WatchDog`,
         description: `Cute WatchDog Rock Pet`,
         price: `30`,
+        isPublic: true,
       },
       {
         name: `Rocket`,
         description: `Cute Trash Panda Rock Pet`,
         price: `90`,
+        isPublic: true,
       },
     ]
     // createProduct needs to be created inside /db/models/product.js
@@ -272,6 +313,7 @@ const rebuildDB = async () => {
     await dropTables()
     await createTables()
     await createInitialUsers()
+    await createInitialAdmins()
     await createInitProducts()
     // await createInitImages()
     await createInitReviews()
