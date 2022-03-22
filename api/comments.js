@@ -37,7 +37,6 @@ commentsRouter.patch("/:commentId", requireUser, async (req, res, next) => {
 
   try {
     const originalComment = await getCommentbyId(id);
-    console.log("originalComment", originalComment);
 
     if (originalComment.userId === req.user.id) {
       const updatedComment = await updateReviewComment(updateField);
