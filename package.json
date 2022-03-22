@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "start": "react-scripts start",
+    "start:react": "react-scripts start",
     "seed": "node ./db/init_db",
     "seed:dev": "nodemon ./db/init_db",
+    "start": "node index.js",
     "start:dev": "nodemon index.js",
     "test:watch": "jest --watchAll --runInBand "
   },
