@@ -20,7 +20,7 @@ productsRouter.get("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-productsRouter.get("/", async (req, res, next) => {
+productsRouter.get("/public", async (req, res, next) => {
   try {
     const publicProducts = await getAllPublicProducts();
     res.send(publicProducts);
