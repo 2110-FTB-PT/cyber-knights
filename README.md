@@ -2,6 +2,8 @@
 
 Aaron Morales Perez | May Wong | Francisco Tran | Kyle Perez
 
+# https://build-a-rock.herokuapp.com/api/health
+
 ## DB tables
 
 ### users table
