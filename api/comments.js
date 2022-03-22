@@ -1,8 +1,9 @@
 const express = require("express");
 const commentsRouter = express.Router();
 const { createComment, updateReviewComment, getCommentbyId } = require("../db");
+const { requireUser } = require("./utils.js");
 
-commentsRouter.post("/create", async (req, res, next) => {
+commentsRouter.post("/create", requireUser, async (req, res, next) => {
   try {
     const { comment, isPublic, reviewId } = req.body;
     const { id: userId } = req.user;
@@ -25,7 +26,7 @@ commentsRouter.post("/create", async (req, res, next) => {
   }
 });
 
-commentsRouter.patch("/:commentId", async (req, res, next) => {
+commentsRouter.patch("/:commentId", requireUser, async (req, res, next) => {
   const { commentId: id } = req.params;
   const { comment, isPublic } = req.body;
   const updateField = { id };

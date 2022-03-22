@@ -28,7 +28,7 @@ describe("API", () => {
   it("responds to a request at /api/health with a message specifying it is healthy", async () => {
     const res = await axios.get(`${DATABASE_URL}/api/health`);
 
-    expect(typeof res.data.message).toEqual("string");
+    expect(res.data.healthy).toEqual(true);
   });
 
   describe("Users", () => {
@@ -157,7 +157,7 @@ describe("API", () => {
     describe("POST /comments/create (*)", () => {
       it("Logged in users can create a new comment", async () => {
         const { data: respondedComment } = await axios.post(
-          `${DATABASE_URL}/api/comments`,
+          `${DATABASE_URL}/api/comments/create`,
           commentToCreateAndUpdate,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -170,8 +170,8 @@ describe("API", () => {
         let noLoggedInUserResp, noLoggedInUserErrResp;
         try {
           noLoggedInUserResp = await axios.post(
-            `${DATABASE_URL}/api/comments`,
-            commentToFail
+            `${DATABASE_URL}/api/comments/create`,
+            commentToCreateAndUpdate
           );
         } catch (err) {
           noLoggedInUserErrResp = err.response;
@@ -183,8 +183,8 @@ describe("API", () => {
     describe("PATCH /comments/:commentId (*)", () => {
       it("Logged in users can update or delete their comments", async () => {
         const { data: respondedComment } = await axios.patch(
-          `${API_URL}/api/comments/${commentToCreateAndUpdate.id}`,
-          newCommentData,
+          `${DATABASE_URL}/api/comments/${commentToCreateAndUpdate.id}`,
+          { comment: "amazing!" },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         expect(respondedComment.comment).toEqual(respondedComment.comment);
@@ -200,7 +200,7 @@ describe("API", () => {
     describe("POST /reviews/create (*)", () => {
       it("Logged in users can create a new review", async () => {
         const { data: respondedReview } = await axios.post(
-          `${DATABASE_URL}/api/reviews`,
+          `${DATABASE_URL}/api/reviews/create`,
           reviewToCreateAndUpdate,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -214,8 +214,8 @@ describe("API", () => {
         let noLoggedInUserResp, noLoggedInUserErrResp;
         try {
           noLoggedInUserResp = await axios.post(
-            `${DATABASE_URL}/api/reviews`,
-            reviewToFail
+            `${DATABASE_URL}/api/reviews/create`,
+            reviewToCreateAndUpdate
           );
         } catch (err) {
           noLoggedInUserErrResp = err.response;
@@ -227,8 +227,8 @@ describe("API", () => {
     describe("PATCH /reviews/:reviewId (*)", () => {
       it("Logged in users can update or delete their reviews", async () => {
         const { data: respondedReview } = await axios.patch(
-          `${API_URL}/api/reviews/${reviewToCreateAndUpdate.id}`,
-          newReviewData,
+          `${DATABASE_URL}/api/reviews/${reviewToCreateAndUpdate.id}`,
+          { title: "wow", description: "sooooo cute" },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         expect(respondedReview.title).toEqual(reviewToCreateAndUpdate.title);

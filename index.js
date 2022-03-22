@@ -23,6 +23,7 @@ server.get('*', (req, res, next) => {
 })
 
 server.use(({ name, message }, req, res, next) => {
+  console.error(name, message);
   res.status(500).send({ name, message })
 })
 
