@@ -45,7 +45,7 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
   }
 }
 
-async function getPublicCommentsByUser({ username }) {
+async function getPublicCommentsByUser( userId ) {
   try {
     const { rows: comments } = await client.query(
       `
@@ -54,10 +54,10 @@ async function getPublicCommentsByUser({ username }) {
       FROM comments
       JOIN users
       ON users.id = comments."userId"
-      WHERE users.username=$1
+      WHERE users.id=$1
       AND comments."isPublic"=true;
     `,
-      [username]
+      [userId]
     );
 
     return comments;
