@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start:react": "react-scripts start",
+    "build": "react-scripts build",
     "seed": "node ./db/init_db",
     "seed:dev": "nodemon ./db/init_db",
     "start": "node index.js",
