@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from 'react'
-// getAPIHealth is defined in our axios-services directory index.js
-// you can think of that directory as a collection of api adapters
-// where each adapter fetches specific info from our express server's /api route
-import { getAPIHealth } from '../axios-services'
-import '../style/App.css'
+import React from "react";
+import Header from "./Header";
+import Home from "./Home";
+import "../style/App.css";
+import { Route, Routes } from "react-router-dom";
 
 const App = () => {
-  const [APIHealth, setAPIHealth] = useState('')
-
-  useEffect(() => {
-    // follow this pattern inside your useEffect calls:
-    // first, create an async function that will wrap your axios service adapter
-    // invoke the adapter, await the response, and set the data
-    const getAPIStatus = async () => {
-      const { healthy } = await getAPIHealth()
-      setAPIHealth(healthy ? 'api is up! :D' : 'api is down :/')
-    }
-
-    // second, after you've defined your getter above
-    // invoke it immediately after its declaration, inside the useEffect callback
-    getAPIStatus()
-  }, [])
-
   return (
-    <div className='app-container'>
-      <h1>Hello, World!</h1>
-      <p>API Status: {APIHealth}</p>
+    <div className="app-container">
+      <Header />
+      <div className="content-container d-flex justify-content-center">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/allProducts" element={<h1>products</h1>} />
+          <Route path="/products-pets" element={<h1>products-pets</h1>} />
+          <Route
+            path="/products-accessories"
+            element={<h1>products-accessories</h1>}
+          />
+          <Route path="/login" element={<h1>login</h1>} />
+          <Route path="/cart" element={<h1>cart</h1>} />
+        </Routes>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
