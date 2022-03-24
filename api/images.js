@@ -1,33 +1,46 @@
 const express = require('express')
 const imagesRouter = express.Router()
+const cloudinary = require('cloudinary').v2
 const multer = require('multer')
+const dotenv = require('dotenv')
+const cloudinaryStorage = require('cloudinary-multer')
 const {createProductImage, createReviewImage } =require('../db/models/images')
 
+// const storage = require('cloudinary-multer')
 
+dotenv.config()
 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 
+});
 
-const fileStorageEngineReviews = multer.diskStorage({
-  destination: (req, file, cb) =>{
-    cb(null, './public/review')
-  },
-  filename: (req, file, cb) =>{
-    cb(null,Date.now() + '--' + file.originalname)
-  }
+const storage = cloudinaryStorage({
+    cloudinary: cloudinary,
+});
+
+const upload = multer({
+    storage: storage
 })
 
-const uploadReviews = multer({storage: fileStorageEngineReviews})
 
-imagesRouter.post('/uploadreview-:reviewId',uploadReviews.single('reviews'),async (req, res, next) => {
+
+
+
+
+imagesRouter.post('/uploadreview/:reviewId',upload.single('reviews'),async (req, res, next) => {
     const imageData = {}
-    const {reviwId} =req.params
+    const {reviewId} = req.params
   try {
     console.log(req.file);
+    console.log(reviewId)
     imageData.description = req.file.fieldname
-    imageData.url = req.file.path
-    imageData.reviewId = reviwId
-    await createReviewImage(imageData)
-    res.send({ message: 'File Upload Success' })
+    imageData.url = req.file.url
+    imageData.reviewId = reviewId
+    const ImageUpload = await createReviewImage(imageData)
+    res.send(ImageUpload)
   } catch (error) {
     next(error)
   }
@@ -35,27 +48,18 @@ imagesRouter.post('/uploadreview-:reviewId',uploadReviews.single('reviews'),asyn
 
 
 
-const fileStorageEngineProducts = multer.diskStorage({
-    destination: (req, file, cb) =>{
-      cb(null, './public/product')
-    },
-    filename: (req, file, cb) =>{
-      cb(null,Date.now().toString() + '--' + file.originalname)
-    }
-  })
+
   
-  const uploadProducts = multer({storage: fileStorageEngineProducts})
-  
-  imagesRouter.post('/uploadproducts-:productId',uploadProducts.single('products'),async (req, res, next) => {
+  imagesRouter.post('/uploadproducts/:productId',upload.single('products'),async (req, res, next) => {
       const imageData = {}
       const {productId} = req.params
     try {
       console.log(req.file);
       imageData.description = req.file.fieldname
-      imageData.url = req.file.path
+      imageData.url = req.file.url
       imageData.productId = productId
-      await createProductImage(imageData)
-      res.send({ message: 'File Upload Success' })
+      const ImageUpload = await createProductImage(imageData)
+      res.send(ImageUpload)
     } catch (error) {
       next(error)
     }
