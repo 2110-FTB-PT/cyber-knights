@@ -18,7 +18,6 @@ const dropTables = async () => {
       DROP TABLE IF EXISTS product_images;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS admins;
     `)
     console.log('Dropped all tables!')
   } catch (err) {
@@ -33,14 +32,8 @@ const createTables = async () => {
       CREATE TABLE users(
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
-      );
-
-      CREATE TABLE admins(
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
-        admin BOOLEAN DEFAULT TRUE
+        admin BOOLEAN DEFAULT FALSE
       );
 
 
@@ -98,6 +91,7 @@ const createInitialUsers = async () => {
       { username: 'albert', password: 'bertie99' },
       { username: 'sandra', password: 'sandra123' },
       { username: 'glamgal', password: 'glamgal123' },
+      { username: 'theBoss', password: 'imTheBoss', admin: true },
     ]
 
     // need to make the createUser function in /db/models/user.js
@@ -106,26 +100,6 @@ const createInitialUsers = async () => {
     console.log('Finished creating users!')
   } catch (err) {
     throw err
-  }
-}
-
-const createInitialAdmins = async () => {
-  console.log('Starting to create users.......')
-  try {
-    const initAdmins = [
-      { username: 'AdminA', password: 'password1234' },
-      { username: 'AdminB', password: 'password1234' },
-      { username: 'AdminC', password: 'password1234' },
-      { username: 'AdminD', password: 'password1234' },
-    ]
-
-    // need to make the createUser function in /db/models/user.js
-    const admins = await Promise.all(initAdmins.map(createAdmin))
-    console.log('Admins =>', admins)
-    console.log('Finished creating Admins!')
-  } catch (err) {
-    throw err
-    Admins
   }
 }
 
@@ -313,9 +287,7 @@ const rebuildDB = async () => {
     await dropTables()
     await createTables()
     await createInitialUsers()
-    await createInitialAdmins()
     await createInitProducts()
-    // await createInitImages()
     await createInitReviews()
     await createInitComments()
   } catch (err) {

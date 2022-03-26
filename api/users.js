@@ -39,11 +39,11 @@ usersRouter.get("/:id/reviews", async (req, res, next) => {
   }
 });
 
-usersRouter.get("/:username/comments", async (req, res, next) => {
-  const { username } = req.params;
+usersRouter.get("/:userId/comments", async (req, res, next) => {
+  const { userId } = req.params;
 
   try {
-    const comments = await getPublicCommentsByUser({ username });
+    const comments = await getPublicCommentsByUser( userId );
 
     res.send(comments);
   } catch ({ name, message }) {
