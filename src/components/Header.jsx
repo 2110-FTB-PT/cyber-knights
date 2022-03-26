@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
@@ -12,7 +12,7 @@ import { GiHamburgerMenu } from 'react-icons/gi'
 import { MdShoppingCart } from 'react-icons/md'
 import { LinkContainer } from 'react-router-bootstrap'
 
-export default function Header() {
+export default function Header({token, username, setToken, setUser}) {
   const [show, setShow] = useState(false)
 
   const handleClose = () => setShow(false)
@@ -37,6 +37,7 @@ export default function Header() {
             closeVariant='white'
           >
             <Offcanvas.Title>PetRocks</Offcanvas.Title>
+            {username ? <Offcanvas.Title>Hello, {username}!</Offcanvas.Title> : <Offcanvas.Title>Hello, Guest!</Offcanvas.Title>}
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav>
@@ -77,7 +78,22 @@ export default function Header() {
                     Accessories
                   </Button>
                 </LinkContainer>
-                <LinkContainer to='/login'>
+                {token ? (
+                <LinkContainer to='/'>
+                  <Button
+                    variant='outline-secondary'
+                    className='btn-block p-4 fs-2'
+                    onClick={() => {
+                      setToken("");
+                      localStorage.removeItem("token");
+                      setUser({});
+                      handleClose();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </LinkContainer>) :
+                (<LinkContainer to='/login'>
                   <Button
                     variant='outline-secondary'
                     className='btn-block p-4 fs-2'
@@ -85,7 +101,7 @@ export default function Header() {
                   >
                     Login
                   </Button>
-                </LinkContainer>
+                </LinkContainer>)}
                 <LinkContainer to='/cart'>
                   <Button
                     variant='outline-secondary'
