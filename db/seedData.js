@@ -1,7 +1,6 @@
 const client = require("./client");
 const {
   createUser,
-  createAdmin,
   createProduct,
   createProductImage,
   createReview,
