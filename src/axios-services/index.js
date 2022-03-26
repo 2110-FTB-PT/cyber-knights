@@ -1,29 +1,41 @@
-import axios from 'axios'
+import axios from "axios";
+const DATABASE_URL = "https://build-a-rock.herokuapp.com/api";
 
-// this file holds your frontend network request adapters
-// think about each function as a service that provides data
-// to your React UI through AJAX calls
-
-// for example, if we need to display a list of users
-// we'd probably want to define a getUsers service like this:
-
-/* 
-  export async function getUsers() {
-    try {
-      const { data: users } = await axios.get('/api/users')
-      return users;
-    } catch(err) {
-      console.error(err)
-    }
-  }
-*/
-
-export async function getAPIHealth() {
+export const login = async (username, password) => {
   try {
-    const { data } = await axios.get('/api/health')
-    return data
-  } catch (err) {
-    console.error(err)
-    return { healthy: false }
+    const { data } = await axios.post(`${DATABASE_URL}/users/login`, {
+      username,
+      password,
+    });
+    localStorage.setItem("token", data.token);
+    return data;
+  } catch (error) {
+    throw error;
   }
-}
+};
+
+export const register = async (username, password) => {
+  try{
+    const { data } = await axios.post(`${DATABASE_URL}/users/register`, {
+    username,
+    password,
+  });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUser = async (token) => {
+  try {
+    const { data } = await axios.get(`${DATABASE_URL}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data)
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
