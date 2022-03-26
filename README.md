@@ -1,6 +1,6 @@
 # CyberKights Capstone Project
 
-Aaron Morales Perez | May Wong | Francisco Tran | Kyle Perez hello
+Aaron Morales Perez | May Wong | Francisco Tran | Kyle Perez
 
 # https://build-a-rock.herokuapp.com/api/health
 
