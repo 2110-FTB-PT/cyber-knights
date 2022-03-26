@@ -5,14 +5,25 @@ import Home from "./Home";
 import Login from "./Login";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
-import { getUser } from "../axios-services";
-import { fetchProducts } from "../axios-services";
+import { getUser,fetchProducts } from "../axios-services";
+import Products from './Products'
 
 const App = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState({});
   const [products, setProducts] = useState([]);
-  
+
+  const handleProducts = async()=>{
+    try {
+      const products= await fetchProducts()
+      setProducts(products)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  useEffect(()=>{
+    handleProducts()
+  })
 
   useEffect(() => {
     const handleUser = async () => {
@@ -33,18 +44,6 @@ const App = () => {
   }, []);
 
 
-  const handleProducts = async()=>{
-    try {
-      const products= await fetchProducts()
-      setProducts(products)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  
-  useEffect(()=>{
-    handleProducts()
-  })
 
   return (
     <div className="app-container">
@@ -52,7 +51,7 @@ const App = () => {
       <div className="content-container d-flex justify-content-center">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/allProducts" element={<Products products={products} setProducts={setProducts} />} />
+          <Route path="/allProducts" element={<Products products={products}/>} />
           <Route path="/products-pets" element={<h1>products-pets</h1>} />
           <Route
             path="/products-accessories"
