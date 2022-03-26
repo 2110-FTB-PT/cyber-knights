@@ -1,9 +1,8 @@
 const client = require('./client')
 const {
   createUser,
-  createAdmin,
   createProduct,
-  createImage,
+  createProductImage,
   createReview,
   createComment,
 } = require('./')
@@ -172,7 +171,7 @@ const createInitImages = async () => {
     ]
 
     // createImage will be in /db/models/images.js
-    const images = await Promise.all(initImgs.map(createImage))
+    const images = await Promise.all(initImgs.map(createProductImage))
     console.log('Images :>> ', images)
     console.log('Images Created')
   } catch (err) {
@@ -288,6 +287,7 @@ const rebuildDB = async () => {
     await createTables()
     await createInitialUsers()
     await createInitProducts()
+    await createInitImages()
     await createInitReviews()
     await createInitComments()
   } catch (err) {
