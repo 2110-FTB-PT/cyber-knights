@@ -1,5 +1,15 @@
 const client = require("../client");
-
+const { getProductImageByID } = require("./images");
+const addImagestoProducts = async (products) => {
+  try {
+    for (let i = 0; i < products.length; i++) {
+      currProduct = products[i];
+      currProduct.images = await getProductImageByID(currProduct);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
 const createProduct = async ({ name, description, price, isPublic }) => {
   try {
     const {
@@ -18,6 +28,7 @@ const createProduct = async ({ name, description, price, isPublic }) => {
         name: "CreateDupProduct",
         message: `Product already exists with this name: ${name}`,
       };
+      product.images= await getProductImageByID(product)
     return product;
   } catch (err) {
     throw err;
@@ -29,6 +40,7 @@ const getAllProducts = async () => {
     const { rows: products } = await client.query(`
     SELECT * FROM products
     `);
+    await addImagestoProducts(products)
     return products;
   } catch (error) {
     throw error;
@@ -47,6 +59,7 @@ const getProductById = async (productId) => {
     `,
       [productId]
     );
+    productById.images = await getProductImageByID(productById)
     return productById;
   } catch (err) {
     throw err;
@@ -60,6 +73,7 @@ const getAllPublicProducts = async () => {
     FROM products 
     WHERE "isPublic" = true;
     `);
+   await addImagestoProducts(products)
     return products;
   } catch (error) {
     throw error;
@@ -68,7 +82,9 @@ const getAllPublicProducts = async () => {
 
 const updateProduct = async ({ id, name, description, price, isPublic }) => {
   try {
-    const { rows: [product] } = await client.query(
+    const {
+      rows: [product],
+    } = await client.query(
       `
     UPDATE products
     SET name = $1, description = $2, price=$3, "isPublic"=$4
@@ -77,12 +93,13 @@ const updateProduct = async ({ id, name, description, price, isPublic }) => {
     `,
       [name, description, price, isPublic, id]
     );
-    if(!product)
-    throw {
-      name: `UpdateActivityError`,
-      message: `Can NOT update activity that does NOT exist`,
-    }
-    return product
+    if (!product)
+      throw {
+        name: `UpdateActivityError`,
+        message: `Can NOT update activity that does NOT exist`,
+      };
+    product.images=await getProductImageByID(product)
+    return product;
   } catch (error) {
     throw error;
   }
@@ -93,5 +110,5 @@ module.exports = {
   getAllProducts,
   getProductById,
   getAllPublicProducts,
-  updateProduct
+  updateProduct,
 };
