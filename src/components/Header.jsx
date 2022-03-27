@@ -14,7 +14,6 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 export default function Header({token, username, setToken, setUser}) {
   const [show, setShow] = useState(false)
-
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
