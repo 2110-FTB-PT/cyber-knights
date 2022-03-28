@@ -11,7 +11,7 @@ const createProduct = async ({ name, description, price, isPublic }) => {
     ON CONFLICT (name) DO NOTHING
     RETURNING *
     `,
-      [ name, description, price, isPublic]
+      [name, description, price, isPublic]
     );
     if (!product)
       throw {
@@ -66,9 +66,32 @@ const getAllPublicProducts = async () => {
   }
 };
 
+const updateProduct = async ({ id, name, description, price, isPublic }) => {
+  try {
+    const { rows: [product] } = await client.query(
+      `
+    UPDATE products
+    SET name = $1, description = $2, price=$3, "isPublic"=$4
+    WHERE id=$5
+    RETURNING *;
+    `,
+      [name, description, price, isPublic, id]
+    );
+    if(!product)
+    throw {
+      name: `UpdateActivityError`,
+      message: `Can NOT update activity that does NOT exist`,
+    }
+    return product
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
-  getAllPublicProducts
+  getAllPublicProducts,
+  updateProduct
 };

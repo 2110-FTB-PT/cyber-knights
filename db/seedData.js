@@ -2,7 +2,7 @@ const client = require('./client')
 const {
   createUser,
   createProduct,
-  createImage,
+  createProductImage,
   createReview,
   createComment,
 } = require('./')
@@ -34,6 +34,7 @@ const createTables = async () => {
         password VARCHAR(255) NOT NULL,
         admin BOOLEAN DEFAULT FALSE
       );
+
 
       CREATE TABLE products(
         id SERIAL PRIMARY KEY,
@@ -89,6 +90,7 @@ const createInitialUsers = async () => {
       { username: 'albert', password: 'bertie99' },
       { username: 'sandra', password: 'sandra123' },
       { username: 'glamgal', password: 'glamgal123' },
+      { username: 'theBoss', password: 'imTheBoss', admin: true },
     ]
 
     // need to make the createUser function in /db/models/user.js
@@ -169,7 +171,7 @@ const createInitImages = async () => {
     ]
 
     // createImage will be in /db/models/images.js
-    const images = await Promise.all(initImgs.map(createImage))
+    const images = await Promise.all(initImgs.map(createProductImage))
     console.log('Images :>> ', images)
     console.log('Images Created')
   } catch (err) {
@@ -285,7 +287,7 @@ const rebuildDB = async () => {
     await createTables()
     await createInitialUsers()
     await createInitProducts()
-    // await createInitImages()
+    await createInitImages()
     await createInitReviews()
     await createInitComments()
   } catch (err) {
