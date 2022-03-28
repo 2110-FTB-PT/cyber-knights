@@ -33,13 +33,13 @@ const createProductImage = async({description, url, productId})=>{
 
 
 
-const getProductImageByID = async({id}) =>{
+const getProductImageByID = async(productId) =>{
     try{
         const {rows }= await client.query(`
             SELECT *
             FROM product_images
-            WHERE "productId" = ${id}
-        `)
+            WHERE "productId" = $1
+        `, [productId])
         return rows
     }catch(error){
         throw error;
@@ -77,13 +77,13 @@ const createReviewImage = async({description, url, reviewId})=>{
 }
 
 
-const getReviewImageByID = async({id}) =>{
+const getReviewImageByID = async(reviewId) =>{
     try{
         const {rows }= await client.query(`
             SELECT *
             FROM review_images
-            WHERE "reviewId" = ${id}
-        `)
+            WHERE "reviewId" = $1
+        `,[reviewId])
         return rows
     }catch(error){
         throw error;
