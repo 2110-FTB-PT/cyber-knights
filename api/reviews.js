@@ -66,7 +66,25 @@ reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
   }
 });
 
+reviewsRouter.get("/myReviews", requireUser, async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const userReviews = await getReviewsByUser(id);
+    if (!userReviews) {
+      next({
+        name: `NoReviewsError`,
+        message: `You haven't made any reviews yet`,
+      });
+      return;
+    }
+    res.send(userReviews);
+  } catch (err) {
+    next(err);
+  }
+});
+
 reviewsRouter.get("/:productId", async (req, res, next) => {
+  console.log(id);
   const { productId } = req.params;
   try {
     const product = await getProductById(productId);
@@ -80,23 +98,6 @@ reviewsRouter.get("/:productId", async (req, res, next) => {
 
     const productReviews = await getReviewsByProduct(productId);
     res.send(productReviews);
-  } catch (err) {
-    next(err);
-  }
-});
-
-reviewsRouter.get("/myReviews", requireUser, async (req, res, next) => {
-  const { id } = req.user;
-  try {
-    const userReviews = await getReviewsByUser(id);
-    if (!userReviews) {
-      next({
-        name: `NoReviewsError`,
-        message: `You haven't made any reviews yet`,
-      });
-      return;
-    }
-    res.send(userReviews);
   } catch (err) {
     next(err);
   }
