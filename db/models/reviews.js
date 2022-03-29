@@ -178,9 +178,10 @@ const updateReview = async ({ id: reviewId, ...reviewFields }) => {
 const getAllPublicReviews = async () => {
   try {
     const { rows: allPublicreviews } = await client.query(`
-      SELECT *
-      FROM reviews
-      WHERE "isPublic" = TRUE;
+      SELECT r.*, u.username AS "creatorName"
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r."isPublic" = TRUE;
     `);
 
     return allPublicreviews;
