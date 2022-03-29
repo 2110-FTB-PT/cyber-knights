@@ -107,48 +107,30 @@ const createInitProducts = async () => {
   try {
     const initProducts = [
       {
-        name: `Legendary Owl Couple pet-rocks`,
-        description: `Eternal inseparable owl couple that is believed to have been together for decades.  
-        This couple as any other in the wild,has been monogamous and have been waiting to find a suitable home 
-        to be able to finally have a permanent nest since they lost their home along with lots of their friends in a wildfire.`,
-        price: `280`,
+        name: `Blue Beetle`,
+        description: `Cute Blue Beetle Rock Pet`,
+        price: `90`,
         isPublic: true,
       },
       {
-        name: ` Special messenger Owl pet-rock`,
-        description: `This cute pet rock was once a usefull mesenger for a very powerfull wizard before a great war broke.
-        In this war this pet rock owl lost his owner and has yet not been able to find a way to fly. He is waiting for the 
-        correct person to take him in and make him feel powerfull again as he once was. He also likes to eat mistery chocalates `,
+        name: ` Nite Owl`,
+        description: `Cute Nite Owl Rock Pet`,
         price: `150`,
         isPublic: true,
       },
       {
-        name: `Wolf Pet rock `,
-        description: `This wolf pet rock was once the leader of his pack. He guided and protected all of the 
-        members from harsh weather, fearsome hunters and harsh hunger. 
-         He lost his pack and his home in a disaster and was left alone with no one to look after and to protect.
-         Up to this day he is still waiting on someone that wants to be protected and someone he can guard and lead. `,
+        name: `WatchDog`,
+        description: `Cute WatchDog Rock Pet`,
         price: `30`,
         isPublic: true,
       },
       {
-        name: `Cat pet-rock`,
-        description: `This awesome cute rock pet is not your usual dometic rock cat. This rock cat was found in the 
-        middle of the woods in the mountains of a far away region. This species of cat rock pet was thought to be one of 
-        the extinct races since it is hard to find a 100% allergy proff to all humans cat- pet rock. This Species was 
-        almost chased to extinction but, has been recenty found to be away and now is trying to get love from a true cat lover. `,
+        name: `Rocket`,
+        description: `Cute Trash Panda Rock Pet`,
         price: `90`,
         isPublic: true,
       },
-      {
-        name: `Dog pet-rock`,
-        description: `This unike pet rock was found in the middle of nowhere. The most special thing about this pet is that 
-        it has lots and lots of history in defending, helping and saving his previous owners. Before the owners passed away
-        he saved them from dangers such as alien ducks, gipsys, zombies and even a crazy relative. He is waiting to be adopted 
-        to be by your side for the rest of his days.`,
-        price: `90`,
-        isPublic: true,
-      },
+<<<<<<< HEAD
       {
         name: `Panda Pet-rock`,
         description: ` This panda warrior has been known to be the guardian of a valley in a remote place in his native country.
@@ -194,6 +176,9 @@ const createInitProducts = async () => {
         isPublic: true,
       },
     ];
+=======
+    ]
+>>>>>>> 32f872965272a6a3d538df782f46f9268f69e8b6
     // createProduct needs to be created inside /db/models/product.js
     const products = await Promise.all(initProducts.map(createProduct));
     console.log("Products :>> ", products);
@@ -208,29 +193,30 @@ const createInitImages = async () => {
   try {
     const initImgs = [
       {
-        description: `Legendary Owl Couple pet-rocks!`,
-        url: `https://res.cloudinary.com/dwhglrnlw/image/upload/v1648441189/eunij3lwipgaxriejdvx.webp`,
+        description: `A cute litle blue beetle!`,
+        url: `https://cdn.vox-cdn.com/thumbor/CSVLsIhgVcg9Pph6f6Vfa_j45s0=/0x0:509x771/920x613/filters:focal(215x346:295x426):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/70004438/blue_beetle_movie_costume_concept_art.0.jpg`,
         productId: 1,
         isPublic: true,
       },
       {
-        description: `Special messenger Owl pet-rock!`,
-        url: `https://res.cloudinary.com/dwhglrnlw/image/upload/v1648441633/pet-rock-whiteowl_swj5qs.jpg`,
+        description: `A cute litle nite owl!`,
+        url: `https://static.wikia.nocookie.net/watchmen/images/4/44/Nite_Owl_II_DC.jpg/revision/latest/top-crop/width/360/height/450?cb=20210123132624`,
         productId: 2,
         isPublic: true,
       },
       {
-        description: `Wolf Pet rock!`,
-        url: `https://res.cloudinary.com/dwhglrnlw/image/upload/v1648442733/wolf-pet_rock_jcyhcr.jpg`,
+        description: `A cute litle WatchDog!`,
+        url: `https://static2.cbrimages.com/wordpress/wp-content/uploads/2020/04/Watchdog-Man-patrol-from-One-Punch-Man-Cropped.jpg?q=50&fit=crop&w=740&h=370&dpr=1.5`,
         productId: 3,
         isPublic: true,
       },
       {
-        description: `Cat pet-rock!`,
-        url: `https://res.cloudinary.com/dwhglrnlw/image/upload/v1648444000/cat_pet-rock_ohsrtj.jpg`,
+        description: `A cute litle Trash Panda!`,
+        url: `https://static0.srcdn.com/wordpress/wp-content/uploads/2021/01/Rocket-Raccoon-2.jpg`,
         productId: 4,
         isPublic: true,
       },
+<<<<<<< HEAD
       {
         description: `Dog pet-rock!`,
         url: `https://res.cloudinary.com/dwhglrnlw/image/upload/v1648444000/dog_pet_rock_toom90.jpg`,
@@ -268,6 +254,9 @@ const createInitImages = async () => {
         isPublic: true,
       },
     ];
+=======
+    ]
+>>>>>>> 32f872965272a6a3d538df782f46f9268f69e8b6
 
     // createImage will be in /db/models/images.js
     const images = await Promise.all(initImgs.map(createProductImage));
