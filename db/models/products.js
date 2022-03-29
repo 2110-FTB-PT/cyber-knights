@@ -4,7 +4,7 @@ const addImagestoProducts = async (products) => {
   try {
     for (let i = 0; i < products.length; i++) {
       currProduct = products[i];
-      currProduct.images = await getProductImageByID(currProduct);
+      currProduct.images = await getProductImageByID(currProduct.id);
     }
   } catch (error) {
     throw error;
@@ -28,7 +28,7 @@ const createProduct = async ({ name, description, price, isPublic }) => {
         name: "CreateDupProduct",
         message: `Product already exists with this name: ${name}`,
       };
-      product.images= await getProductImageByID(product)
+      product.images= await getProductImageByID(product.id)
     return product;
   } catch (err) {
     throw err;
@@ -59,7 +59,7 @@ const getProductById = async (productId) => {
     `,
       [productId]
     );
-    productById.images = await getProductImageByID(productById)
+    productById.images = await getProductImageByID(productById.id)
     return productById;
   } catch (err) {
     throw err;
@@ -98,7 +98,7 @@ const updateProduct = async ({ id, name, description, price, isPublic }) => {
         name: `UpdateActivityError`,
         message: `Can NOT update activity that does NOT exist`,
       };
-    product.images=await getProductImageByID(product)
+    product.images=await getProductImageByID(product.id)
     return product;
   } catch (error) {
     throw error;
