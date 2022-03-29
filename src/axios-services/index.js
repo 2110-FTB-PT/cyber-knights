@@ -1,23 +1,34 @@
 import axios from "axios";
+const {PORT} = process.env
 const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-
-
+const TEST_URL = `http://localhost:3000/api`
+console.log(PORT);
 
 export const fetchProducts = async () => {
   try {
-    const {data} = await axios.get(`${BASE_URL}/products/public`);
+    const {data} = await axios.get(`${TEST_URL}/products/public`);
     return data
   } catch (error) {
     console.error(error)
   }
 };
 
+export const fetchProductById = async(id) => {
+  try {
+    const {data} = await axios.get(`${TEST_URL}/products/${id}`);
+    console.log(data);
+    return data
+  } catch (error) {
+    console.error(error)
+  }
+  
+};
 
 
 
 export const login = async (username, password) => {
   try {
-    const { data } = await axios.post(`${BASE_URL}/users/login`, {
+    const { data } = await axios.post(`${TEST_URL}/users/login`, {
       username,
       password,
     });
@@ -30,7 +41,7 @@ export const login = async (username, password) => {
 
 export const register = async (username, password) => {
   try{
-    const { data } = await axios.post(`${BASE_URL}/users/register`, {
+    const { data } = await axios.post(`${TEST_URL}/users/register`, {
     username,
     password,
   });
@@ -42,14 +53,14 @@ export const register = async (username, password) => {
 
 export const getUser = async (token) => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/users/me`, {
+    const { data } = await axios.get(`${TEST_URL}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     console.log(data)
     return data;
-  } catch (error) {
-    throw error;
+  } catch ({response}) {
+    console.error({response}) ;
   }
 };

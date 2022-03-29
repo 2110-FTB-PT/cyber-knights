@@ -1,11 +1,12 @@
-import { React, useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import Header from "./Header";
+import Products from "./Products";
 import Home from "./Home";
 import Login from "./Login";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
 import { getUser,fetchProducts } from "../axios-services";
-import Products from './Products'
+import SingleProduct from "./SingleProduct";
 
 const App = () => {
   const [token, setToken] = useState("");
@@ -22,7 +23,7 @@ const App = () => {
   }
   useEffect(()=>{
     handleProducts()
-  })
+  },[])
 
   useEffect(() => {
     const handleUser = async () => {
@@ -42,6 +43,8 @@ const App = () => {
     }
   }, []);
 
+
+
   return (
     <div className="app-container">
       <Header username={user && user.username} token={token} setToken={setToken} setUser={setUser}/>
@@ -49,6 +52,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/allProducts" element={<Products products={products}/>} />
+          <Route path="/single-product/:productId" element={<SingleProduct />} />
           <Route path="/products-pets" element={<h1>products-pets</h1>} />
           <Route
             path="/products-accessories"
