@@ -3,7 +3,6 @@ import Header from "./Header";
 import Products from "./Products";
 import Home from "./Home";
 import Login from "./Login";
-import MyAccount from "./MyAccount";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
 import { getUser, fetchProducts } from "../axios-services";
