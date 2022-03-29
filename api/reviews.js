@@ -84,7 +84,6 @@ reviewsRouter.get("/myReviews", requireUser, async (req, res, next) => {
 });
 
 reviewsRouter.get("/:productId", async (req, res, next) => {
-  console.log(id);
   const { productId } = req.params;
   try {
     const product = await getProductById(productId);
