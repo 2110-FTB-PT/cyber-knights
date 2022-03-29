@@ -3,6 +3,7 @@ import Header from "./Header";
 import Products from "./Products";
 import Home from "./Home";
 import Login from "./Login";
+import MyAccount from "./MyAccount";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
 import { getUser,fetchProducts } from "../axios-services";
@@ -47,7 +48,12 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <Header username={user && user.username} token={token} setToken={setToken} setUser={setUser}/>
+      <Header
+        username={user && user.username}
+        token={token}
+        setToken={setToken}
+        setUser={setUser}
+      />
       <div className="content-container d-flex justify-content-center">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -61,6 +67,10 @@ const App = () => {
           <Route
             path="/login"
             element={<Login setToken={setToken} setUser={setUser} />}
+          />
+          <Route
+            path="/account"
+            element={<MyAccount user={user} token={token} />}
           />
           <Route path="/cart" element={<h1>cart</h1>} />
         </Routes>

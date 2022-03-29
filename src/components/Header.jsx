@@ -101,6 +101,15 @@ export default function Header({token, username, setToken, setUser}) {
                     Login
                   </Button>
                 </LinkContainer>)}
+                {token && (<LinkContainer to='/account'>
+                  <Button
+                    variant='outline-secondary'
+                    className='btn-block p-4 fs-2'
+                    onClick={handleClose}
+                  >
+                    My Account
+                  </Button>
+                </LinkContainer>)}
                 <LinkContainer to='/cart'>
                   <Button
                     variant='outline-secondary'

@@ -64,3 +64,50 @@ export const getUser = async (token) => {
     console.error({response}) ;
   }
 };
+
+export const fetchUserComments = async(token) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/comments/myComments`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+    return data;
+  } catch ({response}) {
+    console.error("response", response)
+    // throw error;
+  }
+};
+
+export const fetchUserReviews = async (token) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/reviews/myReviews`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateReviewComment = async ({ id: commentId, ...commentFields }) => {
+  try{
+    const { data } = await axios.patch(
+      `${BASE_URL}/comments/${commentId}`,
+      {
+        ...commentFields
+      },
+       {headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+

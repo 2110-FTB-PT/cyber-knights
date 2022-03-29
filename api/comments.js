@@ -1,7 +1,23 @@
 const express = require("express");
 const commentsRouter = express.Router();
-const { createComment, updateReviewComment, getCommentbyId } = require("../db");
+const {
+  createComment,
+  updateReviewComment,
+  getCommentbyId,
+  getPublicCommentsByUser,
+} = require("../db");
 const { requireUser } = require("./utils.js");
+
+commentsRouter.get("/myComments", requireUser, async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const userComments = await getPublicCommentsByUser(id);
+
+    res.send(userComments);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 commentsRouter.post("/create", requireUser, async (req, res, next) => {
   try {
