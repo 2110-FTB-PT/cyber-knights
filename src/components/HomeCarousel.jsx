@@ -16,7 +16,6 @@ export default function HomeCarousel({ products }) {
     if (products) {
       let count = 0;
       while (count < 4 && products.length > 0) {
-        console.log("stack :>> ", stack);
         const rIndex = Math.floor(Math.random() * products.length);
         if (stack.hasOwnProperty(rIndex)) continue;
         stack[rIndex] = products[rIndex];
