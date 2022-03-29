@@ -31,24 +31,29 @@ export default function HomeCarousel({ products }) {
       <h1>Hot Products!</h1>
       <Carousel variant="dark" slide={true} className="w-100 ms-2 p-4">
         {products &&
-          rngProducts().map((product) => {
+          rngProducts().map(({ id, name, images, description, price }) => {
             return (
-              <Carousel.Item
-                key={[product.id]}
-                interval={5000}
-                alt={product.name}
-              >
+              <Carousel.Item key={[id]} interval={5000} alt={name}>
                 <Card>
-                  <Card.Img variant="top" src={product.images[0].url} />
+                  <Card.Img
+                    variant="top"
+                    src={images[0].url}
+                    style={{
+                      display: "block",
+                      maxWidth: "900px",
+                      maxHeight: "600px",
+                      minWidth: "900px",
+                      minHeight: "600px",
+                    }}
+                  />
                   <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
-                    <Card.Text>{product.description}</Card.Text>
-                    <Card.Text>{`$${product.price}`}</Card.Text>
+                    <Card.Title>{name}</Card.Title>
+                    <Card.Text>{description}</Card.Text>
                     <Button
                       variant="primary"
-                      onClick={() => navigate(`/single-product/${product.id}`)}
+                      onClick={() => navigate(`/single-product/${id}`)}
                     >
-                      See Details
+                      Click to see price!
                     </Button>
                   </Card.Body>
                 </Card>
