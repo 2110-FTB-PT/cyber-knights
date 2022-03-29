@@ -7,8 +7,19 @@ const {
   getReviewsByProduct,
   getProductById,
   getReviewsByUser,
+  getAllPublicReviews,
 } = require("../db");
 const { requireUser } = require("./utils");
+
+reviewsRouter.get("/", async (req, res, next) => {
+  try {
+    const allPubReviews = await getAllPublicReviews();
+
+    res.send(allPubReviews);
+  } catch (err) {
+    next(err);
+  }
+});
 
 //require user to create a new review
 reviewsRouter.post("/create", requireUser, async (req, res, next) => {
