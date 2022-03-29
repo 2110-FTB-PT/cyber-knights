@@ -28,10 +28,10 @@ const Register = ({
   return(
     <Form className="d-flex flex-column gap-2" onSubmit={handleSubmit}>
       <h2>Create Account</h2>
-      <FloatingLabel controlId="username" label="Username">
+      <FloatingLabel controlId="register-username" label="Username">
         <Form.Control type="text" placeholder="Username" onChange={(event) => {setUsername(event.target.value)}}></Form.Control>
       </FloatingLabel>
-      <FloatingLabel controlId="password" label="Password">
+      <FloatingLabel controlId="register-password" label="Password">
         <Form.Control type="password" placeholder="Password" minLength="8" onChange={(event) => {setPassword(event.target.value)}}></Form.Control>
       </FloatingLabel>
     <Button variant="success" type="submit">
