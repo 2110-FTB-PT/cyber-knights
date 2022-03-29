@@ -1,16 +1,15 @@
-const client = require('./client')
+const client = require("./client");
 const {
   createUser,
-  createAdmin,
   createProduct,
-  createImage,
+  createProductImage,
   createReview,
   createComment,
-} = require('./')
+} = require("./");
 
 const dropTables = async () => {
   try {
-    console.log('Starting to drop tables')
+    console.log("Starting to drop tables");
     await client.query(`
       DROP TABLE IF EXISTS comments;
       DROP TABLE IF EXISTS review_images;
@@ -18,15 +17,15 @@ const dropTables = async () => {
       DROP TABLE IF EXISTS product_images;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
-    `)
-    console.log('Dropped all tables!')
+    `);
+    console.log("Dropped all tables!");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const createTables = async () => {
-  console.log('Starting to create tables....')
+  console.log("Starting to create tables....");
   try {
     await client.query(`
       CREATE TABLE users(
@@ -40,7 +39,7 @@ const createTables = async () => {
       CREATE TABLE products(
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE NOT NULL,
-        description VARCHAR(255),
+        description TEXT,
         price INT NOT NULL,
         "isPublic" BOOLEAN DEFAULT TRUE
       );
@@ -75,74 +74,74 @@ const createTables = async () => {
         "reviewId" INT REFERENCES reviews(id) NOT NULL,
         "isPublic" BOOLEAN DEFAULT TRUE 
       );
-    `)
-    console.log('Created all tables')
+    `);
+    console.log("Created all tables");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 /**********************************inital db setup *******************************/
 
 const createInitialUsers = async () => {
-  console.log('Starting to create users.......')
+  console.log("Starting to create users.......");
   try {
     const initUsers = [
-      { username: 'albert', password: 'bertie99' },
-      { username: 'sandra', password: 'sandra123' },
-      { username: 'glamgal', password: 'glamgal123' },
-      { username: 'theBoss', password: 'imTheBoss', admin: true },
-    ]
+      { username: "albert", password: "bertie99" },
+      { username: "sandra", password: "sandra123" },
+      { username: "glamgal", password: "glamgal123" },
+      { username: "theBoss", password: "imTheBoss", admin: true },
+    ];
 
     // need to make the createUser function in /db/models/user.js
-    const users = await Promise.all(initUsers.map(createUser))
-    console.log('Users =>', users)
-    console.log('Finished creating users!')
+    const users = await Promise.all(initUsers.map(createUser));
+    console.log("Users =>", users);
+    console.log("Finished creating users!");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const createInitProducts = async () => {
-  console.log('Starting to create products')
+  console.log("Starting to create products");
   try {
     const initProducts = [
       {
         name: `Blue Beetle`,
         description: `Cute Blue Beetle Rock Pet`,
-        price: `90`,
+        price: 90,
         isPublic: true,
       },
       {
         name: ` Nite Owl`,
         description: `Cute Nite Owl Rock Pet`,
-        price: `150`,
+        price: 150,
         isPublic: true,
       },
       {
         name: `WatchDog`,
         description: `Cute WatchDog Rock Pet`,
-        price: `30`,
+        price: 30,
         isPublic: true,
       },
       {
         name: `Rocket`,
         description: `Cute Trash Panda Rock Pet`,
-        price: `90`,
+        price: 90,
         isPublic: true,
       },
-    ]
+    ];
     // createProduct needs to be created inside /db/models/product.js
-    const products = await Promise.all(initProducts.map(createProduct))
-    console.log('Products :>> ', products)
-    console.log('Finished creating products!')
+    const products = await Promise.all(initProducts.map(createProduct));
+    console.log("Products :>> ", products);
+    console.log("Finished creating products!");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const createInitImages = async () => {
-  console.log('Storing image urls to db')
+  console.log("Storing image urls to db");
   try {
     const initImgs = [
       {
@@ -169,19 +168,19 @@ const createInitImages = async () => {
         productId: 4,
         isPublic: true,
       },
-    ]
+    ];
 
     // createImage will be in /db/models/images.js
-    const images = await Promise.all(initImgs.map(createImage))
-    console.log('Images :>> ', images)
-    console.log('Images Created')
+    const images = await Promise.all(initImgs.map(createProductImage));
+    console.log("Images :>> ", images);
+    console.log("Images Created");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const createInitReviews = async () => {
-  console.log('Creating Initial Reviews')
+  console.log("Creating Initial Reviews");
   try {
     const initReviews = [
       {
@@ -219,19 +218,19 @@ const createInitReviews = async () => {
         productId: 4,
         isPublic: true,
       },
-    ]
+    ];
 
     // createReview inside /db/models/reviews.js
-    const reviews = await Promise.all(initReviews.map(createReview))
-    console.log('Reviews :>> ', reviews)
-    console.log('Finished Creating Reviews')
+    const reviews = await Promise.all(initReviews.map(createReview));
+    console.log("Reviews :>> ", reviews);
+    console.log("Finished Creating Reviews");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const createInitComments = async () => {
-  console.log('Creating Initial Comments')
+  console.log("Creating Initial Comments");
   try {
     const initComments = [
       {
@@ -270,29 +269,30 @@ const createInitComments = async () => {
         reviewId: 5,
         isPublic: true,
       },
-    ]
+    ];
 
     // createComment inside /db/models/comments.js
-    const comments = await Promise.all(initComments.map(createComment))
-    console.log('Comments :>> ', comments)
-    console.log('Finished Creating Comments')
+    const comments = await Promise.all(initComments.map(createComment));
+    console.log("Comments :>> ", comments);
+    console.log("Finished Creating Comments");
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const rebuildDB = async () => {
   try {
-    client.connect()
-    await dropTables()
-    await createTables()
-    await createInitialUsers()
-    await createInitProducts()
-    await createInitReviews()
-    await createInitComments()
+    client.connect();
+    await dropTables();
+    await createTables();
+    await createInitialUsers();
+    await createInitProducts();
+    await createInitImages();
+    await createInitReviews();
+    await createInitComments();
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
-module.exports = { rebuildDB }
+module.exports = { rebuildDB };
