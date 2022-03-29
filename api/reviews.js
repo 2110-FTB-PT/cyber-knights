@@ -6,6 +6,7 @@ const {
   getReviewById,
   getReviewsByProduct,
   getProductById,
+  getReviewsByUser,
 } = require("../db");
 const { requireUser } = require("./utils");
 
