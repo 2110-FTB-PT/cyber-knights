@@ -3,7 +3,6 @@ import Header from "./Header";
 import Products from "./Products";
 import Home from "./Home";
 import Login from "./Login";
-import MyAccount from "./MyAccount";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
 import { getUser, fetchProducts } from "../axios-services";
@@ -54,7 +53,7 @@ const App = () => {
       />
       <div className="content-container d-flex justify-content-center">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home products={products} />} />
           <Route
             path="/allProducts"
             element={<Products products={products} />}
