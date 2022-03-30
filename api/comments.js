@@ -12,7 +12,7 @@ commentsRouter.get("/myComments", requireUser, async (req, res, next) => {
   const { id } = req.user;
   try {
     const userComments = await getPublicCommentsByUser(id);
-
+    
     res.send(userComments);
   } catch ({ name, message }) {
     next({ name, message });
