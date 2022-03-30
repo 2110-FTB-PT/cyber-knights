@@ -5,16 +5,17 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Container from "react-bootstrap/Container";
 import { updateReviewComment } from "../axios-services";
-import { useNavigate } from "react-router-dom";
 
-const EditCommentModal = ({ show, onHide, id, token }) => {
-  const [ updatedComment, setUpdatedComment] = useState("");
+
+const EditCommentModal = ({ show, onHide, id, token, setRerender }) => {
+  const [updatedComment, setUpdatedComment] = useState("");
   console.log("id", id);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await updateReviewComment({id, comment: updatedComment, token});
+      await updateReviewComment({ id, comment: updatedComment, token });
       setUpdatedComment("");
+      setRerender(true);
     } catch (error) {
       throw error;
     }

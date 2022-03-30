@@ -9,8 +9,9 @@ import EditCommentModal from "./EditCommentModal";
 const MyAccount = ({ user, token }) => {
   const [comments, setComments] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [ specificCommentId, setSpecificCommentId ] = useState(0);
+  const [specificCommentId, setSpecificCommentId] = useState(0);
   const [show, setShow] = useState(false);
+  const [rerender, setRerender] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -25,6 +26,7 @@ const MyAccount = ({ user, token }) => {
           const userComment = await fetchUserComments(token);
           console.log('usercomment :>> ', userComment);
           setComments(userComment);
+          setRerender(false);
         } catch (error) {
           console.error(error);
         }
@@ -33,7 +35,7 @@ const MyAccount = ({ user, token }) => {
     handleComment();
     // fetchUserComments(token).then((response) => setComments(response));
     // fetchUserReviews(token).then(setReviews);
-  }, [token, comments]);
+  }, [token, rerender]);
 
   return (
     <div className="account-container d-flex flex-column">
@@ -59,6 +61,7 @@ const MyAccount = ({ user, token }) => {
                           className="rounded"
                           onClick={()=>{
                             setSpecificCommentId(comment.id),
+                            setRerender(true);
                             handleShow()}}
                         >
                           Edit
@@ -77,7 +80,7 @@ const MyAccount = ({ user, token }) => {
           <h5>Reviews</h5>
         </div>
       </div>
-      <EditCommentModal show={show} onHide={handleClose} id={specificCommentId} token={token}/>
+      <EditCommentModal show={show} onHide={handleClose} id={specificCommentId} token={token} setRerender={setRerender}/>
     </div>
   );
 };
