@@ -7,7 +7,7 @@ export default function Home({ products }) {
       <h1>Welcom to PetRocks</h1>
       <div className="d-flex justify-content-center">
         <HomeCarousel products={products} />
-        <HomeReviews />
+        <HomeReviews products={products} />
       </div>
     </div>
   );

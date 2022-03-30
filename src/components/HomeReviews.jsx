@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchPublicReviews } from "../axios-services";
+import { fetchProductById, fetchPublicReviews } from "../axios-services";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
-export default function HomeReviews() {
+export default function HomeReviews({ products }) {
   const navigate = useNavigate();
   const [publicReviews, setPublicReviews] = useState([]);
 
@@ -26,20 +26,32 @@ export default function HomeReviews() {
     }
     return Object.values(stack);
   };
+
+  const productTitle = (productId) => {
+    const [singleProduct] = products.filter(
+      (product) => product.id === productId
+    );
+    return singleProduct.name;
+  };
+
   return (
-    <div className="d-flex flex-column w-50">
+    <div className="d-flex flex-column w-50 gap-4">
       <h1>Some Reviews</h1>
-      {publicReviews &&
-        rngReviews().map(
-          ({ id, title, creatorName, description, productId }) => {
+      <div className="d-flex flex-column gap-2">
+        {publicReviews &&
+          rngReviews().map(({ id, creatorName, description, productId }) => {
             return (
               <Card key={id}>
-                <Card.Header>{title}</Card.Header>
+                <Card.Header className="bg-dark text-light fs-4">
+                  {productTitle(productId)}
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title>{creatorName}</Card.Title>
                   <Card.Text>{description}</Card.Text>
+                  <Card.Title className="blockquote-footer fs-6 text-end">
+                    Author: {creatorName}
+                  </Card.Title>
                   <Button
-                    variant="secondary"
+                    variant="warning"
                     onClick={() => navigate(`./single-product/${productId}`)}
                   >
                     Check out the product!
@@ -47,8 +59,8 @@ export default function HomeReviews() {
                 </Card.Body>
               </Card>
             );
-          }
-        )}
+          })}
+      </div>
     </div>
   );
 }
