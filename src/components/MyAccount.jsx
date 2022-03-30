@@ -9,8 +9,7 @@ import EditCommentModal from "./EditCommentModal";
 const MyAccount = ({ user, token }) => {
   const [comments, setComments] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [commentModalShow, setCommentModalShow] = useState(false);
-  const [reviewModalShow, setReviewModalShow] = useState(false);
+  const [ specificCommentId, setSpecificCommentId ] = useState(0);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -34,7 +33,7 @@ const MyAccount = ({ user, token }) => {
     handleComment();
     // fetchUserComments(token).then((response) => setComments(response));
     // fetchUserReviews(token).then(setReviews);
-  }, [token]);
+  }, [token, comments]);
 
   return (
     <div className="account-container d-flex flex-column">
@@ -58,7 +57,9 @@ const MyAccount = ({ user, token }) => {
                         <Button
                           variant="secondary"
                           className="rounded"
-                          onClick={handleShow}
+                          onClick={()=>{
+                            setSpecificCommentId(comment.id),
+                            handleShow()}}
                         >
                           Edit
                         </Button>
@@ -76,7 +77,7 @@ const MyAccount = ({ user, token }) => {
           <h5>Reviews</h5>
         </div>
       </div>
-      <EditCommentModal show={show} onHide={handleClose}/>
+      <EditCommentModal show={show} onHide={handleClose} id={specificCommentId} token={token}/>
     </div>
   );
 };

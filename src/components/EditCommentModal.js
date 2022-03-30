@@ -1,34 +1,24 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Container from "react-bootstrap/Container";
 import { updateReviewComment } from "../axios-services";
 import { useNavigate } from "react-router-dom";
 
-
-const EditCommentModal = ({ show, onHide, comment }) => {
-  const navigate = useNavigate();
-  
+const EditCommentModal = ({ show, onHide, id, token }) => {
+  const [ updatedComment, setUpdatedComment] = useState("");
+  console.log("id", id);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try{
-      
-      navigate("/");
+    try {
+      await updateReviewComment({id, comment: updatedComment, token});
+      setUpdatedComment("");
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
-
-    // useEffect(() => {
-    //   if (comment) {
-    //     setComment(comment);
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   if (token) {
-    //     setToken(token);
-    //   }
-    // }, [comment]);
+  };
 
   return (
     <>
@@ -37,38 +27,32 @@ const EditCommentModal = ({ show, onHide, comment }) => {
           <Modal.Title>Edit Comment</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form>
-            <textarea
-              type="text"
-              placeholder="Type new comment here"
-              cols="50"
-              maxLength="500"
-            ></textarea>
-          </form>
-          {/* Hi
           <Form className="d-flex flex-column gap-2" onSubmit={handleSubmit}>
-              <FloatingLabel
-                controlId="update-comment"
-                label="New Comment Here"
+            <FloatingLabel controlId="update-comment" label="New Comment Here">
+              <Form.Control
+                type="text"
+                placeholder="New Comment Here"
+                onChange={(event) => {
+                  setUpdatedComment(event.target.value);
+                }}
+              ></Form.Control>
+            </FloatingLabel>
+            <Container className="d-flex gap-3">
+              <Button variant="secondary" onClick={onHide} className="w-50">
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                onClick={onHide}
+                type="submit"
+                className="w-50"
               >
-                <Form.Control
-                  type="text"
-                  placeholder="New Comment Here"
-                  onChange={(event) => {
-                    setComments(event.target.value);
-                  }}
-                ></Form.Control>
-              </FloatingLabel>
-          </Form> */}
+                Save Changes
+              </Button>
+            </Container>
+          </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={onHide} onSubmit={handleSubmit}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        <Modal.Footer></Modal.Footer>
       </Modal>
     </>
   );

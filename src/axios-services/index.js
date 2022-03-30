@@ -92,13 +92,14 @@ export const fetchUserReviews = async (token) => {
 
 export const updateReviewComment = async ({
   id: commentId,
-  ...commentFields
+  comment,
+  token
 }) => {
   try {
     const { data } = await axios.patch(
       `${BASE_URL}/comments/${commentId}`,
       {
-        ...commentFields,
+        comment,
       },
       {
         headers: {
@@ -107,7 +108,8 @@ export const updateReviewComment = async ({
       }
     );
     return data;
-  } catch (error) {
-    throw error;
+  } catch ({response}) {
+    console.log("response", response.data);
+    throw response;
   }
 };
