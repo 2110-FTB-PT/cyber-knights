@@ -35,23 +35,20 @@ export default function MyComments({
   };
 
   const reviewInfo = (reviewId) => {
-    const [{ creatorName }] = allPublicReviews.filter(
+    const [singleReview] = allPublicReviews.filter(
       (review) => review.id === reviewId
     );
-
-    return `Comment left on 
-      ${creatorName}${checkUserName(creatorName)} review about`;
+    return singleReview;
   };
 
   const productInfo = (reviewId) => {
     const [singleProduct] = products.filter(
       (product) => product.id === reviewInfo(reviewId).productId
     );
-    return singleProduct?.name;
+    return singleProduct.name;
   };
 
   const checkUserName = (username) => {
-    username = username.split("");
     const lastLetter = username.length - 1;
     if (username[lastLetter] === "s") return `'`;
     return `'s`;
@@ -69,7 +66,12 @@ export default function MyComments({
                 className="d-flex flex-column align-content-center"
               >
                 <Card.Header className="bg-dark text-light fs-4">
-                  <Card.Title>{reviewInfo(reviewId)}</Card.Title>
+                  <Card.Title>
+                    {`Comment left on 
+                    ${reviewInfo(reviewId).creatorName}${checkUserName(
+                      reviewInfo(reviewId).creatorName
+                    )} review about`}
+                  </Card.Title>
                   <Card.Text>{`${productInfo(reviewId)}!`}</Card.Text>
                 </Card.Header>
                 <Card.Body>
