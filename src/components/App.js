@@ -49,7 +49,7 @@ const App = () => {
         setToken={setToken}
         setUser={setUser}
       />
-      <div className="content-container d-flex justify-content-center">
+      <div className="content-container d-flex justify-content-center mb-5">
         <Routes>
           <Route path="/" element={<Home />} />
 

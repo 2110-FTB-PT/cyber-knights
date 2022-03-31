@@ -33,7 +33,7 @@ export default function HomeCarousel({ products }) {
           rngProducts().map(({ id, name, images, description, price }) => {
             return (
               <Carousel.Item key={[id]} interval={5000} alt={name}>
-                <Card>
+                <Card className="d-flex align-items-center flex-column">
                   <Card.Img
                     variant="top"
                     src={images[0].url}

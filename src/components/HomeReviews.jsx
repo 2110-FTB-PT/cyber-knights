@@ -31,7 +31,7 @@ export default function HomeReviews({ products }) {
     const [singleProduct] = products.filter(
       (product) => product.id === productId
     );
-    return singleProduct.name;
+    return singleProduct?.name;
   };
 
   return (
