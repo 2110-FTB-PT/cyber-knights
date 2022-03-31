@@ -57,7 +57,7 @@ export default function MyReviews({
                   <Container className="d-flex flex-column align-content-center gap-1">
                     <Button
                       variant="warning"
-                      onClick={() => navigate(`./single-product/${productId}`)}
+                      onClick={() => navigate(`/single-product/${productId}`)}
                     >
                       Check out the product!
                     </Button>
