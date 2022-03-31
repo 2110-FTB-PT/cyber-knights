@@ -30,7 +30,7 @@ export default function HomeCarousel({ products }) {
       <h1>Hot Products!</h1>
       <Carousel variant="dark" slide={true} className="w-100 ms-2 p-4">
         {products &&
-          rngProducts().map(({ id, name, images, description, price }) => {
+          rngProducts().map(({ id, name, images, description }) => {
             return (
               <Carousel.Item key={[id]} interval={5000} alt={name}>
                 <Card className="d-flex align-items-center flex-column">

@@ -110,6 +110,7 @@ const getReviewsByUser = async (userId) => {
 
     await addCommentsToReviews(reviews);
 
+    console.table(reviews);
     return reviews;
   } catch (err) {
     throw err;
