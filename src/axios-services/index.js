@@ -1,6 +1,7 @@
 import axios from "axios";
 const BASE_URL = "https://build-a-rock.herokuapp.com/api";
 
+
 export const fetchProducts = async () => {
   try {
     const { data } = await axios.get(`${BASE_URL}/products/public`);
@@ -90,14 +91,14 @@ export const fetchUserReviews = async (token) => {
 
 export const updateReviewComment = async ({
   id: commentId,
+  token,
   ...commentFields
 }) => {
+  console.log("commentFields :>> ", commentFields);
   try {
     const { data } = await axios.patch(
       `${BASE_URL}/comments/${commentId}`,
-      {
-        ...commentFields,
-      },
+      commentFields,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,8 +106,9 @@ export const updateReviewComment = async ({
       }
     );
     return data;
-  } catch (error) {
-    throw error;
+  } catch ({response}) {
+    console.log("response", response.data);
+    throw response;
   }
 };
 

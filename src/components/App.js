@@ -3,6 +3,7 @@ import Header from "./Header";
 import Products from "./Products";
 import Home from "./Home";
 import Login from "./Login";
+import MyAccount from "./MyAccount";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
 import { getUser, fetchProducts } from "../axios-services";
@@ -71,6 +72,10 @@ const App = () => {
           <Route
             path="/login"
             element={<Login setToken={setToken} setUser={setUser} />}
+          />
+          <Route
+            path="/account"
+            element={<MyAccount token={token} user={user} />}
           />
           <Route path="/cart" element={<h1>cart</h1>} />
         </Routes>

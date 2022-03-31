@@ -12,7 +12,7 @@ commentsRouter.get("/myComments", requireUser, async (req, res, next) => {
   const { id } = req.user;
   try {
     const userComments = await getPublicCommentsByUser(id);
-
+    
     res.send(userComments);
   } catch ({ name, message }) {
     next({ name, message });
@@ -47,7 +47,7 @@ commentsRouter.patch("/:commentId", requireUser, async (req, res, next) => {
   const { comment, isPublic } = req.body;
   const updateField = { id };
 
-  if (isPublic) updateField.isPublic = isPublic;
+  if (req.body.hasOwnProperty("isPublic")) updateField.isPublic = isPublic;
 
   if (comment) updateField.comment = comment;
 
