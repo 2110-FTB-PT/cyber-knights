@@ -1,16 +1,24 @@
+import { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import { updateReviewComment } from "../axios-services";
+import Container from "react-bootstrap/Container";
+import { fetchPublicReviews, updateReviewComment } from "../axios-services";
 
 export default function MyComments({
   token,
   comments,
   setRerender,
+  handleShow,
   specificCommentId,
   setSpecificCommentId,
-  handleShow,
 }) {
+  const [allPublicReviews, setAllPublicReviews] = useState([]);
+
+  useEffect(() => {
+    fetchPublicReviews().then((res) => setAllPublicReviews(res));
+  }, []);
+
   const handleDelete = async () => {
     const deleteComment = {
       id: specificCommentId,
@@ -27,40 +35,61 @@ export default function MyComments({
     }
   };
 
+  const addReviewTitleToComment = (reviewId) => {
+    const [singleReview] = allPublicReviews.filter(
+      (review) => review.id === reviewId
+    );
+    return singleReview?.title;
+  };
+
   return (
     <div className="comments-container w-50">
       <h5 className="text-center">My Comments</h5>
       <div className="d-flex flex-column gap-4">
         {comments &&
-          comments.map((comment) => {
+          comments.map(({ id, comment, reviewId }) => {
             return (
-              <Card key={comment.id}>
+              <Card
+                key={id}
+                className="d-flex flex-column align-content-center"
+              >
+                <Card.Header className="bg-dark text-light fs-4">
+                  {addReviewTitleToComment(reviewId)}
+                </Card.Header>
                 <Card.Body>
-                  <Card.Text>{comment.comment}</Card.Text>
+                  <Card.Text>{comment}</Card.Text>
                 </Card.Body>
-                <ButtonGroup className="gap-2">
+                <Container className="d-flex flex-column align-content-center gap-1 mb-3">
                   <Button
-                    variant="secondary"
-                    className="rounded"
-                    onClick={() => {
-                      setSpecificCommentId(comment.id);
-                      setRerender(true);
-                      handleShow();
-                    }}
+                    variant="warning"
+                    onClick={() => navigate(`./single-product/${productId}`)}
                   >
-                    Edit
+                    Check out the product!
                   </Button>
-                  <Button
-                    variant="danger"
-                    className="rounded"
-                    onClick={() => {
-                      setSpecificCommentId(comment.id);
-                      handleDelete();
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </ButtonGroup>
+                  <ButtonGroup className="gap-2">
+                    <Button
+                      variant="secondary"
+                      className="rounded"
+                      onClick={() => {
+                        setSpecificCommentId(id);
+                        setRerender(true);
+                        handleShow();
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="danger"
+                      className="rounded"
+                      onClick={() => {
+                        setSpecificCommentId(comment.id);
+                        handleDelete();
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </ButtonGroup>
+                </Container>
               </Card>
             );
           })}

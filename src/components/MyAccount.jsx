@@ -13,7 +13,6 @@ const MyAccount = ({ user, token, products }) => {
   const [showCommentsModal, setShowCommentsModal] = useState(false);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [rerender, setRerender] = useState(false);
-  console.log("reviews :>> ", reviews);
 
   const handleCommentClose = () => setShowCommentsModal(false);
   const handleCommentShow = () => setShowCommentsModal(true);
@@ -48,32 +47,32 @@ const MyAccount = ({ user, token, products }) => {
           token={token}
           comments={comments}
           setRerender={setRerender}
+          handleShow={handleCommentShow}
           specificCommentId={specificCommentId}
           setSpecificCommentId={setSpecificCommentId}
-          handleShow={handleCommentShow}
         />
         <MyReviews
           token={token}
           reviews={reviews}
           products={products}
           setRerender={setRerender}
+          handleShow={handleReviewsShow}
           specificReviewId={specificReviewId}
           setSpecificReviewId={setSpecificReviewId}
-          handleShow={handleReviewsShow}
         />
       </div>
       <EditCommentModal
-        show={showCommentsModal}
-        onHide={handleCommentClose}
-        id={specificCommentId}
         token={token}
+        id={specificCommentId}
+        show={showCommentsModal}
         setRerender={setRerender}
+        onHide={handleCommentClose}
       />
       <EditReviewsModal
         token={token}
         reviews={reviews}
-        show={showReviewsModal}
         id={specificReviewId}
+        show={showReviewsModal}
         setRerender={setRerender}
         onHide={handleReviewsClose}
       />
@@ -82,38 +81,3 @@ const MyAccount = ({ user, token, products }) => {
 };
 
 export default MyAccount;
-
-/*<div className="comments-container">
-          <h5>Comments</h5>
-          <div className="d-flex flex-column gap-4">
-            {comments &&
-              comments.map((comment) => {
-                return (
-                  <>
-                    <Card key={comment.id}>
-                      <Card.Body>
-                        <Card.Text>{comment.comment}</Card.Text>
-                      </Card.Body>
-                      <ButtonGroup className="gap-2">
-                        <Button
-                          variant="secondary"
-                          className="rounded"
-                          onClick={()=>{
-                            setSpecificCommentId(comment.id);
-                            setRerender(true);
-                            handleShow()}}
-                        >
-                          Edit
-                        </Button>
-                        <Button variant="danger" className="rounded" onClick={()=>{
-                          setSpecificCommentId(comment.id);
-                          handleDelete()}}>
-                          Delete
-                        </Button>
-                      </ButtonGroup>
-                    </Card>
-                  </>
-                );
-              })}
-          </div>
-        </div> */
