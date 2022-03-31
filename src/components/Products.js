@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ProductCards from "./ProductCards";
 import "../style/Products.css";
 
-export default function Products({ products }) {
+export default function Products({ products, user}) {
   return (
     <div>
       <div className="primarycontent"></div>
@@ -13,7 +13,7 @@ export default function Products({ products }) {
       {products.map((product) => {
         return (
           <React.Fragment key={product.id}>
-            <ProductCards product={product} />
+            <ProductCards product={product} user={user} />
           </React.Fragment>
         );
       })}
