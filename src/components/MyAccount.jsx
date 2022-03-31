@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchUserComments, fetchUserReviews } from "../axios-services";
 import EditCommentModal from "./EditCommentModal";
-import { updateReviewComment } from "../axios-services";
+import EditReviewsModal from "./EditReviewsModal";
 import MyComments from "./MyComments";
 import MyReviews from "./MyReviews";
 
@@ -10,11 +10,16 @@ const MyAccount = ({ user, token, products }) => {
   const [reviews, setReviews] = useState([]);
   const [specificReviewId, setSpecificReviewId] = useState(0);
   const [specificCommentId, setSpecificCommentId] = useState(0);
-  const [show, setShow] = useState(false);
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [rerender, setRerender] = useState(false);
+  console.log("reviews :>> ", reviews);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleCommentClose = () => setShowCommentsModal(false);
+  const handleCommentShow = () => setShowCommentsModal(true);
+
+  const handleReviewsClose = () => setShowReviewsModal(false);
+  const handleReviewsShow = () => setShowReviewsModal(true);
 
   useEffect(() => {
     const handleComment = async () => {
@@ -24,7 +29,6 @@ const MyAccount = ({ user, token, products }) => {
           const userReviews = await fetchUserReviews(token);
           setReviews(userReviews);
           setComments(userComment);
-          setRerender(false);
         } catch (error) {
           console.error(error);
         }
@@ -32,23 +36,6 @@ const MyAccount = ({ user, token, products }) => {
     };
     handleComment();
   }, [token, rerender]);
-
-  const handleDelete = async () => {
-    console.log("specificCommentId :>> ", specificCommentId);
-
-    const deleteComment = {
-      id: specificCommentId,
-      isPublic: commentIsPublic,
-      token,
-    };
-    try {
-      setRerender(true);
-      await updateReviewComment(deleteComment);
-      setRerender(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div className="account-container d-flex flex-column w-75 align-items-center">
@@ -63,7 +50,7 @@ const MyAccount = ({ user, token, products }) => {
           setRerender={setRerender}
           specificCommentId={specificCommentId}
           setSpecificCommentId={setSpecificCommentId}
-          handleShow={handleShow}
+          handleShow={handleCommentShow}
         />
         <MyReviews
           token={token}
@@ -72,15 +59,23 @@ const MyAccount = ({ user, token, products }) => {
           setRerender={setRerender}
           specificReviewId={specificReviewId}
           setSpecificReviewId={setSpecificReviewId}
-          handleShow={handleShow}
+          handleShow={handleReviewsShow}
         />
       </div>
       <EditCommentModal
-        show={show}
-        onHide={handleClose}
+        show={showCommentsModal}
+        onHide={handleCommentClose}
         id={specificCommentId}
         token={token}
         setRerender={setRerender}
+      />
+      <EditReviewsModal
+        token={token}
+        reviews={reviews}
+        show={showReviewsModal}
+        id={specificReviewId}
+        setRerender={setRerender}
+        onHide={handleReviewsClose}
       />
     </div>
   );
