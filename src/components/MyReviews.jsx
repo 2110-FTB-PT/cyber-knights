@@ -1,7 +1,8 @@
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Container from "react-bootstrap/Container";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import { useNavigate } from "react-router-dom";
 import { updateReview } from "../axios-services";
 
 export default function MyReviews({
@@ -9,10 +10,10 @@ export default function MyReviews({
   reviews,
   products,
   setRerender,
-  specificReviewId,
   setSpecificReviewId,
   handleShow,
 }) {
+  const navigate = useNavigate();
   const handleDelete = async (reviewId) => {
     const deleteReview = {
       id: reviewId,
@@ -32,6 +33,7 @@ export default function MyReviews({
     const [singleProduct] = products.filter(
       (product) => product.id === productId
     );
+
     return singleProduct?.name;
   };
 
