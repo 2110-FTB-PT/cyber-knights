@@ -18,11 +18,9 @@ export default function EditReviewsModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  console.log("id", id);
   useEffect(() => {
     const handleSingleReview = () => {
       const [thisReview] = reviews.filter((review) => review.id === id);
-      console.log("thisReview :>> ", thisReview);
       setTitle(thisReview?.title);
       setDescription(thisReview?.description);
       setSingleReview(thisReview);
