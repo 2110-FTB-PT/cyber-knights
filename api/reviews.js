@@ -55,7 +55,7 @@ reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
   const { isPublic, title, description } = req.body;
   const updateField = { id };
 
-  if (isPublic) updateField.isPublic = isPublic;
+  if (req.body.hasOwnProperty("isPublic")) updateField.isPublic = isPublic;
 
   if (title) updateField.title = title;
 
