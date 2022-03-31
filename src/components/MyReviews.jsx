@@ -38,16 +38,17 @@ export default function MyReviews({
 
   return (
     <div className="comments-container w-50">
-      <h5>Comments</h5>
+      <h5 className="text-center">My Reviews</h5>
       <div className="d-flex flex-column gap-4">
         {reviews &&
-          reviews.map(({ id, productId, description, creatorName }) => {
+          reviews.map(({ id, productId, description, creatorName, title }) => {
             return (
               <Card key={id}>
                 <Card.Header className="bg-dark text-light fs-4">
                   {productTitle(productId)}
                 </Card.Header>
                 <Card.Body>
+                  <Card.Text className="fs-5 fst-italic">{title}</Card.Text>
                   <Card.Text>{description}</Card.Text>
                   <Card.Title className="blockquote-footer fs-6 text-end">
                     Author: {creatorName}
@@ -64,7 +65,7 @@ export default function MyReviews({
                         variant="secondary"
                         className="rounded"
                         onClick={() => {
-                          setSpecificReviewId(comment.id);
+                          setSpecificReviewId(id);
                           setRerender(true);
                           handleShow();
                         }}
@@ -75,7 +76,7 @@ export default function MyReviews({
                         variant="danger"
                         className="rounded"
                         onClick={() => {
-                          setSpecificReviewId(comment.id);
+                          setSpecificReviewId(id);
                           handleDelete();
                         }}
                       >

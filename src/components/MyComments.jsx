@@ -29,7 +29,7 @@ export default function MyComments({
 
   return (
     <div className="comments-container w-50">
-      <h5>Comments</h5>
+      <h5 className="text-center">My Comments</h5>
       <div className="d-flex flex-column gap-4">
         {comments &&
           comments.map((comment) => {
