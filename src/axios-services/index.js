@@ -1,7 +1,6 @@
 import axios from "axios";
 const BASE_URL = "http://localhost:3000/api";
 
-
 export const fetchProducts = async () => {
   try {
     const { data } = await axios.get(`${BASE_URL}/products/public`);
@@ -106,7 +105,30 @@ export const updateReviewComment = async ({
       }
     );
     return data;
-  } catch ({response}) {
+  } catch ({ response }) {
+    console.log("response", response.data);
+    throw response;
+  }
+};
+
+export const updateReview = async ({
+  id: reviewId,
+  token,
+  ...reviewFields
+}) => {
+  console.log("reviewFields :>> ", reviewFields);
+  try {
+    const { data } = await axios.patch(
+      `${BASE_URL}/review/${reviewId}`,
+      reviewFields,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch ({ response }) {
     console.log("response", response.data);
     throw response;
   }
