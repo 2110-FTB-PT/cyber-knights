@@ -7,6 +7,7 @@ import { fetchPublicReviews, updateReviewComment } from "../axios-services";
 
 export default function MyComments({
   token,
+  products,
   comments,
   setRerender,
   handleShow,
@@ -33,11 +34,27 @@ export default function MyComments({
     }
   };
 
-  const addReviewTitleToComment = (reviewId) => {
-    const [singleReview] = allPublicReviews.filter(
+  const reviewInfo = (reviewId) => {
+    const [{ creatorName }] = allPublicReviews.filter(
       (review) => review.id === reviewId
     );
-    return singleReview?.title;
+
+    return `Comment left on 
+      ${creatorName}${checkUserName(creatorName)} review about`;
+  };
+
+  const productInfo = (reviewId) => {
+    const [singleProduct] = products.filter(
+      (product) => product.id === reviewInfo(reviewId).productId
+    );
+    return singleProduct?.name;
+  };
+
+  const checkUserName = (username) => {
+    username = username.split("");
+    const lastLetter = username.length - 1;
+    if (username[lastLetter] === "s") return `'`;
+    return `'s`;
   };
 
   return (
@@ -52,7 +69,8 @@ export default function MyComments({
                 className="d-flex flex-column align-content-center"
               >
                 <Card.Header className="bg-dark text-light fs-4">
-                  {addReviewTitleToComment(reviewId)}
+                  <Card.Title>{reviewInfo(reviewId)}</Card.Title>
+                  <Card.Text>{`${productInfo(reviewId)}!`}</Card.Text>
                 </Card.Header>
                 <Card.Body>
                   <Card.Text>{comment}</Card.Text>

@@ -46,6 +46,7 @@ const MyAccount = ({ user, token, products }) => {
       <div className="d-flex w-75 justify-content-around gap-4">
         <MyComments
           token={token}
+          products={products}
           comments={comments}
           setRerender={setRerender}
           handleShow={handleCommentShow}
