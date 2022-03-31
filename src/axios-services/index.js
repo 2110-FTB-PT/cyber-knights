@@ -5,7 +5,7 @@ const TEST_URL = `http://localhost:4000/api`;
 
 export const fetchProducts = async () => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/products/public`);
+    const { data } = await axios.get(`${TEST_URL}/products/public`);
     return data;
   } catch (error) {
     console.error(error);
@@ -14,7 +14,7 @@ export const fetchProducts = async () => {
 
 export const fetchProductById = async (id) => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/products/${id}`);
+    const { data } = await axios.get(`${TEST_URL}/products/${id}`);
     console.log(data);
     return data;
   } catch (error) {
@@ -24,7 +24,7 @@ export const fetchProductById = async (id) => {
 
 export const login = async (username, password) => {
   try {
-    const { data } = await axios.post(`${BASE_URL}/users/login`, {
+    const { data } = await axios.post(`${TEST_URL}/users/login`, {
       username,
       password,
     });
@@ -37,7 +37,7 @@ export const login = async (username, password) => {
 
 export const register = async (username, password) => {
   try {
-    const { data } = await axios.post(`${BASE_URL}/users/register`, {
+    const { data } = await axios.post(`${TEST_URL}/users/register`, {
       username,
       password,
     });
@@ -49,7 +49,7 @@ export const register = async (username, password) => {
 
 export const getUser = async (token) => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/users/me`, {
+    const { data } = await axios.get(`${TEST_URL}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -63,7 +63,7 @@ export const getUser = async (token) => {
 
 export const fetchUserComments = async (token) => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/comments/myComments`, {
+    const { data } = await axios.get(`${TEST_URL}/comments/myComments`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -78,7 +78,7 @@ export const fetchUserComments = async (token) => {
 
 export const fetchUserReviews = async (token) => {
   try {
-    const { data } = await axios.get(`${BASE_URL}/reviews/myReviews`, {
+    const { data } = await axios.get(`${TEST_URL}/reviews/myReviews`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -92,15 +92,14 @@ export const fetchUserReviews = async (token) => {
 
 export const updateReviewComment = async ({
   id: commentId,
-  comment,
-  token
+  token,
+  ...commentFields
 }) => {
+  console.log("commentFields :>> ", commentFields);
   try {
     const { data } = await axios.patch(
-      `${BASE_URL}/comments/${commentId}`,
-      {
-        comment,
-      },
+      `${TEST_URL}/comments/${commentId}`,
+      commentFields,
       {
         headers: {
           Authorization: `Bearer ${token}`,

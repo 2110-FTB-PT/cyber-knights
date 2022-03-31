@@ -27,6 +27,14 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
     .join(", ");
     
   try {
+
+    if (setString.length === 0) {
+      throw {
+        name: `UpdateCommentErr`,
+        message: `Must include all fields to update comment`,
+      };
+    }
+
     const {
       rows: [comment],
     } = await client.query(

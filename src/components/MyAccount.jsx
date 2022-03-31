@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import EditCommentModal from "./EditCommentModal";
+import { updateReviewComment } from "../axios-services";
 
 
 const MyAccount = ({ user, token }) => {
@@ -12,6 +13,7 @@ const MyAccount = ({ user, token }) => {
   const [specificCommentId, setSpecificCommentId] = useState(0);
   const [show, setShow] = useState(false);
   const [rerender, setRerender] = useState(false);
+  const [commentIsPublic, setCommentIsPublic] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -33,9 +35,27 @@ const MyAccount = ({ user, token }) => {
       }
     };
     handleComment();
-    // fetchUserComments(token).then((response) => setComments(response));
-    // fetchUserReviews(token).then(setReviews);
   }, [token, rerender]);
+
+  const handleDelete = async () => {
+    console.log("specificCommentId :>> ", specificCommentId);
+    
+    const deleteComment = {
+      id: specificCommentId,
+      isPublic: commentIsPublic,
+      token,
+    };
+    console.log("deleteComment :>> ", deleteComment);
+    try {
+      setRerender(true);
+      await updateReviewComment(
+        deleteComment,
+      );
+      setRerender(false);
+    } catch(error){
+      console.error(error);
+    }
+  }
 
   return (
     <div className="account-container d-flex flex-column">
@@ -60,13 +80,15 @@ const MyAccount = ({ user, token }) => {
                           variant="secondary"
                           className="rounded"
                           onClick={()=>{
-                            setSpecificCommentId(comment.id),
+                            setSpecificCommentId(comment.id);
                             setRerender(true);
                             handleShow()}}
                         >
                           Edit
                         </Button>
-                        <Button variant="danger" className="rounded">
+                        <Button variant="danger" className="rounded" onClick={()=>{
+                          setSpecificCommentId(comment.id);
+                          handleDelete()}}>
                           Delete
                         </Button>
                       </ButtonGroup>
