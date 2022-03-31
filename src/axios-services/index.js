@@ -1,7 +1,6 @@
 import axios from "axios";
-const { PORT } = process.env;
 const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-const TEST_URL = `http://localhost:4000/api`;
+const TEST_URL = "http://localhost:4000/api";
 
 export const fetchProducts = async () => {
   try {
@@ -54,7 +53,7 @@ export const getUser = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    
+    console.log(data);
     return data;
   } catch ({ response }) {
     console.error({ response });
@@ -68,11 +67,11 @@ export const fetchUserComments = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("data :>> ", data);
+
     return data;
   } catch ({ response }) {
     console.error("response", response);
-    throw response.data;
+    // throw error;
   }
 };
 
@@ -111,4 +110,9 @@ export const updateReviewComment = async ({
     console.log("response", response.data);
     throw response;
   }
+};
+
+export const fetchPublicReviews = async () => {
+  const { data } = await axios.get(`${TEST_URL}/reviews/`);
+  return data;
 };
