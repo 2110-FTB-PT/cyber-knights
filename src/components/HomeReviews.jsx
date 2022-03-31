@@ -22,7 +22,7 @@ export default function HomeReviews({ products }) {
     let count = 0;
     while (
       (count < 4 && publicReviews.length > 4) ||
-      (count < 2 && publicReviews.length >= 2)
+      (count <= 1 && publicReviews.length === 1)
     ) {
       const rIndex = Math.floor(Math.random() * publicReviews.length);
       console.log(stack.hasOwnProperty(rIndex), `count: ${count}`);
