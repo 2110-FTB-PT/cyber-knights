@@ -10,7 +10,6 @@ export default function MyComments({
   comments,
   setRerender,
   handleShow,
-  specificCommentId,
   setSpecificCommentId,
 }) {
   const [allPublicReviews, setAllPublicReviews] = useState([]);
@@ -19,13 +18,12 @@ export default function MyComments({
     fetchPublicReviews().then((res) => setAllPublicReviews(res));
   }, []);
 
-  const handleDelete = async () => {
+  const handleDelete = async (commentId) => {
     const deleteComment = {
-      id: specificCommentId,
+      id: commentId,
       isPublic: false,
       token,
     };
-
     try {
       setRerender(true);
       await updateReviewComment(deleteComment);
@@ -60,12 +58,6 @@ export default function MyComments({
                   <Card.Text>{comment}</Card.Text>
                 </Card.Body>
                 <Container className="d-flex flex-column align-content-center gap-1 mb-3">
-                  <Button
-                    variant="warning"
-                    onClick={() => navigate(`./single-product/${productId}`)}
-                  >
-                    Check out the product!
-                  </Button>
                   <ButtonGroup className="gap-2">
                     <Button
                       variant="secondary"
@@ -82,8 +74,7 @@ export default function MyComments({
                       variant="danger"
                       className="rounded"
                       onClick={() => {
-                        setSpecificCommentId(comment.id);
-                        handleDelete();
+                        handleDelete(id);
                       }}
                     >
                       Delete

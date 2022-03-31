@@ -13,17 +13,16 @@ export default function MyReviews({
   setSpecificReviewId,
   handleShow,
 }) {
-  const handleDelete = async () => {
+  const handleDelete = async (reviewId) => {
     const deleteReview = {
-      id: specificReviewId,
+      id: reviewId,
       isPublic: false,
       token,
     };
 
     try {
-      setRerender(true);
       await updateReview(deleteReview);
-      setRerender(false);
+      setRerender(true);
     } catch (error) {
       console.error(error);
     }
@@ -76,8 +75,7 @@ export default function MyReviews({
                         variant="danger"
                         className="rounded"
                         onClick={() => {
-                          setSpecificReviewId(id);
-                          handleDelete();
+                          handleDelete(id);
                         }}
                       >
                         Delete
