@@ -28,7 +28,6 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
     .join(", ");
 
   try {
-
     if (setString.length === 0) {
       throw {
         name: `UpdateCommentErr`,
@@ -63,8 +62,11 @@ async function getPublicCommentsByUser(userId) {
       FROM comments
       JOIN users
       ON users.id = comments."userId"
+      JOIN reviews
+      ON reviews.id = comments."reviewId"
       WHERE users.id=$1
-      AND comments."isPublic"=true;
+      AND comments."isPublic"=true
+      AND reviews."isPublic"=true;
     `,
       [userId]
     );
