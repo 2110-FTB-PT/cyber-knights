@@ -1,11 +1,11 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Products from "./Products";
 import Home from "./Home";
 import Login from "./Login";
 import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
-import { getUser,fetchProducts } from "../axios-services";
+import { getUser, fetchProducts } from "../axios-services";
 import SingleProduct from "./SingleProduct";
 
 const App = () => {
@@ -13,24 +13,11 @@ const App = () => {
   const [user, setUser] = useState({});
   const [products, setProducts] = useState([]);
 
- 
-  useEffect(()=>{
-    const handleProducts = async()=>{
-      try {
-        const products= await fetchProducts()
-        setProducts(products)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    handleProducts()
-  },[])
-
   useEffect(() => {
     const handleUser = async () => {
       if (token) {
         const userInfo = await getUser(token);
-        console.log('userInfo :>> ', userInfo);
+        console.log("userInfo :>> ", userInfo);
         setUser(userInfo);
       }
     };
@@ -38,22 +25,37 @@ const App = () => {
     handleUser();
   }, [token]);
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
+useEffect(() => {
+  const handleProducts = async () => {
+    try {
+      const products = await fetchProducts();
+      setProducts(products);
+    } catch (error) {
+      console.error(error);
     }
-  }, []);
+  };
 
-
+  handleProducts();
+  if (localStorage.getItem("token")) {
+    setToken(localStorage.getItem("token"));
+  }
+}, []);
 
   return (
     <div className="app-container">
-      <Header username={user && user.username} token={token} setToken={setToken} setUser={setUser}/>
+      <Header
+        username={user && user.username}
+        token={token}
+        setToken={setToken}
+        setUser={setUser}
+      />
       <div className="content-container d-flex justify-content-center">
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route path="/allProducts" element={<Products products={products} user={user}/>} />
           <Route path="/single-product/:productId" element={<SingleProduct user={user}/>} />
+
           <Route path="/products-pets" element={<h1>products-pets</h1>} />
           <Route
             path="/products-accessories"
