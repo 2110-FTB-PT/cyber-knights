@@ -133,6 +133,10 @@ export const updateReview = async ({
 };
 
 export const fetchPublicReviews = async () => {
-  const { data } = await axios.get(`${BASE_URL}/reviews/`);
-  return data;
+  try {
+    const { data } = await axios.get(`${BASE_URL}/reviews/`);
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
 };
