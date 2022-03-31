@@ -7,8 +7,19 @@ const {
   getReviewsByProduct,
   getProductById,
   getReviewsByUser,
+  getAllPublicReviews,
 } = require("../db");
 const { requireUser } = require("./utils");
+
+reviewsRouter.get("/", async (req, res, next) => {
+  try {
+    const allPubReviews = await getAllPublicReviews();
+
+    res.send(allPubReviews);
+  } catch (err) {
+    next(err);
+  }
+});
 
 //require user to create a new review
 reviewsRouter.post("/create", requireUser, async (req, res, next) => {
@@ -44,7 +55,7 @@ reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
   const { isPublic, title, description } = req.body;
   const updateField = { id };
 
-  if (isPublic) updateField.isPublic = isPublic;
+  if (req.body.hasOwnProperty("isPublic")) updateField.isPublic = isPublic;
 
   if (title) updateField.title = title;
 
@@ -66,6 +77,23 @@ reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
   }
 });
 
+reviewsRouter.get("/myReviews", requireUser, async (req, res, next) => {
+  const { id } = req.user;
+  try {
+    const userReviews = await getReviewsByUser(id);
+    if (!userReviews) {
+      next({
+        name: `NoReviewsError`,
+        message: `You haven't made any reviews yet`,
+      });
+      return;
+    }
+    res.send(userReviews);
+  } catch (err) {
+    next(err);
+  }
+});
+
 reviewsRouter.get("/:productId", async (req, res, next) => {
   const { productId } = req.params;
   try {
@@ -80,23 +108,6 @@ reviewsRouter.get("/:productId", async (req, res, next) => {
 
     const productReviews = await getReviewsByProduct(productId);
     res.send(productReviews);
-  } catch (err) {
-    next(err);
-  }
-});
-
-reviewsRouter.get("/myReviews", requireUser, async (req, res, next) => {
-  const { id } = req.user;
-  try {
-    const userReviews = await getReviewsByUser(id);
-    if (!userReviews) {
-      next({
-        name: `NoReviewsError`,
-        message: `You haven't made any reviews yet`,
-      });
-      return;
-    }
-    res.send(userReviews);
   } catch (err) {
     next(err);
   }
