@@ -6,13 +6,13 @@ import MyComments from "./MyComments";
 import MyReviews from "./MyReviews";
 
 const MyAccount = ({ user, token, products }) => {
-  const [comments, setComments] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [specificReviewId, setSpecificReviewId] = useState(0);
-  const [specificCommentId, setSpecificCommentId] = useState(0);
-  const [showCommentsModal, setShowCommentsModal] = useState(false);
-  const [showReviewsModal, setShowReviewsModal] = useState(false);
+  const [comments, setComments] = useState([]);
   const [rerender, setRerender] = useState(false);
+  const [specificReviewId, setSpecificReviewId] = useState(null);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
+  const [specificCommentId, setSpecificCommentId] = useState(null);
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
 
   const handleCommentClose = () => setShowCommentsModal(false);
   const handleCommentShow = () => setShowCommentsModal(true);
@@ -28,6 +28,7 @@ const MyAccount = ({ user, token, products }) => {
           const userReviews = await fetchUserReviews(token);
           setReviews(userReviews);
           setComments(userComment);
+          setRerender(false);
         } catch (error) {
           console.error(error);
         }
