@@ -93,7 +93,6 @@ export const updateReviewComment = async ({
   token,
   ...commentFields
 }) => {
-  console.log("commentFields :>> ", commentFields);
   try {
     const { data } = await axios.patch(
       `${BASE_URL}/comments/${commentId}`,
@@ -116,10 +115,9 @@ export const updateReview = async ({
   token,
   ...reviewFields
 }) => {
-  console.log("reviewFields :>> ", reviewFields);
   try {
     const { data } = await axios.patch(
-      `${BASE_URL}/review/${reviewId}`,
+      `${BASE_URL}/reviews/${reviewId}`,
       reviewFields,
       {
         headers: {
