@@ -13,18 +13,6 @@ const App = () => {
   const [user, setUser] = useState({});
   const [products, setProducts] = useState([]);
 
-  const handleProducts = async () => {
-    try {
-      const products = await fetchProducts();
-      setProducts(products);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    handleProducts();
-  }, []);
-
   useEffect(() => {
     const handleUser = async () => {
       if (token) {
@@ -38,6 +26,16 @@ const App = () => {
   }, [token]);
 
   useEffect(() => {
+    const handleProducts = async () => {
+      try {
+        const products = await fetchProducts();
+        setProducts(products);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    handleProducts();
     if (localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
     }
@@ -53,15 +51,17 @@ const App = () => {
       />
       <div className="content-container d-flex justify-content-center">
         <Routes>
-          <Route path="/" element={<Home products={products} />} />
+          <Route path="/" element={<Home />} />
+
           <Route
             path="/allProducts"
-            element={<Products products={products} />}
+            element={<Products products={products} user={user} />}
           />
           <Route
             path="/single-product/:productId"
-            element={<SingleProduct />}
+            element={<SingleProduct user={user} />}
           />
+
           <Route path="/products-pets" element={<h1>products-pets</h1>} />
           <Route
             path="/products-accessories"
