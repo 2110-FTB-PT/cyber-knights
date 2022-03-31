@@ -36,6 +36,7 @@ const App = () => {
     };
 
     handleProducts();
+
     if (localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
     }
@@ -51,7 +52,7 @@ const App = () => {
       />
       <div className="content-container d-flex justify-content-center mb-5">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home products={products} />} />
 
           <Route
             path="/allProducts"
