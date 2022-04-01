@@ -75,7 +75,9 @@ const App = () => {
           />
           <Route
             path="/account"
-            element={<MyAccount token={token} user={user} />}
+            element={
+              <MyAccount products={products} token={token} user={user} />
+            }
           />
           <Route path="/cart" element={<h1>cart</h1>} />
         </Routes>

@@ -6,11 +6,9 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Container from "react-bootstrap/Container";
 import { updateReviewComment } from "../axios-services";
 
-
 const EditCommentModal = ({ show, onHide, id, token, setRerender }) => {
   const [updatedComment, setUpdatedComment] = useState("");
-  console.log("id", id);
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

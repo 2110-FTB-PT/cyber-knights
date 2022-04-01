@@ -1,32 +1,32 @@
 import { useEffect, useState } from "react";
 import { fetchUserComments, fetchUserReviews } from "../axios-services";
-import Card from "react-bootstrap/Card"
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import EditCommentModal from "./EditCommentModal";
-import { updateReviewComment } from "../axios-services";
+import EditReviewsModal from "./EditReviewsModal";
+import MyComments from "./MyComments";
+import MyReviews from "./MyReviews";
 
-
-const MyAccount = ({ user, token }) => {
-  const [comments, setComments] = useState([]);
+const MyAccount = ({ user, token, products }) => {
   const [reviews, setReviews] = useState([]);
-  const [specificCommentId, setSpecificCommentId] = useState(0);
-  const [show, setShow] = useState(false);
+  const [comments, setComments] = useState([]);
   const [rerender, setRerender] = useState(false);
-  const [commentIsPublic, setCommentIsPublic] = useState(false);
+  const [specificReviewId, setSpecificReviewId] = useState(null);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
+  const [specificCommentId, setSpecificCommentId] = useState(null);
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleCommentClose = () => setShowCommentsModal(false);
+  const handleCommentShow = () => setShowCommentsModal(true);
 
-  console.log("comments", comments);
-  console.log("token",token)
+  const handleReviewsClose = () => setShowReviewsModal(false);
+  const handleReviewsShow = () => setShowReviewsModal(true);
 
   useEffect(() => {
     const handleComment = async () => {
-      if(token){
+      if (token) {
         try {
           const userComment = await fetchUserComments(token);
-          console.log('usercomment :>> ', userComment);
+          const userReviews = await fetchUserReviews(token);
+          setReviews(userReviews);
           setComments(userComment);
           setRerender(false);
         } catch (error) {
@@ -37,72 +37,47 @@ const MyAccount = ({ user, token }) => {
     handleComment();
   }, [token, rerender]);
 
-  const handleDelete = async () => {
-    console.log("specificCommentId :>> ", specificCommentId);
-    
-    const deleteComment = {
-      id: specificCommentId,
-      isPublic: commentIsPublic,
-      token,
-    };
-    console.log("deleteComment :>> ", deleteComment);
-    try {
-      setRerender(true);
-      await updateReviewComment(
-        deleteComment,
-      );
-      setRerender(false);
-    } catch(error){
-      console.error(error);
-    }
-  }
-
   return (
-    <div className="account-container d-flex flex-column">
-      <div className="userInfo-container">
+    <div className="account-container d-flex flex-column w-75 align-items-center">
+      <div className="userInfo-container text-center">
         <h1>{user && user.username}</h1>
         <h1>Welcome Back!</h1>
       </div>
-      <div className="comments-reviews d-flex gap-4">
-        <div className="comments-container">
-          <h5>Comments</h5>
-          <div className="d-flex flex-column gap-4">
-            {comments &&
-              comments.map((comment) => {
-                return (
-                  <>
-                    <Card key={comment.id}>
-                      <Card.Body>
-                        <Card.Text>{comment.comment}</Card.Text>
-                      </Card.Body>
-                      <ButtonGroup className="gap-2">
-                        <Button
-                          variant="secondary"
-                          className="rounded"
-                          onClick={()=>{
-                            setSpecificCommentId(comment.id);
-                            setRerender(true);
-                            handleShow()}}
-                        >
-                          Edit
-                        </Button>
-                        <Button variant="danger" className="rounded" onClick={()=>{
-                          setSpecificCommentId(comment.id);
-                          handleDelete()}}>
-                          Delete
-                        </Button>
-                      </ButtonGroup>
-                    </Card>
-                  </>
-                );
-              })}
-          </div>
-        </div>
-        <div className="reviews-container">
-          <h5>Reviews</h5>
-        </div>
+      <div className="d-flex w-75 justify-content-around gap-4">
+        <MyComments
+          token={token}
+          products={products}
+          comments={comments}
+          setRerender={setRerender}
+          handleShow={handleCommentShow}
+          specificCommentId={specificCommentId}
+          setSpecificCommentId={setSpecificCommentId}
+        />
+        <MyReviews
+          token={token}
+          reviews={reviews}
+          products={products}
+          setRerender={setRerender}
+          handleShow={handleReviewsShow}
+          specificReviewId={specificReviewId}
+          setSpecificReviewId={setSpecificReviewId}
+        />
       </div>
-      <EditCommentModal show={show} onHide={handleClose} id={specificCommentId} token={token} setRerender={setRerender}/>
+      <EditCommentModal
+        token={token}
+        id={specificCommentId}
+        show={showCommentsModal}
+        setRerender={setRerender}
+        onHide={handleCommentClose}
+      />
+      <EditReviewsModal
+        token={token}
+        reviews={reviews}
+        id={specificReviewId}
+        show={showReviewsModal}
+        setRerender={setRerender}
+        onHide={handleReviewsClose}
+      />
     </div>
   );
 };

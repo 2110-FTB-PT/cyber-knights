@@ -6,7 +6,7 @@ const {
   getReviewById,
   getReviewsByProduct,
   getProductById,
-  getReviewsByUser,
+  getPublicReviewsByUser,
   getAllPublicReviews,
 } = require("../db");
 const { requireUser } = require("./utils");
@@ -80,7 +80,7 @@ reviewsRouter.patch("/:reviewId", requireUser, async (req, res, next) => {
 reviewsRouter.get("/myReviews", requireUser, async (req, res, next) => {
   const { id } = req.user;
   try {
-    const userReviews = await getReviewsByUser(id);
+    const userReviews = await getPublicReviewsByUser(id);
     if (!userReviews) {
       next({
         name: `NoReviewsError`,

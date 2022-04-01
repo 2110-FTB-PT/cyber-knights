@@ -1,6 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-
+const BASE_URL = "http://build-a-rock.herokuapp.com/api";
 
 export const fetchProducts = async () => {
   try {
@@ -94,7 +93,6 @@ export const updateReviewComment = async ({
   token,
   ...commentFields
 }) => {
-  console.log("commentFields :>> ", commentFields);
   try {
     const { data } = await axios.patch(
       `${BASE_URL}/comments/${commentId}`,
@@ -106,13 +104,39 @@ export const updateReviewComment = async ({
       }
     );
     return data;
-  } catch ({response}) {
+  } catch ({ response }) {
+    console.log("response", response.data);
+    throw response;
+  }
+};
+
+export const updateReview = async ({
+  id: reviewId,
+  token,
+  ...reviewFields
+}) => {
+  try {
+    const { data } = await axios.patch(
+      `${BASE_URL}/reviews/${reviewId}`,
+      reviewFields,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch ({ response }) {
     console.log("response", response.data);
     throw response;
   }
 };
 
 export const fetchPublicReviews = async () => {
-  const { data } = await axios.get(`${BASE_URL}/reviews/`);
-  return data;
+  try {
+    const { data } = await axios.get(`${BASE_URL}/reviews/`);
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
 };

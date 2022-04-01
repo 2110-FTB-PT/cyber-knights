@@ -20,14 +20,14 @@ async function createComment({ comment, reviewId, userId, isPublic }) {
 }
 
 async function updateReviewComment({ id: commentId, ...commentFields }) {
+  console.log("commentFields :>> ", commentFields);
   const setString = Object.keys(commentFields)
     .map((field, index) => {
       return `"${field}" = $${index + 1}`;
     })
     .join(", ");
-    
-  try {
 
+  try {
     if (setString.length === 0) {
       throw {
         name: `UpdateCommentErr`,
@@ -39,10 +39,10 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
       rows: [comment],
     } = await client.query(
       `
-            UPDATE comments
-            SET ${setString}
-            WHERE id= ${commentId}
-            RETURNING *;
+        UPDATE comments
+        SET ${setString}
+        WHERE id= ${commentId}
+        RETURNING *;
         `,
       Object.values(commentFields)
     );
@@ -53,7 +53,7 @@ async function updateReviewComment({ id: commentId, ...commentFields }) {
   }
 }
 
-async function getPublicCommentsByUser( userId ) {
+async function getPublicCommentsByUser(userId) {
   try {
     const { rows: comments } = await client.query(
       `
@@ -62,8 +62,11 @@ async function getPublicCommentsByUser( userId ) {
       FROM comments
       JOIN users
       ON users.id = comments."userId"
+      JOIN reviews
+      ON reviews.id = comments."reviewId"
       WHERE users.id=$1
-      AND comments."isPublic"=true;
+      AND comments."isPublic"=true
+      AND reviews."isPublic"=true;
     `,
       [userId]
     );

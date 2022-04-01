@@ -7,30 +7,27 @@ import { useEffect } from "react";
 export default function HomeCarousel({ products }) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("products useEffect", products);
-  }, [products]);
-
   const rngProducts = () => {
     const stack = {};
     if (products) {
       let count = 0;
       while (count < 4 && products.length > 0) {
         const rIndex = Math.floor(Math.random() * products.length);
+        console.log("WHAAA");
         if (stack.hasOwnProperty(rIndex)) continue;
         stack[rIndex] = products[rIndex];
         count += 1;
       }
+      return Object.values(stack);
     }
-    return Object.values(stack);
   };
 
   return (
-    <div className="d-flex flex-column text-center w-75">
+    <div className="d-flex flex-column text-center w-50">
       <h1>Hot Products!</h1>
-      <Carousel variant="dark" slide={true} className="w-100 ms-2 p-4">
+      <Carousel variant="dark" slide={true} className="w-100 p-4">
         {products &&
-          rngProducts().map(({ id, name, images, description, price }) => {
+          rngProducts().map(({ id, name, images, description }) => {
             return (
               <Carousel.Item key={[id]} interval={5000} alt={name}>
                 <Card className="d-flex align-items-center flex-column">
