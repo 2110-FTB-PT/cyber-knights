@@ -1,10 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchProductReviews } from "../axios-services";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
+import EditReviewsModal from "./EditReviewsModal";
+import EditCommentModal from "./EditCommentModal";
 
-export default function ProductRevies({ productId }) {
+export default function ProductRevies({ productId, username, token }) {
   const [singleProductReviews, setSingleProductReviews] = useState([]);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [specificReviewId, setSpecificReviewId] = useState(null);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [specificCommentId, setSpecificCommentId] = useState(null);
+  const [rerender, setRerender] = useState(false);
+
+  const handleReviewShow = () => setShowReviewModal(true);
+  const handleReviewClose = () => setShowReviewModal(false);
+  const handleCommentShow = () => setShowCommentModal(true);
+  const handleCommentClose = () => setShowCommentModal(false);
 
   useEffect(() => {
     const productReviews = async () => {
@@ -12,8 +25,8 @@ export default function ProductRevies({ productId }) {
       setSingleProductReviews(reviews);
     };
     productReviews();
-    console.log("singleProductReviews", singleProductReviews);
-  }, []);
+    setRerender(false);
+  }, [rerender, showReviewModal]);
 
   return (
     <div>
@@ -31,17 +44,46 @@ export default function ProductRevies({ productId }) {
                   <Card.Title className="blockquote-footer fs-6 text-end">
                     Author: {creatorName}
                   </Card.Title>
+                  {username === creatorName && (
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        setSpecificReviewId(id);
+                        handleReviewShow();
+                      }}
+                    >
+                      Edit Your Review
+                    </Button>
+                  )}
                   {comments &&
-                    comments.map((comment, i) => {
+                    comments.map(({ id, comment, creatorName }, i) => {
                       return (
-                        <Accordion key={comment.id}>
-                          <Accordion.Item eventKey={i}>
-                            <Accordion.Header>
-                              Comment from {comment.creatorName}
-                            </Accordion.Header>
-                            <Accordion.Body>{comment.comment}</Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
+                        <React.Fragment key={id}>
+                          <Accordion>
+                            <Accordion.Item eventKey={id}>
+                              <Accordion.Header>
+                                {username === creatorName
+                                  ? `Your comment`
+                                  : `Comment by ${creatorName}`}
+                              </Accordion.Header>
+                              <Accordion.Body className="d-flex flex-column gap-2">
+                                {comment}
+                                {username === creatorName && (
+                                  <Button
+                                    variant="secondary"
+                                    className="align-self-end"
+                                    onClick={() => {
+                                      setSpecificCommentId(id);
+                                      handleCommentShow();
+                                    }}
+                                  >
+                                    Edit your comment
+                                  </Button>
+                                )}
+                              </Accordion.Body>
+                            </Accordion.Item>
+                          </Accordion>
+                        </React.Fragment>
                       );
                     })}
                 </Card.Body>
@@ -49,6 +91,20 @@ export default function ProductRevies({ productId }) {
             );
           }
         )}
+      <EditCommentModal
+        token={token}
+        id={specificCommentId}
+        show={showCommentModal}
+        setRerender={setRerender}
+        onHide={handleCommentClose}
+      />
+      <EditReviewsModal
+        token={token}
+        reviews={singleProductReviews}
+        id={specificReviewId}
+        show={showReviewModal}
+        onHide={handleReviewClose}
+      />
     </div>
   );
 }
