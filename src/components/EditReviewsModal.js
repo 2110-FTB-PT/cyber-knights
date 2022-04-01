@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Container from "react-bootstrap/Container";
 import { updateReview } from "../axios-services";
 
 export default function EditReviewsModal({
-  token,
-  reviews,
   show,
-  id,
-  setRerender,
   onHide,
+  id,
+  token,
+  setRerender,
+  reviews,
 }) {
   const [singleReview, setSingleReview] = useState({});
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleSingleReview = () => {
@@ -37,10 +38,14 @@ export default function EditReviewsModal({
       token,
     };
     try {
-      setRerender(true);
-      await updateReview(updateFields);
-      setRerender(false);
-      onHide();
+      if (pathname === `/account`) {
+        await updateReview(updateFields);
+        setRerender(true);
+        onHide();
+      } else {
+        await updateReview(updateFields);
+        onHide();
+      }
     } catch (error) {
       throw error;
     }
