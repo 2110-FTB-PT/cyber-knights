@@ -11,10 +11,12 @@ const EditCommentModal = ({ show, onHide, id, token, setRerender }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const commentFields = { id, comment: updatedComment, token };
     try {
-      await updateReviewComment({ id, comment: updatedComment, token });
+      await updateReviewComment(commentFields);
       setUpdatedComment("");
       setRerender(true);
+      onHide();
     } catch (error) {
       throw error;
     }
