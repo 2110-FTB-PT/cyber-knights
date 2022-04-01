@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://build-a-rock.herokuapp.com/api";
+const BASE_URL = "https://build-a-rock.herokuapp.com/api";
 
 export const fetchProducts = async () => {
   try {
@@ -13,7 +13,6 @@ export const fetchProducts = async () => {
 export const fetchProductById = async (id) => {
   try {
     const { data } = await axios.get(`${BASE_URL}/products/${id}`);
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
@@ -52,7 +51,6 @@ export const getUser = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
     return data;
   } catch ({ response }) {
     console.error({ response });
@@ -135,6 +133,15 @@ export const updateReview = async ({
 export const fetchPublicReviews = async () => {
   try {
     const { data } = await axios.get(`${BASE_URL}/reviews/`);
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
+};
+
+export const fetchProductReviews = async (productId) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/reviews/${productId}`);
     return data;
   } catch ({ response }) {
     console.error(response.data);
