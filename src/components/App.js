@@ -61,7 +61,7 @@ const App = () => {
           />
           <Route
             path="/single-product/:productId"
-            element={<SingleProduct user={user} />}
+            element={<SingleProduct user={user} token={token} />}
           />
 
           <Route path="/products-pets" element={<h1>products-pets</h1>} />

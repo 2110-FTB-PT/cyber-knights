@@ -81,8 +81,9 @@ async function getCommentsByReview(reviewId) {
   try {
     const { rows: comments } = await client.query(
       `
-      SELECT *
-      FROM comments
+      SELECT c.*, u.username "creatorName"
+      FROM comments c
+      JOIN users u ON u.id = c."userId"
       WHERE "reviewId"=$1
       AND "isPublic"=true;
   `,
