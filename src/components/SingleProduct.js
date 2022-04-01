@@ -6,7 +6,7 @@ import { fetchProductById } from "../axios-services";
 import Button from "react-bootstrap/Button";
 import "../style/SingleProduct.css";
 
-export default function SingleProduct({ user }) {
+export default function SingleProduct({ user, token }) {
   const [product, setProduct] = useState([]);
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -46,8 +46,11 @@ export default function SingleProduct({ user }) {
 
         <div className="product-reviews"></div>
       </div>
-      <ProductReviews productId={productId} />
+      <ProductReviews
+        productId={productId}
+        username={user.username}
+        token={token}
+      />
     </div>
-    //COMMENT COMPONENT WILL GO HERE
   );
 }
