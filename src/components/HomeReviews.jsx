@@ -14,7 +14,6 @@ export default function HomeReviews({ products }) {
       setPublicReviews(getReviews);
     };
     handleReviews();
-    console.log("publicReviews useEffect :>> ", publicReviews);
   }, []);
 
   const rngReviews = () => {
@@ -25,13 +24,11 @@ export default function HomeReviews({ products }) {
       (count <= 1 && publicReviews.length === 1)
     ) {
       const rIndex = Math.floor(Math.random() * publicReviews.length);
-      console.log(stack.hasOwnProperty(rIndex), `count: ${count}`);
       if (stack.hasOwnProperty(rIndex)) continue;
       stack[rIndex] = publicReviews[rIndex];
       count += 1;
       continue;
     }
-    console.log(stack);
     return Object.values(stack);
   };
 
