@@ -11,6 +11,9 @@ import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdShoppingCart } from "react-icons/md";
 import { LinkContainer } from "react-router-bootstrap";
+import Logo from "./Logo"
+import '../style/header.css'
+
 
 export default function Header({ token, username, setToken, setUser }) {
   const [show, setShow] = useState(false);
@@ -25,17 +28,17 @@ export default function Header({ token, username, setToken, setUser }) {
       className="mw-100 d-sm-flex justify-content-between flex-md-row flex-sm-column"
       fixed="top"
     >
-      <Container className="d-flex justify-content-start">
+      <Container className="d-flex justify-content-between mw-100">
         <Button variant="secondary" className="ms-3 py-2" onClick={handleShow}>
           <GiHamburgerMenu size={30} />{" "}
         </Button>
-        <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas className='' show={show} onHide={handleClose}>
           <Offcanvas.Header
             className="bg-dark text-light"
             closeButton
             closeVariant="white"
           >
-            <Offcanvas.Title>PetRocks</Offcanvas.Title>
+            <Offcanvas.Title>Build-a-Rock</Offcanvas.Title>
             {username ? (
               <Offcanvas.Title>Hello, {username}!</Offcanvas.Title>
             ) : (
@@ -131,9 +134,21 @@ export default function Header({ token, username, setToken, setUser }) {
             </Nav>
           </Offcanvas.Body>
         </Offcanvas>
-        <Navbar.Brand className="m-0  mx-3 fs-1">PetRocks</Navbar.Brand>
-      </Container>
-      <InputGroup className="w-25 mx-4">
+        <Navbar.Brand className="m-0  mx-3 fs-1"></Navbar.Brand>
+        <Logo/>
+        <LinkContainer to="/cart">
+                  <Button
+                    variant="outline-secondary"
+                    className="btn-block p-2 fs-2"
+                  >
+                  <MdShoppingCart />
+                  <span className='badge badge-warning' id='lblCartCount'> 5 </span>
+                    
+                  </Button>
+                
+                </LinkContainer>
+       
+        <InputGroup className="w-25 mx-4">
         <FormControl
           placeholder="Search . . ."
           aria-label="Recipient's username"
@@ -143,6 +158,7 @@ export default function Header({ token, username, setToken, setUser }) {
           <FaSearch />
         </Button>
       </InputGroup>
+      </Container>
     </Navbar>
   );
 }

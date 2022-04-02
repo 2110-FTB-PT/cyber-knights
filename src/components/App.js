@@ -8,6 +8,7 @@ import "../style/App.css";
 import { Route, Routes } from "react-router-dom";
 import { getUser, fetchProducts } from "../axios-services";
 import SingleProduct from "./SingleProduct";
+import ShoppingCart from "./ShoppingCart";
 
 const App = () => {
   const [token, setToken] = useState("");
@@ -79,7 +80,7 @@ const App = () => {
               <MyAccount products={products} token={token} user={user} />
             }
           />
-          <Route path="/cart" element={<h1>cart</h1>} />
+          <Route path="/cart" element={<ShoppingCart user={user} products={products}/>} />
         </Routes>
       </div>
     </div>
