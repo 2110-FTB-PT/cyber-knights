@@ -51,6 +51,7 @@ apiRouter.use("/comments", commentsRouter);
 apiRouter.use("/reviews", require("./reviews"));
 apiRouter.use("/images", require("./images"));
 apiRouter.use("/products", require("./products"));
+apiRouter.use("/cart", require("./cart"));
 
 apiRouter.get("*", (req, res, next) => {
   res.status(404).send("PAGE NOT FOUND");

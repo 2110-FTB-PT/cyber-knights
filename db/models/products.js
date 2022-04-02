@@ -105,6 +105,7 @@ const updateProduct = async ({ id, name, description, price, isPublic }) => {
   }
 };
 
+
 module.exports = {
   createProduct,
   getAllProducts,

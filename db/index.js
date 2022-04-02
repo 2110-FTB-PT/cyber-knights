@@ -7,4 +7,5 @@ module.exports = {
   ...require('./models/images'),
   ...require('./models/reviews'),
   ...require('./models/comments'),
+  ...require('./models/cart'),
 }
