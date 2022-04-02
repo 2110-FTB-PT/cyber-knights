@@ -71,7 +71,7 @@ export default function SingleProduct({ user, token }) {
     />
      <ProductReviews
         productId={productId}
-        username={user.username}
+        user={user}
         token={token}
       />
     </div>

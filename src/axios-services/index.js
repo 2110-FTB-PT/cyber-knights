@@ -1,7 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:3000/api";
-// const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-
+const BASE_URL = "https://build-a-rock.herokuapp.com/api";
 
 export const fetchProducts = async () => {
   try {
@@ -159,6 +157,40 @@ export const fetchPublicReviews = async () => {
 export const fetchProductReviews = async (productId) => {
   try {
     const { data } = await axios.get(`${BASE_URL}/reviews/${productId}`);
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
+};
+
+export const createReview = async ({ token, ...reviewFields }) => {
+  try {
+    const { data } = await axios.post(
+      `${BASE_URL}/reviews/create`,
+      reviewFields,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
+};
+
+export const createComment = async ({token, ...commentFields}) => {
+  try {
+    const { data } = await axios.post(
+      `${BASE_URL}/comments/create`,
+      commentFields,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return data;
   } catch ({ response }) {
     console.error(response.data);
