@@ -14,17 +14,6 @@ export default function SingleProduct({ user, token }) {
   const navigate = useNavigate();
   const [productModalShow, setProductModalShow] = useState(false);
 
-  const singleProductHandler = async () => {
-    try {
-      const singleProduct = await fetchProductById(productId);
-      setProduct(singleProduct);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-  
-
   const handleProductShow=()=>setModalShow(true)
   const handleProductClose=()=>setModalShow(false)
 
