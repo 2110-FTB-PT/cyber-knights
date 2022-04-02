@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { fetchProductReviews } from "../axios-services";
+import {
+  fetchProductReviews,
+  updateReview,
+  updateReviewComment,
+} from "../axios-services";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
+import Container from "react-bootstrap/Container";
 import EditReviewsModal from "./EditReviewsModal";
 import EditCommentModal from "./EditCommentModal";
 import CreateReviewModal from "./CreateReviewModal";
@@ -42,6 +47,36 @@ export default function ProductRevies({ productId, user, token }) {
     showCreateCommentModal,
   ]);
 
+  const handleDeleteReview = async (reviewId) => {
+    const deleteReview = {
+      id: reviewId,
+      isPublic: false,
+      token,
+    };
+
+    try {
+      await updateReview(deleteReview);
+      setRerender(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const deleteComment = {
+      id: commentId,
+      isPublic: false,
+      token,
+    };
+    try {
+      setRerender(true);
+      await updateReviewComment(deleteComment);
+      setRerender(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <h1>Reviews:</h1>
@@ -66,15 +101,26 @@ export default function ProductRevies({ productId, user, token }) {
                     Author: {creatorName}
                   </Card.Title>
                   {user.username === creatorName ? (
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        setSpecificReviewId(id);
-                        handleReviewShow();
-                      }}
-                    >
-                      Edit Your Review
-                    </Button>
+                    <Container className="d-flex gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          setSpecificReviewId(id);
+                          handleReviewShow();
+                        }}
+                      >
+                        Edit Your Review
+                      </Button>
+                      <Button
+                        variant="danger"
+                        className="rounded"
+                        onClick={() => {
+                          handleDeleteReview(id);
+                        }}
+                      >
+                        Delete Review
+                      </Button>
+                    </Container>
                   ) : (
                     <Button
                       variant="secondary"
@@ -100,16 +146,27 @@ export default function ProductRevies({ productId, user, token }) {
                               <Accordion.Body className="d-flex flex-column gap-2">
                                 {comment}
                                 {user.username === creatorName && (
-                                  <Button
-                                    variant="secondary"
-                                    className="align-self-end"
-                                    onClick={() => {
-                                      setSpecificCommentId(id);
-                                      handleCommentShow();
-                                    }}
-                                  >
-                                    Edit your comment
-                                  </Button>
+                                  <Container className="d-flex gap-2">
+                                    <Button
+                                      variant="secondary"
+                                      className="align-self-end"
+                                      onClick={() => {
+                                        setSpecificCommentId(id);
+                                        handleCommentShow();
+                                      }}
+                                    >
+                                      Edit your comment
+                                    </Button>
+                                    <Button
+                                      variant="danger"
+                                      className="rounded"
+                                      onClick={() => {
+                                        handleDeleteComment(id);
+                                      }}
+                                    >
+                                      Delete Comment
+                                    </Button>
+                                  </Container>
                                 )}
                               </Accordion.Body>
                             </Accordion.Item>

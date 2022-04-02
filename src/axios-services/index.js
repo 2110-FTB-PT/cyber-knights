@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "https://build-a-rock.herokuapp.com/api";
+// const BASE_URL = "https://build-a-rock.herokuapp.com/api";
+const BASE_URL = "http://localhost:4000/api";
 
 export const fetchProducts = async () => {
   try {
