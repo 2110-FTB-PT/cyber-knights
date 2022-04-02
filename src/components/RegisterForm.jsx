@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { register } from '../axios-services';
+import { login, register } from '../axios-services';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 
@@ -13,9 +13,9 @@ const Register = ({
     const handleSubmit = async (event) => {
         event.preventDefault();
         try{
-            const { token } = await register(username, password);
+            await register(username, password);
+            const { token } = await login(username,password);
             setToken(token);
-            localStorage.setItem("token", token);
             setUsername("");
             setPassword("");
             navigate('/');

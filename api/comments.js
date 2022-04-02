@@ -47,7 +47,7 @@ commentsRouter.patch("/:commentId", requireUser, async (req, res, next) => {
   const { comment, isPublic } = req.body;
   const updateField = { id };
 
-  if (isPublic) updateField.isPublic = isPublic;
+  if (req.body.hasOwnProperty("isPublic")) updateField.isPublic = isPublic;
 
   if (comment) updateField.comment = comment;
 

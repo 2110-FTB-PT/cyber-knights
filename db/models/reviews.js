@@ -1,5 +1,5 @@
-const client = require('../client')
-const { getCommentsByReview } = require('./comments')
+const client = require("../client");
+const { getCommentsByReview } = require("./comments");
 
 const createReview = async ({
   title,
@@ -18,13 +18,13 @@ const createReview = async ({
       RETURNING *;
     `,
       [title, description, userId, productId, isPublic]
-    )
+    );
 
-    return review
+    return review;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const getReviewById = async (reviewId) => {
   try {
@@ -38,21 +38,21 @@ const getReviewById = async (reviewId) => {
       WHERE r.id = $1;
     `,
       [reviewId]
-    )
+    );
 
     if (!review)
       throw {
         name: `ReviewNotFound`,
         message: `Review with the id of ${reviewId} could NOT be found`,
-      }
+      };
 
-    review.comments = await getCommentsByReview(reviewId)
+    review.comments = await getCommentsByReview(reviewId);
 
-    return review
+    return review;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const getPublicReviewsByProduct = async (productId) => {
   try {
@@ -65,15 +65,15 @@ const getPublicReviewsByProduct = async (productId) => {
       AND r."isPublic" = TRUE
     `,
       [productId]
-    )
+    );
 
-    await addCommentsToReviews(productReviews)
+    await addCommentsToReviews(productReviews);
 
-    return productReviews
+    return productReviews;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const getReviewsByProduct = async (productId) => {
   try {
@@ -86,68 +86,68 @@ const getReviewsByProduct = async (productId) => {
       AND "isPublic" = true 
     `,
       [productId]
-    )
+    );
 
-    await addCommentsToReviews(productReviews)
+    await addCommentsToReviews(productReviews);
 
-    return productReviews
+    return productReviews;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const getReviewsByUser = async (userId) => {
   try {
     const { rows: reviews } = await client.query(
       `
-      SELECT r.id, r."userId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      SELECT r.*, u.username AS "creatorName" 
       FROM reviews r
       JOIN users u ON r."userId" = u.id
       WHERE r."userId" = $1;
     `,
       [userId]
-    )
+    );
 
-    await addCommentsToReviews(reviews)
+    await addCommentsToReviews(reviews);
 
-    return reviews
+    return reviews;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const getPublicReviewsByUser = async (userId) => {
   try {
     const { rows: reviews } = await client.query(
       `
-      SELECT r.id, r."userId", r."isPublic", r.title, r.description, u.username AS "creatorName" 
+      SELECT r.*, u.username AS "creatorName" 
       FROM reviews r
       JOIN users u ON r."userId" = u.id
       WHERE r."userId" = $1
       AND r."isPublic" = true;
     `,
       [userId]
-    )
+    );
 
-    await addCommentsToReviews(reviews)
+    await addCommentsToReviews(reviews);
 
-    return reviews
+    return reviews;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const updateReview = async ({ id: reviewId, ...reviewFields }) => {
   try {
     const setString = Object.keys(reviewFields)
       .map((key, idx) => `"${key}"=$${idx + 1}`)
-      .join(', ')
+      .join(", ");
 
     if (setString.length === 0) {
       throw {
         name: `UpdateReviewErr`,
         message: `Must include all fields to update review`,
-      }
+      };
     }
 
     const {
@@ -160,31 +160,46 @@ const updateReview = async ({ id: reviewId, ...reviewFields }) => {
         RETURNING *;
       `,
       Object.values(reviewFields)
-    )
+    );
 
     if (!updatedReview)
       throw {
         name: `UpdateReviewErr`,
         message: `Unable to update review check review fields`,
-      }
+      };
 
-    updatedReview.comments = await getCommentsByReview(reviewId)
-    return updatedReview
+    updatedReview.comments = await getCommentsByReview(reviewId);
+    return updatedReview;
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
+
+const getAllPublicReviews = async () => {
+  try {
+    const { rows: allPublicReviews } = await client.query(`
+      SELECT r.*, u.username AS "creatorName"
+      FROM reviews r
+      JOIN users u ON r."userId" = u.id
+      WHERE r."isPublic" = TRUE;
+    `);
+
+    return allPublicReviews;
+  } catch (err) {
+    throw err;
+  }
+};
 
 const addCommentsToReviews = async (reviewsArr) => {
   try {
     for (let i = 0; i < reviewsArr.length; i++) {
-      const currReview = reviewsArr[i]
-      currReview.comments = await getCommentsByReview(currReview.id)
+      const currReview = reviewsArr[i];
+      currReview.comments = await getCommentsByReview(currReview.id);
     }
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 module.exports = {
   createReview,
@@ -194,4 +209,5 @@ module.exports = {
   getReviewsByUser,
   getPublicReviewsByUser,
   updateReview,
-}
+  getAllPublicReviews,
+};

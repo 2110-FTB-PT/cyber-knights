@@ -54,7 +54,7 @@ const createTables = async () => {
       CREATE TABLE reviews(
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
         "userId" INT REFERENCES users(id) NOT NULL,
         "productId" INT REFERENCES products(id) NOT NULL,
         "isPublic" BOOLEAN DEFAULT TRUE
@@ -69,7 +69,7 @@ const createTables = async () => {
 
       CREATE TABLE comments(
         id SERIAL PRIMARY KEY,
-        comment VARCHAR(255) NOT NULL,
+        comment TEXT NOT NULL,
         "userId" INT REFERENCES users(id) NOT NULL,
         "reviewId" INT REFERENCES reviews(id) NOT NULL,
         "isPublic" BOOLEAN DEFAULT TRUE 
@@ -284,35 +284,35 @@ const createInitReviews = async () => {
     const initReviews = [
       {
         title: `WOW CUTE`,
-        description: `This is the cutest little PET ROCK! 1`,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu aliquet risus. Cras risus tellus, semper id mollis ac, semper eu augue. Quisque porta est et tortor feugiat ullamcorper. Morbi et aliquam ex, vel pharetra ante. Cras nec leo ultrices, sodales urna ut, vulputate leo. Vestibulum vestibulum nulla augue, et.`,
         userId: 1,
         productId: 1,
         isPublic: true,
       },
       {
         title: `WOW CUTE`,
-        description: `This is the cutest little PET ROCK! 2`,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu aliquet risus. Cras risus tellus, semper id mollis ac, semper eu augue. Quisque porta est et tortor feugiat ullamcorper. Morbi et aliquam ex, vel pharetra ante. Cras nec leo ultrices, sodales urna ut, vulputate leo. Vestibulum vestibulum nulla augue, et.`,
         userId: 3,
         productId: 2,
         isPublic: true,
       },
       {
         title: `WOW CUTE`,
-        description: `This is the cutest little PET ROCK! 3`,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu aliquet risus. Cras risus tellus, semper id mollis ac, semper eu augue. Quisque porta est et tortor feugiat ullamcorper. Morbi et aliquam ex, vel pharetra ante. Cras nec leo ultrices, sodales urna ut, vulputate leo. Vestibulum vestibulum nulla augue, et.`,
         userId: 2,
         productId: 3,
         isPublic: true,
       },
       {
         title: `WOW CUTE`,
-        description: `This is the cutest little PET ROCK! 4`,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu aliquet risus. Cras risus tellus, semper id mollis ac, semper eu augue. Quisque porta est et tortor feugiat ullamcorper. Morbi et aliquam ex, vel pharetra ante. Cras nec leo ultrices, sodales urna ut, vulputate leo. Vestibulum vestibulum nulla augue, et.`,
         userId: 1,
         productId: 4,
         isPublic: true,
       },
       {
         title: `wowSOOO CUTE`,
-        description: `CUTE CUTE CUTE CUTE`,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu aliquet risus. Cras risus tellus, semper id mollis ac, semper eu augue. Quisque porta est et tortor feugiat ullamcorper. Morbi et aliquam ex, vel pharetra ante. Cras nec leo ultrices, sodales urna ut, vulputate leo. Vestibulum vestibulum nulla augue, et.`,
         userId: 1,
         productId: 4,
         isPublic: true,
