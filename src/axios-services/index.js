@@ -1,13 +1,18 @@
 import axios from "axios";
+<<<<<<< Updated upstream
 const BASE_URL = "https://build-a-rock.herokuapp.com/api";
 
+=======
+// const BASE_URL = "https://build-a-rock.herokuapp.com/api";
+const BASE_URL = "http://localhost:3000/api";
+>>>>>>> Stashed changes
 
 export const fetchProducts = async () => {
   try {
-    const {data} = await axios.get(`${BASE_URL}/products/public`);
-    return data
-  } catch ({response}) {
-    console.error(response.data)
+    const { data } = await axios.get(`${BASE_URL}/products/public`);
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
   }
 };
 
@@ -20,6 +25,7 @@ export const fetchProductById = async (id) => {
   }
 };
 
+<<<<<<< Updated upstream
 export const editProducts = async(id,token,productObj) => {
   try {
     await axios.patch(`${BASE_URL}/products/${id}`,productObj,{
@@ -30,11 +36,19 @@ export const editProducts = async(id,token,productObj) => {
   } catch ({response}) {
     console.error(response.data)
      
+=======
+export const editProducts = async (id, productObj) => {
+  try {
+    await axios.patch(`${BASE_URL}"/products/${id}`, productObj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+>>>>>>> Stashed changes
   }
-  
 };
-
-
 
 export const login = async (username, password) => {
   try {
@@ -182,7 +196,7 @@ export const createReview = async ({ token, ...reviewFields }) => {
   }
 };
 
-export const createComment = async ({token, ...commentFields}) => {
+export const createComment = async ({ token, ...commentFields }) => {
   try {
     const { data } = await axios.post(
       `${BASE_URL}/comments/create`,
@@ -196,5 +210,27 @@ export const createComment = async ({token, ...commentFields}) => {
     return data;
   } catch ({ response }) {
     console.error(response.data);
+  }
+};
+
+export const addItemToCart = async (userId, productId) => {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/cart/create`, {
+      userId,
+      productId,
+    });
+
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const removeItemFromCart = async (cartId) => {
+  try {
+    const { data } = await axios.delete(`${BASE_URL}/cart/delete`, { cartId });
+    return data;
+  } catch (err) {
+    throw err;
   }
 };
