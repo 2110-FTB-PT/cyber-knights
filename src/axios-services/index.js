@@ -1,11 +1,6 @@
 import axios from "axios";
-<<<<<<< Updated upstream
-const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-
-=======
 // const BASE_URL = "https://build-a-rock.herokuapp.com/api";
 const BASE_URL = "http://localhost:3000/api";
->>>>>>> Stashed changes
 
 export const fetchProducts = async () => {
   try {
@@ -25,28 +20,15 @@ export const fetchProductById = async (id) => {
   }
 };
 
-<<<<<<< Updated upstream
-export const editProducts = async(id,token,productObj) => {
+export const editProducts = async (id, token, productObj) => {
   try {
-    await axios.patch(`${BASE_URL}/products/${id}`,productObj,{
-      headers:{
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  } catch ({response}) {
-    console.error(response.data)
-     
-=======
-export const editProducts = async (id, productObj) => {
-  try {
-    await axios.patch(`${BASE_URL}"/products/${id}`, productObj, {
+    await axios.patch(`${BASE_URL}/products/${id}`, productObj, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (err) {
-    console.error(err);
->>>>>>> Stashed changes
+  } catch ({ response }) {
+    console.error(response.data);
   }
 };
 
