@@ -1,30 +1,54 @@
 import { useState, useEffect } from "react";
+import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
-import Form from 'react-bootstrap/Form'
+import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { editProducts } from "../axios-services";
+import { editProducts, fetchProductById } from "../axios-services";
+import "../style/editmodal.css";
 
 export default function EditProductModal({
   show,
   onHide,
-  product,
+  product: {
+    name: productName,
+    price: productPrice,
+    description: productDescription,
+    id,
+  },
   setProduct,
   user,
+  token
 }) {
-  const [name,setName]=useState('')
-  const [price,setPrice]=useState('')
-  const [description,setDescripton]=useState('')
+  //toggle state
+  //useEffect
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescripton] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
+
+  console.log(name);
+  console.log(price);
+  console.log(description);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     const updateProductObj = { name, description, price, isPublic };
     try {
-      await editProducts(updateProductObj);
+      await editProducts(id,token, updateProductObj);
+      const updatedProduct = await fetchProductById(id);
+      setProduct(updatedProduct)
+      onHide()
     } catch (err) {
       //errorhandling goes here
       console.error(err);
     }
   };
+
+  useEffect(()=>{
+    setName(productName)
+    setDescripton(productDescription)
+    setPrice(productPrice)
+  },[show])
 
   return (
     <Modal
@@ -33,13 +57,50 @@ export default function EditProductModal({
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="edit-modal "
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-        <Modal.Body>
-          <Form></Form>
-        </Modal.Body>
+        <Modal.Title id="contained-modal-title-vcenter">
+          <Form.Control
+            type="text"
+            defaultValue={productName}
+            onChange={(e) => setName(e.target.value)}
+          ></Form.Control>
+        </Modal.Title>
       </Modal.Header>
+      <Modal.Body>
+        <Form
+          className="d-flex flex-column "
+          onSubmit={(e) => submitHandler(e)}
+        >
+          <Form.Group id="modal-size">
+            <Form.Label>New Price</Form.Label>
+            <Form.Control
+              type="number"
+              defaultValue={productPrice}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>New Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={8}
+              type="text"
+              defaultValue={productDescription}
+              onChange={(e) => setDescripton(e.target.value)}
+            />
+          </Form.Group>
+          <Container>
+            <Button type="submit" onClick={submitHandler}>
+              Update product
+            </Button>
+            <Button type="submit" onClick={onHide}>
+              Close
+            </Button>
+          </Container>
+        </Form>
+      </Modal.Body>
     </Modal>
   );
 }
