@@ -42,7 +42,7 @@ export default function SingleProduct({ user, token, setUser }) {
       )}
       <div className="product-container mt-2 w-100 d-flex ">
         <div className="d-flex flex-row left-column justify-content-center">
-          {product.images && (
+          {product?.images && (
             <img
               style={{
                 maxWidth: "200px",
@@ -60,7 +60,14 @@ export default function SingleProduct({ user, token, setUser }) {
         <div className="right-column">
           <h3>${product?.price}</h3>
           <h2>IN STOCK</h2>
-          <Button>Add to Cart</Button>
+          <Button
+            onClick={async () => {
+              await getUser(token).then((res) => setUser(res));
+              addItemToCart(user.id, product.id);
+            }}
+          >
+            Add to Cart
+          </Button>
         </div>
       </div>
       <EditProductModal

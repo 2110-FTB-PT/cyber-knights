@@ -38,8 +38,8 @@ export default function Header({ token, user, setToken, setUser }) {
             closeVariant="white"
           >
             <Offcanvas.Title>Build-a-Rock</Offcanvas.Title>
-            {user.username ? (
-              <Offcanvas.Title>Hello, {user.username}!</Offcanvas.Title>
+            {user?.username ? (
+              <Offcanvas.Title>Hello, {user?.username}!</Offcanvas.Title>
             ) : (
               <Offcanvas.Title>Hello, Guest!</Offcanvas.Title>
             )}
