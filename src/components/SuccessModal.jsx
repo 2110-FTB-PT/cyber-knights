@@ -1,6 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import { FaHandHoldingHeart } from "react-icons/fa";
 
 export default function SuccessModal({ show, onHide }) {
   return (
@@ -18,7 +19,10 @@ export default function SuccessModal({ show, onHide }) {
           We hope you'll return in the future to buy more buddies!
         </p>
         <Button variant="success" onClick={onHide} className="align-self-end">
-          Thank you come again
+          Thank you come again{" "}
+          <span className="ps-2">
+            <FaHandHoldingHeart />
+          </span>
         </Button>
       </Alert>
     </Modal>
