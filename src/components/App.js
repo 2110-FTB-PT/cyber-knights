@@ -32,8 +32,9 @@ const App = () => {
         setUser(userInfo);
       }
     };
-    if (!user.id) handleUser();
-    if (user.id) handleUserCart();
+
+    if (!user?.username) handleUser();
+    if (user?.id) handleUserCart();
   }, [token, user]);
 
   useEffect(() => {
