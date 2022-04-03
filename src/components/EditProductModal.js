@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { editProducts, fetchProductById } from "../axios-services";
-import "../style/editmodal.css";
 
 export default function EditProductModal({
   show,
@@ -17,38 +16,34 @@ export default function EditProductModal({
   },
   setProduct,
   user,
-  token
+  token,
 }) {
   //toggle state
   //useEffect
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescripton] = useState('');
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescripton] = useState("");
   const [isPublic, setIsPublic] = useState(true);
-
-  console.log(name);
-  console.log(price);
-  console.log(description);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     const updateProductObj = { name, description, price, isPublic };
     try {
-      await editProducts(id,token, updateProductObj);
+      await editProducts(id, token, updateProductObj);
       const updatedProduct = await fetchProductById(id);
-      setProduct(updatedProduct)
-      onHide()
+      setProduct(updatedProduct);
+      onHide();
     } catch (err) {
       //errorhandling goes here
       console.error(err);
     }
   };
 
-  useEffect(()=>{
-    setName(productName)
-    setDescripton(productDescription)
-    setPrice(productPrice)
-  },[show])
+  useEffect(() => {
+    setName(productName);
+    setDescripton(productDescription);
+    setPrice(productPrice);
+  }, [show]);
 
   return (
     <Modal
