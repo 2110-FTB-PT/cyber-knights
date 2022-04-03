@@ -22,7 +22,6 @@ export default function ProductRevies({ productId, user, token }) {
   const [rerender, setRerender] = useState(false);
   const [showCreateReviewModal, setShowCreateReviewModal] = useState(false);
   const [showCreateCommentModal, setShowCreateCommentModal] = useState(false);
-  console.log("showCreateReviewModal :>> ", showCreateReviewModal);
 
   const handleReviewShow = () => setShowReviewModal(true);
   const handleReviewClose = () => setShowReviewModal(false);
@@ -101,7 +100,7 @@ export default function ProductRevies({ productId, user, token }) {
                     Author: {creatorName}
                   </Card.Title>
                   {user.username === creatorName ? (
-                    <Container className="d-flex gap-2">
+                    <Container className="d-flex gap-2 mw-100 mb-1">
                       <Button
                         variant="secondary"
                         onClick={() => {

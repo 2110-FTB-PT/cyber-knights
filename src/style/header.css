@@ -1,11 +1,15 @@
-.header{background:rgb(0, 178, 255);color:#fff;}
+.header {
+  background: rgb(0, 178, 255);
+  color: #fff;
+}
+
 #lblCartCount {
-    font-size: 13px;
-    background: #ff0000;
-    color: #fff;
-    padding: 0 5px;
-    vertical-align: top;
-    margin-left: -10px;
+  font-size: 13px;
+  background: #ff0000;
+  color: #fff;
+  padding: 0 5px;
+  vertical-align: top;
+  margin-left: -10px;
 }
 .badge {
   padding-left: 9px;
