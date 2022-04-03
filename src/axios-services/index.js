@@ -1,6 +1,5 @@
 import axios from "axios";
-// const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://build-a-rock.herokuapp.com/api";
 
 export const fetchProducts = async () => {
   try {
@@ -201,6 +200,17 @@ export const addItemToCart = async (userId, productId) => {
       userId,
       productId,
     });
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const removeItemFromCart = async ({ cartId }) => {
+  try {
+    const { data } = await axios.delete(`${BASE_URL}/cart/delete`, {
+      data: { cartId },
+    });
 
     return data;
   } catch (err) {
@@ -208,9 +218,13 @@ export const addItemToCart = async (userId, productId) => {
   }
 };
 
-export const removeItemFromCart = async (cartId) => {
+export const purchaseItemsInCart = async (purchaseObj) => {
   try {
-    const { data } = await axios.delete(`${BASE_URL}/cart/delete`, { cartId });
+    const { data } = await axios.patch(
+      `${BASE_URL}/cart/checkout`,
+      purchaseObj
+    );
+    console.log("data :>> ", data);
     return data;
   } catch (err) {
     throw err;
