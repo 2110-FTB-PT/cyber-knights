@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-const BASE_URL = "http://localhost:4000/api";
+const BASE_URL = "https://build-a-rock.herokuapp.com/api";
+
 
 export const fetchProducts = async () => {
   try {
@@ -20,15 +20,16 @@ export const fetchProductById = async (id) => {
   }
 };
 
-export const editProducts = async(id,productObj) => {
+export const editProducts = async(id,token,productObj) => {
   try {
-    await axios.patch(`${BASE_URL}"/products/${id}`,productObj,{
+    await axios.patch(`${BASE_URL}/products/${id}`,productObj,{
       headers:{
         Authorization: `Bearer ${token}`,
       },
     })
-  } catch (err) {
-    console.error(err)
+  } catch ({response}) {
+    console.error(response.data)
+     
   }
   
 };
