@@ -13,7 +13,6 @@ export default function HomeCarousel({ products }) {
       let count = 0;
       while (count < 4 && products.length > 0) {
         const rIndex = Math.floor(Math.random() * products.length);
-        console.log("WHAAA");
         if (stack.hasOwnProperty(rIndex)) continue;
         stack[rIndex] = products[rIndex];
         count += 1;

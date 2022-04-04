@@ -10,13 +10,13 @@ const PORT = process.env.PORT || 4000;
 server.use(cors());
 server.use(morgan("dev"));
 server.use(express.json());
-server.use(express.static(path.join(__dirname, "build")));
+// server.use(express.static(path.join(__dirname, "build")));
 
 server.use("/api", require("./api"));
 
-server.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// server.use((req, res, next) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 server.use(({ name, message }, req, res, next) => {
   console.error(name, message);

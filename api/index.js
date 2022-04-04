@@ -40,7 +40,7 @@ apiRouter.use(async (req, res, next) => {
 
 apiRouter.use((req, res, next) => {
   if (req.user) {
-    console.log("User is set:", req.user);
+    // console.log("User is set:", req.user);
   }
   next();
 });
@@ -51,6 +51,7 @@ apiRouter.use("/comments", commentsRouter);
 apiRouter.use("/reviews", require("./reviews"));
 apiRouter.use("/images", require("./images"));
 apiRouter.use("/products", require("./products"));
+apiRouter.use("/cart", require("./cart"));
 
 apiRouter.get("*", (req, res, next) => {
   res.status(404).send("PAGE NOT FOUND");

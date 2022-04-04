@@ -1,3 +1,4 @@
+const {getCartByUser} = require('./cart')
 const client = require('../client')
 const bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
@@ -98,8 +99,12 @@ async function getUserById(id) {
     )
 
     if (!user) {
+      
       return null
     }
+    
+    user.cart = await getCartByUser(user.id)
+   
 
     return user
   } catch (error) {

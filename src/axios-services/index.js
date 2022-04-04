@@ -5,8 +5,8 @@ export const fetchProducts = async () => {
   try {
     const { data } = await axios.get(`${BASE_URL}/products/public`);
     return data;
-  } catch (error) {
-    console.error(error);
+  } catch ({ response }) {
+    console.error(response.data);
   }
 };
 
@@ -16,6 +16,18 @@ export const fetchProductById = async (id) => {
     return data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const editProducts = async (id, token, productObj) => {
+  try {
+    await axios.patch(`${BASE_URL}/products/${id}`, productObj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch ({ response }) {
+    console.error(response.data);
   }
 };
 
@@ -145,5 +157,76 @@ export const fetchProductReviews = async (productId) => {
     return data;
   } catch ({ response }) {
     console.error(response.data);
+  }
+};
+
+export const createReview = async ({ token, ...reviewFields }) => {
+  try {
+    const { data } = await axios.post(
+      `${BASE_URL}/reviews/create`,
+      reviewFields,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
+};
+
+export const createComment = async ({ token, ...commentFields }) => {
+  try {
+    const { data } = await axios.post(
+      `${BASE_URL}/comments/create`,
+      commentFields,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch ({ response }) {
+    console.error(response.data);
+  }
+};
+
+export const addItemToCart = async (userId, productId) => {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/cart/create`, {
+      userId,
+      productId,
+    });
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const removeItemFromCart = async ({ cartId }) => {
+  try {
+    const { data } = await axios.delete(`${BASE_URL}/cart/delete`, {
+      data: { cartId },
+    });
+
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const purchaseItemsInCart = async (purchaseObj) => {
+  try {
+    const { data } = await axios.patch(
+      `${BASE_URL}/cart/checkout`,
+      purchaseObj
+    );
+    console.log("data :>> ", data);
+    return data;
+  } catch (err) {
+    throw err;
   }
 };

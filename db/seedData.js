@@ -12,6 +12,7 @@ const dropTables = async () => {
     console.log("Starting to drop tables");
     await client.query(`
       DROP TABLE IF EXISTS comments;
+      DROP TABLE IF EXISTS cart;
       DROP TABLE IF EXISTS review_images;
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS product_images;
@@ -65,6 +66,13 @@ const createTables = async () => {
         description VARCHAR(255) NOT NULL,
         url VARCHAR(255) NOT NULL, 
         "reviewId" INT REFERENCES reviews(id) NOT NULL
+      );
+      
+      CREATE TABLE cart(
+        id SERIAL PRIMARY KEY,
+        "userId" INT REFERENCES users(id) NOT NULL,
+        "productId" INTEGER REFERENCES products(id),
+        "isPurchase" BOOLEAN DEFAULT FALSE
       );
 
       CREATE TABLE comments(

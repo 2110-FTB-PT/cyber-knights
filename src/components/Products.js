@@ -1,22 +1,24 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
 import { fetchProducts } from "../axios-services";
 import { useNavigate } from "react-router-dom";
 import ProductCards from "./ProductCards";
 import "../style/Products.css";
 
-export default function Products({ products, user}) {
+export default function Products({ products, user,token }) {
   return (
     <div>
       <div className="primarycontent"></div>
-      <div className="products-ribbon">SALE</div>
-      {products.map((product) => {
-        return (
-          <React.Fragment key={product.id}>
-            <ProductCards product={product} user={user} />
-          </React.Fragment>
-        );
-      })}
+      {!token?<div className="products-ribbon">Login to save items in cart!</div>:null}
+      <div className="d-flex flex-wrap gap-4" >
+        {products.map((product) => {
+          return (
+            <React.Fragment key={product.id}>
+              <ProductCards product={product} user={user} />
+            </React.Fragment>
+          );
+        })}
+      </div>
     </div>
   );
 }
