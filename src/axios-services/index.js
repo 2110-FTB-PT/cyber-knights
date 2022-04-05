@@ -1,10 +1,5 @@
 import axios from "axios";
-<<<<<<< Updated upstream
 const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-=======
-// const BASE_URL = "https://build-a-rock.herokuapp.com/api";
-const BASE_URL = "http://localhost:3000/api";
->>>>>>> Stashed changes
 
 export const fetchProducts = async () => {
   try {
@@ -24,26 +19,15 @@ export const fetchProductById = async (id) => {
   }
 };
 
-<<<<<<< Updated upstream
 export const editProducts = async (id, token, productObj) => {
   try {
     await axios.patch(`${BASE_URL}/products/${id}`, productObj, {
-=======
-export const editProducts = async (id, productObj) => {
-  try {
-    await axios.patch(`${BASE_URL}"/products/${id}`, productObj, {
->>>>>>> Stashed changes
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-<<<<<<< Updated upstream
   } catch ({ response }) {
     console.error(response.data);
-=======
-  } catch (err) {
-    console.error(err);
->>>>>>> Stashed changes
   }
 };
 
@@ -216,7 +200,6 @@ export const addItemToCart = async (userId, productId) => {
       userId,
       productId,
     });
-<<<<<<< Updated upstream
     return data;
   } catch (err) {
     throw err;
@@ -228,8 +211,6 @@ export const removeItemFromCart = async ({ cartId }) => {
     const { data } = await axios.delete(`${BASE_URL}/cart/delete`, {
       data: { cartId },
     });
-=======
->>>>>>> Stashed changes
 
     return data;
   } catch (err) {
@@ -237,7 +218,6 @@ export const removeItemFromCart = async ({ cartId }) => {
   }
 };
 
-<<<<<<< Updated upstream
 export const purchaseItemsInCart = async (purchaseObj) => {
   try {
     const { data } = await axios.patch(
@@ -245,11 +225,6 @@ export const purchaseItemsInCart = async (purchaseObj) => {
       purchaseObj
     );
     console.log("data :>> ", data);
-=======
-export const removeItemFromCart = async (cartId) => {
-  try {
-    const { data } = await axios.delete(`${BASE_URL}/cart/delete`, { cartId });
->>>>>>> Stashed changes
     return data;
   } catch (err) {
     throw err;

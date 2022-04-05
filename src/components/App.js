@@ -32,14 +32,9 @@ const App = () => {
         setUser(userInfo);
       }
     };
-<<<<<<< Updated upstream
 
     if (!user?.username) handleUser();
     if (user?.id) handleUserCart();
-=======
-    if (!user.id) handleUser();
-    if (user.id) handleUserCart();
->>>>>>> Stashed changes
   }, [token, user]);
 
   useEffect(() => {
