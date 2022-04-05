@@ -30,16 +30,14 @@ export default function SingleProduct({ user, token, setUser }) {
   return (
     <div className="d-flex flex-column mx-4 w-100">
       {user.admin && (
-        <div className="admin-banner ">
+        <div className="admin-banner d-flex gap-5 justify-content-center align-items-center ">
           ADMIN MODE
-          <span>
-            <Button onClick={handleProductShow}>Edit Page</Button>
-          </span>
+          <Button onClick={handleProductShow}>Edit Page</Button>
         </div>
       )}
       <div className="product-container mt-2 w-100 d-flex ">
         <div className="d-flex flex-row left-column justify-content-center">
-          {product?.images && (
+          {product.images && (
             <img
               style={{
                 maxWidth: "200px",

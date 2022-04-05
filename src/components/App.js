@@ -20,7 +20,6 @@ const App = () => {
     const handleUser = async () => {
       if (token) {
         const userInfo = await getUser(token);
-        console.log("userInfo :>> ", userInfo);
         setUser(userInfo);
       }
     };
