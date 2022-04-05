@@ -7,12 +7,13 @@
 }
 
 .right-column{
+  padding: 20px;
   border: 1px solid lightgray;
 }
 
 .left-column {
   display: flex;
-  border: 1px solid lightgray;
+  padding: 25px;
  
 }
 

@@ -4,6 +4,9 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { editProducts, fetchProductById } from "../axios-services";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
+
 
 export default function EditProductModal({
   show,
@@ -55,13 +58,21 @@ export default function EditProductModal({
       className="edit-modal "
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          <Form.Control
+        <InputGroup>
+          <InputGroup.Text>New Title</InputGroup.Text>
+          <FormControl
             type="text"
             defaultValue={productName}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Modal.Title>
+         />
+        </InputGroup>
+        <Modal.Title id="contained-modal-title-vcenter d-flex">
+           </Modal.Title>
+          <Form.Group>
+          <Form.Label>Hide Product</Form.Label>
+          <Form.Check type='switch' onChange={()=>isPublic?setIsPublic(false):setIsPublic(true)} />
+          </Form.Group>
+       
       </Modal.Header>
       <Modal.Body>
         <Form

@@ -24,7 +24,7 @@ export default function Header({ token, user, setToken, setUser }) {
       bg="dark"
       variant="dark"
       id="lg-nav"
-      className="mw-100 d-sm-flex justify-content-between flex-md-row flex-sm-column"
+      className="main-nav mw-100 d-sm-flex justify-content-between flex-md-row flex-sm-column"
       fixed="top"
     >
       <Container className="d-flex justify-content-between mw-100">

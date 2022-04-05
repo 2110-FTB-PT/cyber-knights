@@ -42,7 +42,7 @@ export default function SingleProduct({ user, token, setUser }) {
       )}
       <div className="product-container mt-2 w-100 d-flex ">
         <div className="d-flex flex-row left-column justify-content-center">
-          {product?.images && (
+          {product.images && (
             <img
               style={{
                 maxWidth: "200px",
