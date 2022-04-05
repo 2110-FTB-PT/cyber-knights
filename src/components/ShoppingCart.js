@@ -112,7 +112,7 @@ export default function ShoppingCart({
           </div>
         </div>
       ) : (
-        <div>
+        <div className="d-flex flex-column justify-content-center">
           <h1 className="text-center">need to add items to cart</h1>
           <Button onClick={() => navigate("/allProducts")}>
             Start browsing
