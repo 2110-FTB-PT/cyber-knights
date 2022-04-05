@@ -123,7 +123,7 @@ export default function Header({ token, user, setToken, setUser }) {
             className="btn-block p-2 fs-2 d-flex flex-column"
           >
             <span
-              className="badge badge-warning w-75 align-self-end"
+              className="badge badge-warning bg-danger w-75 align-self-end"
               id="lblCartCount"
             >
               {user?.cart?.length}

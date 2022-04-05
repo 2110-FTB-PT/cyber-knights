@@ -67,7 +67,7 @@ export default function ShoppingCart({
               user?.cart?.map((cartItem) => {
                 return (
                   <Card
-                    className="d-flex  gap-2 my-2 shadow-lg"
+                    className="d-flex gap-2 my-2 shadow-lg"
                     key={cartItem.cartId}
                   >
                     <Card.Body className="d-flex ">
@@ -79,12 +79,16 @@ export default function ShoppingCart({
                       <Container className="d-flex flex-column">
                         <Card.Title>{cartItem.name}</Card.Title>
                         <Card.Text>{cartItem.description}</Card.Text>
-                        <Card.Text className="d-flex justify-content-between">
+                        <Card.Text className="d-flex justify-content-between align-items-center">
                           {`Price: $${cartItem.price}`}
                           <Button
+                            variant="danger"
+                            className="align-self-end"
                             onClick={async () => {
                               await removeItemFromCart(cartItem);
-                              await getUser(token).then((res) => setUser(res));
+                              await getUser(token)
+                                .catch((err) => console.error)
+                                .then((res) => setUser(res));
                             }}
                           >
                             Remove from Cart
@@ -112,7 +116,7 @@ export default function ShoppingCart({
           </div>
         </div>
       ) : (
-        <div className="d-flex flex-column justify-content-center">
+        <div className="d-flex flex-column align-content-center">
           <h1 className="text-center">need to add items to cart</h1>
           <Button onClick={() => navigate("/allProducts")}>
             Start browsing

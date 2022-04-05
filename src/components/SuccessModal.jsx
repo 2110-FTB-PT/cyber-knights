@@ -2,6 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { FaHandHoldingHeart } from "react-icons/fa";
+
 export default function SuccessModal({ show, onHide }) {
   return (
     <Modal size="lg" show={show} onHide={onHide}>
