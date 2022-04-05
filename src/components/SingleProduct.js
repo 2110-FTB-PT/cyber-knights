@@ -59,8 +59,8 @@ export default function SingleProduct({ user, token, setUser }) {
           <h2>IN STOCK</h2>
           <Button
             onClick={async () => {
+              await addItemToCart(user.id, product.id);
               await getUser(token).then((res) => setUser(res));
-              addItemToCart(user.id, product.id);
             }}
           >
             Add to Cart
