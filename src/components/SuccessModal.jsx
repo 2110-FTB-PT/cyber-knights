@@ -19,10 +19,7 @@ export default function SuccessModal({ show, onHide }) {
           We hope you'll return in the future to buy more buddies!
         </p>
         <Button variant="success" onClick={onHide} className="align-self-end">
-          Thank you come again{" "}
-          <span className="ps-2">
-            <FaHandHoldingHeart />
-          </span>
+          Thank you come back soon! <FaHandHoldingHeart />
         </Button>
       </Alert>
     </Modal>

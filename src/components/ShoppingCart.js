@@ -36,7 +36,7 @@ export default function ShoppingCart({
     };
     handleUserCart();
     handleTotal();
-  }, []);
+  }, [previousCart]);
 
   const handleTotal = () => {
     const sumArray = [];
