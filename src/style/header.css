@@ -12,6 +12,7 @@
   margin-left: -10px;
 }
 .badge {
+  font-family: "Karla", sans-serif;
   padding-left: 9px;
   padding-right: 9px;
   border-radius: 9px;
@@ -22,7 +23,6 @@
   background-color: #c67605;
 }
 
-.main-nav{
+.main-nav {
   border: 1px solid lightgrey;
-  
 }
