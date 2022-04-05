@@ -31,13 +31,19 @@ export default function SingleProduct({ user, token, setUser }) {
   }, [modalShow]);
 
   return (
+<<<<<<< Updated upstream
     <div className="d-flex flex-column mx-4 w-100">
       {user.admin && (
+=======
+    <div className="d-flex flex-column mx-4">
+      {user.admin ? (
+>>>>>>> Stashed changes
         <div className="admin-banner ">
           ADMIN MODE
           <span>
             <Button onClick={handleProductShow}>Edit Page</Button>
           </span>
+<<<<<<< Updated upstream
         </div>
       )}
       <div className="product-container mt-2 w-100 d-flex ">
@@ -69,6 +75,35 @@ export default function SingleProduct({ user, token, setUser }) {
             Add to Cart
           </Button>
         </div>
+=======
+        </div>
+      ) : null}
+      <div className="product-container mt-5  d-flex ">
+        <div className="product-container mt-5  d-flex ">
+          <div className="left-column">
+            <div className="mapped-images"></div>
+            <div className="IMAGEaa"></div>
+          </div>
+          <div className="center-column ">
+            <h1>{product.name}</h1>
+            <h2>{product.description}</h2>
+          </div>
+          <div className="right-column">
+            <h3>${product.price}</h3>
+            <h2>IN STOCK</h2>
+            <Button
+              onClick={async () => {
+                await getUser(token).then((res) => setUser(res));
+                addItemToCart(user.id, product.id);
+              }}
+            >
+              Add to Cart
+            </Button>
+          </div>
+
+          <div className="product-reviews"></div>
+        </div>
+>>>>>>> Stashed changes
       </div>
       <EditProductModal
         show={modalShow}
@@ -76,7 +111,6 @@ export default function SingleProduct({ user, token, setUser }) {
         product={product}
         setProduct={setProduct}
         user={user}
-        token={token}
       />
       <ProductReviews productId={productId} user={user} token={token} />
     </div>
