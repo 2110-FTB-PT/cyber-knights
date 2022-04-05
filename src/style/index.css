@@ -9,3 +9,7 @@ body {
   padding: 0;
   background-color: #f2eee3;
 }
+
+body p{
+  font-family: 'karla';
+}

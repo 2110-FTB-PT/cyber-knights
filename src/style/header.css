@@ -21,3 +21,8 @@
 .badge-warning[href] {
   background-color: #c67605;
 }
+
+.main-nav{
+  border: 1px solid lightgrey;
+  
+}
