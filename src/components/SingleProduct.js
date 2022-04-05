@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductReviews from "./ProductReviews";
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { fetchProductById, addItemToCart, getUser } from "../axios-services";
 import "../style/SingleProduct.css";
 import EditProductModal from "./EditProductModal";
-import Logo from "./Logo";
-import ProductRevies from "./ProductReviews";
 
 export default function SingleProduct({ user, token, setUser }) {
   const [product, setProduct] = useState([]);
@@ -62,8 +59,8 @@ export default function SingleProduct({ user, token, setUser }) {
           <h2>IN STOCK</h2>
           <Button
             onClick={async () => {
+              await addItemToCart(user.id, product.id);
               await getUser(token).then((res) => setUser(res));
-              addItemToCart(user.id, product.id);
             }}
           >
             Add to Cart
@@ -76,7 +73,6 @@ export default function SingleProduct({ user, token, setUser }) {
         product={product}
         setProduct={setProduct}
         user={user}
-        token={token}
       />
       <ProductReviews productId={productId} user={user} token={token} />
     </div>

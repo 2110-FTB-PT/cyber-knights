@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { useEffect } from "react";
 
 export default function HomeCarousel({ products }) {
   const navigate = useNavigate();
