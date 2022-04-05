@@ -8,7 +8,7 @@ export default function ProductCards({ product }) {
   return (
     <div>
       {product && (
-        <Card className="col-">
+        <Card className="shadow-lg">
           <Card.Header className="fs-4 text-center">{product.name}</Card.Header>
           <Card.Img style={{
             maxWidth:'400px',
@@ -16,7 +16,7 @@ export default function ProductCards({ product }) {
             minWidth:'400px',
             minHeight:'400px',
           }} variant='top' src={product.images[0].url}/>
-          <Card.Body>
+          <Card.Body className="product-card-button d-flex justify-content-center flex-column">
             <Card.Text className="text-center fs-2">${product.price}</Card.Text>
             <Button onClick={()=>Navigate(`/single-product/${product.id}`)}>More Details</Button>
           </Card.Body>

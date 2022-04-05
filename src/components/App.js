@@ -20,7 +20,6 @@ const App = () => {
     const handleUser = async () => {
       if (token) {
         const userInfo = await getUser(token);
-        console.log("userInfo :>> ", userInfo);
         setUser(userInfo);
       }
     };
@@ -55,7 +54,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="app-container">
+    <div className="app-container bg-light">
       <Header user={user} token={token} setToken={setToken} setUser={setUser} />
       <div className="content-container d-flex justify-content-center mb-5">
         <Routes>

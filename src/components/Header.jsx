@@ -3,11 +3,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Container from "react-bootstrap/Container";
-import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdShoppingCart } from "react-icons/md";
 import { LinkContainer } from "react-router-bootstrap";
@@ -24,7 +21,7 @@ export default function Header({ token, user, setToken, setUser }) {
       bg="dark"
       variant="dark"
       id="lg-nav"
-      className="mw-100 d-sm-flex justify-content-between flex-md-row flex-sm-column"
+      className="main-nav mw-100 d-sm-flex justify-content-between flex-md-row flex-sm-column"
       fixed="top"
     >
       <Container className="d-flex justify-content-between mw-100">
@@ -126,7 +123,7 @@ export default function Header({ token, user, setToken, setUser }) {
             className="btn-block p-2 fs-2 d-flex flex-column"
           >
             <span
-              className="badge badge-warning w-75 align-self-end"
+              className="badge badge-warning bg-danger w-75 align-self-end"
               id="lblCartCount"
             >
               {user?.cart?.length}

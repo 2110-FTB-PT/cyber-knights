@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductReviews from "./ProductReviews";
-import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { fetchProductById, addItemToCart, getUser } from "../axios-services";
 import "../style/SingleProduct.css";
 import EditProductModal from "./EditProductModal";
-import Logo from "./Logo";
-import ProductRevies from "./ProductReviews";
 
 export default function SingleProduct({ user, token, setUser }) {
   const [product, setProduct] = useState([]);
@@ -33,16 +30,14 @@ export default function SingleProduct({ user, token, setUser }) {
   return (
     <div className="d-flex flex-column mx-4 w-100">
       {user.admin && (
-        <div className="admin-banner ">
+        <div className="admin-banner d-flex gap-5 justify-content-center align-items-center ">
           ADMIN MODE
-          <span>
-            <Button onClick={handleProductShow}>Edit Page</Button>
-          </span>
+          <Button onClick={handleProductShow}>Edit Page</Button>
         </div>
       )}
       <div className="product-container mt-2 w-100 d-flex ">
         <div className="d-flex flex-row left-column justify-content-center">
-          {product?.images && (
+          {product.images && (
             <img
               style={{
                 maxWidth: "200px",
@@ -62,8 +57,8 @@ export default function SingleProduct({ user, token, setUser }) {
           <h2>IN STOCK</h2>
           <Button
             onClick={async () => {
+              await addItemToCart(user.id, product.id);
               await getUser(token).then((res) => setUser(res));
-              addItemToCart(user.id, product.id);
             }}
           >
             Add to Cart
@@ -76,7 +71,6 @@ export default function SingleProduct({ user, token, setUser }) {
         product={product}
         setProduct={setProduct}
         user={user}
-        token={token}
       />
       <ProductReviews productId={productId} user={user} token={token} />
     </div>
