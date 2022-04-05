@@ -41,7 +41,7 @@ export default function HomeReviews({ products }) {
 
   return (
     <div className="d-flex flex-column w-25 gap-4">
-      <h1>Some Reviews</h1>
+      <h1 className="text-center">Latest Reviews</h1>
       <div className="d-flex flex-column gap-2">
         {publicReviews &&
           rngReviews().map(({ id, creatorName, description, productId }) => {
@@ -50,13 +50,14 @@ export default function HomeReviews({ products }) {
                 <Card.Header className="bg-dark text-light fs-4">
                   {productTitle(productId)}
                 </Card.Header>
-                <Card.Body>
+                <Card.Body className="d-flex flex-column">
                   <Card.Text>{description}</Card.Text>
                   <Card.Title className="blockquote-footer fs-6 text-end">
                     Author: {creatorName}
                   </Card.Title>
                   <Button
                     variant="warning"
+                    className=""
                     onClick={() => navigate(`./single-product/${productId}`)}
                   >
                     Check out the product!
